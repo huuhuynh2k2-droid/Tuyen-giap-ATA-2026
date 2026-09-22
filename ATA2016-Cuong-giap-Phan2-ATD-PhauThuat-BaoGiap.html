@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ATA 2016 – Cường giáp (Phần 2): ATD, Phẫu thuật, Cơn bão giáp</title>
+<style>
+  :root{
+    --bg:#FAFAF7; --surface:#FFFFFF; --ink:#211F1B; --ink-2:#6B6862;
+    --border:#E4E1D8; --accent:#A6192E; --accent-ink:#6E0F1D; --accent-bg:#FBEAEC;
+    --warn-bg:#FBEFE0; --warn-ink:#6B3E06; --warn-border:#EBCE9C;
+    --hl:#FFE58A;
+    --serif:"Source Serif 4","Iowan Old Style",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --sidebar-w:290px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.7; font-size:16px;}
+  a{color:var(--accent-ink);}
+  #progress{position:fixed; top:0; left:0; height:3px; background:var(--accent); width:0%; z-index:100; transition:width .1s linear;}
+  #topbar{display:none; position:sticky; top:0; z-index:60; background:var(--surface); border-bottom:1px solid var(--border); padding:10px 14px; align-items:center; gap:10px;}
+  #topbar button{background:none; border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:14px; color:var(--ink); cursor:pointer;}
+  #topbar .ttl{font-family:var(--serif); font-size:15px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .layout{display:flex; max-width:1180px; margin:0 auto;}
+  #sidebar{width:var(--sidebar-w); flex-shrink:0; position:sticky; top:0; align-self:flex-start; height:100vh; overflow-y:auto; padding:28px 18px 40px 28px; border-right:1px solid var(--border);}
+  #sidebar .eyebrow{font-size:11px; letter-spacing:.03em; color:var(--accent-ink); font-weight:600; margin-bottom:6px;}
+  #sidebar .doc-title{font-family:var(--serif); font-size:16.5px; font-weight:600; line-height:1.35; margin-bottom:14px;}
+  #readpct{font-size:12px; color:var(--ink-2); margin-bottom:18px;}
+  #toc{list-style:none; margin:0; padding:0; font-size:13.5px;}
+  #toc li{margin:0;}
+  #toc a{display:block; padding:6px 8px; border-radius:6px; color:var(--ink-2); text-decoration:none; border-left:2px solid transparent;}
+  #toc a.lvl2{font-weight:600; color:var(--ink); margin-top:6px;}
+  #toc a.lvl3{padding-left:20px; font-size:13px;}
+  #toc a:hover{background:var(--accent-bg);}
+  #toc a.active{border-left:2px solid var(--accent); color:var(--accent-ink); background:var(--accent-bg); font-weight:600;}
+  #sidebar-foot{margin-top:22px; padding-top:14px; border-top:1px solid var(--border);}
+  #sidebar-foot button{width:100%; background:none; border:1px solid var(--border); border-radius:6px; padding:8px; font-size:12.5px; color:var(--ink-2); cursor:pointer;}
+  #sidebar-foot button:hover{border-color:var(--accent); color:var(--accent-ink);}
+  #hlcount{font-size:12px; color:var(--ink-2); margin-bottom:8px;}
+  main{flex:1; min-width:0; padding:44px 48px 120px; max-width:780px;}
+  .kicker{display:inline-block; background:var(--accent); color:#fff; font-size:11.5px; letter-spacing:.06em; font-weight:600; padding:4px 10px; border-radius:4px; margin-bottom:16px;}
+  h1{font-family:var(--serif); font-size:32px; line-height:1.22; font-weight:600; margin:0 0 10px;}
+  .byline{color:var(--ink-2); font-size:14px; margin-bottom:4px;}
+  .cite{color:var(--ink-2); font-size:12.5px; margin-bottom:30px; border-bottom:1px solid var(--border); padding-bottom:26px;}
+  h2{font-family:var(--serif); font-size:23px; font-weight:600; margin:44px 0 14px; scroll-margin-top:20px;}
+  h3{font-family:var(--serif); font-size:18.5px; font-weight:600; margin:30px 0 10px; scroll-margin-top:20px;}
+  p{margin:0 0 16px;}
+  .sup{font-size:11px; vertical-align:super; color:var(--accent-ink);}
+  strong{font-weight:600;}
+  .box{background:var(--accent-bg); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin:20px 0;}
+  .box .box-title{font-weight:600; color:var(--accent-ink); font-size:13px; letter-spacing:.02em; margin-bottom:8px;}
+  .box ul{margin:0; padding-left:20px;}
+  .box li{margin-bottom:6px;}
+  .rec{background:#F1EFE6; border-left:3px solid var(--accent); border-radius:6px; padding:12px 16px; margin:14px 0; font-size:14.5px;}
+  .rec .num{font-weight:700; color:var(--accent-ink);}
+  .grade{display:inline-block; font-weight:700; font-size:11.5px; background:var(--accent); color:#fff; border-radius:4px; padding:1px 6px; margin-left:4px;}
+  .warn{background:var(--warn-bg); border:1px solid var(--warn-border); border-radius:10px; padding:16px 20px; margin:20px 0; color:var(--warn-ink); font-size:14.5px;}
+  table{width:100%; border-collapse:collapse; margin:18px 0 26px; font-size:13.5px;}
+  caption{caption-side:top; text-align:left; font-weight:600; font-size:13.5px; margin-bottom:8px; color:var(--ink);}
+  th,td{border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top;}
+  th{background:#F1EFE6; font-weight:600;}
+  tr:nth-child(even) td{background:#FCFCFA;}
+  .tbl-wrap{overflow-x:auto;}
+  ul,ol{padding-left:22px;}
+  li{margin-bottom:6px;}
+  .fig-caption{font-size:13px; color:var(--ink-2); font-style:italic; margin-top:8px;}
+  hr.sect{border:none; border-top:1px solid var(--border); margin:36px 0;}
+  mark.hl{background:var(--hl); padding:0 1px; border-radius:2px; cursor:pointer;}
+  #hlbtn{position:absolute; display:none; z-index:80; background:var(--ink); color:#fff; font-size:12.5px; padding:7px 12px; border-radius:6px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.2); user-select:none;}
+  #hlbtn:hover{background:#000;}
+  @media (max-width:880px){
+    #topbar{display:flex;}
+    .layout{flex-direction:column;}
+    #sidebar{position:fixed; top:0; left:0; height:100%; z-index:70; background:var(--surface); width:82vw; max-width:320px; transform:translateX(-100%); transition:transform .22s ease; box-shadow:8px 0 30px rgba(0,0,0,.12);}
+    #sidebar.open{transform:translateX(0);}
+    #overlay{display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:65;}
+    #overlay.show{display:block;}
+    main{padding:28px 20px 100px; max-width:100%;}
+    h1{font-size:25px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="topbar"><button id="menuBtn" aria-label="Mục lục">☰ Mục lục</button><div class="ttl">ATA 2016 Cường giáp – P2</div></div>
+<div id="overlay"></div>
+
+<div class="layout">
+  <aside id="sidebar">
+    <div class="eyebrow">HƯỚNG DẪN CHUYÊN ĐỀ · THYROID (ATA) 2016</div>
+    <div class="doc-title">Hướng dẫn ATA 2016 về Chẩn đoán và Xử trí Cường giáp — Phần 2/5</div>
+    <div id="readpct">Đã đọc: 0%</div>
+    <ul id="toc"></ul>
+    <div id="sidebar-foot">
+      <div id="hlcount">0 đoạn đã highlight</div>
+      <button id="clearHl">Xoá tất cả highlight</button>
+    </div>
+  </aside>
+
+  <main id="content">
+    <span class="kicker">PHẦN 2/5 · ATD — PHẪU THUẬT — BÃO GIÁP</span>
+    <h1>Hướng dẫn ATA 2016: Chẩn đoán và Xử trí Cường giáp — Phần 2</h1>
+    <div class="byline">Douglas S. Ross, Henry B. Burch, David S. Cooper và cộng sự — American Thyroid Association Task Force</div>
+    <div class="cite">Nguồn: Ross DS, Burch HB, Cooper DS, et al. 2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis. Thyroid. 2016;26(10):1343–1421. DOI: 10.1089/thy.2016.0229. Bản dịch tham khảo phục vụ học tập lâm sàng — không thay thế bản gốc.</div>
+
+    <div class="box">
+<div class="box-title">VỀ TÀI LIỆU NÀY</div>
+<p style="margin:0;">Đây là <strong>Phần 2/5</strong> của bộ tài liệu dịch Hướng dẫn ATA 2016 về cường giáp. Phần 2 bao gồm: điều trị Basedow bằng thuốc kháng giáp tổng hợp [E] (Khuyến cáo 13–23), phẫu thuật cắt giáp [F] (Khuyến cáo 24–32), xử trí nhân giáp kèm GD [G] (Khuyến cáo 33), cơn bão giáp [H] (Khuyến cáo 34–35), và vai trò của iod đơn thuần trong điều trị GD [I] (Khuyến cáo 36). Xem <strong>Phần 1</strong> để đọc phần Nền tảng, chẩn đoán và điều trị RAI cho Basedow.</p>
+</div>
+
+<h2 id="h-atd-basedow">[E] Nếu chọn ATD là điều trị ban đầu cho GD, quản lý như thế nào?</h2>
+<p>ATD đã được dùng suốt 7 thập kỷ. Mục tiêu điều trị là đưa bệnh nhân về bình giáp nhanh và an toàn nhất có thể. Các thuốc này không chữa khỏi cường giáp Basedow; tuy nhiên nếu dùng đủ liều, chúng rất hiệu quả trong kiểm soát cường giáp. Khi thất bại đạt bình giáp, nguyên nhân thường gặp nhất là không tuân thủ điều trị. Bản thân điều trị có thể có vai trò ức chế miễn dịch có lợi, hoặc trực tiếp giảm tự miễn đặc hiệu tuyến giáp, hoặc gián tiếp qua cải thiện tình trạng cường giáp giúp hệ miễn dịch rối loạn điều hoà trở về bình thường. Thực tế, tỷ lệ thuyên giảm khi điều trị ATD cao hơn nhiều so với tỷ lệ thuyên giảm tự nhiên trong lịch sử.</p>
+
+<h3 id="h-khoi-tri-atd">[E1] Khởi trị ATD cho GD</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 13</span> — Nên dùng MMI cho hầu như mọi bệnh nhân chọn điều trị ATD cho GD, trừ tam cá nguyệt 1 của thai kỳ (ưu tiên PTU), trong điều trị cơn bão giáp, và ở bệnh nhân có phản ứng nhẹ với MMI nhưng từ chối RAI hoặc phẫu thuật.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 14</span> — Cần thông báo cho bệnh nhân về tác dụng phụ của ATD và sự cần thiết phải báo ngay cho bác sĩ nếu xuất hiện phát ban ngứa, vàng da, phân bạc màu hoặc nước tiểu sậm màu, đau khớp, đau bụng, buồn nôn, mệt mỏi, sốt, hoặc viêm họng. Nên cung cấp thông tin này bằng văn bản. Trước khi bắt đầu ATD và ở mỗi lần tái khám, cần nhắc bệnh nhân ngừng thuốc ngay và gọi bác sĩ nếu có triệu chứng gợi ý mất bạch cầu hạt hoặc tổn thương gan.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 15</span> — Trước khi khởi trị ATD cho GD, nên làm công thức máu nền (gồm bạch cầu có công thức) và bilan gan (gồm bilirubin, transaminase).
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Tại Hoa Kỳ có MMI và PTU; tại một số nước dùng rộng rãi carbimazole — tiền chất của MMI. Carbimazole chuyển nhanh thành MMI trong huyết thanh (10 mg carbimazole chuyển hoá thành khoảng 6 mg MMI). Hai thuốc hoạt động giống hệt nhau, trong tài liệu này gọi chung là MMI. Cả hai đều hiệu quả khi dùng 1 lần/ngày. Khi khởi trị MMI, liều ban đầu 10–30 mg/ngày để đưa về bình giáp, sau đó giảm dần về liều duy trì (thường 5–10 mg/ngày). Liều MMI cần phù hợp mức độ rối loạn chức năng giáp vì liều quá thấp sẽ không đưa được bệnh nhân bệnh nặng về bình giáp, còn liều quá cao có thể gây suy giáp do thầy thuốc ở bệnh nhân bệnh nhẹ. Ngoài ra, phản ứng bất lợi thường gặp hơn ở liều MMI cao. Do đó, quan trọng là chọn liều MMI đạt mục tiêu bình thường hoá chức năng giáp tương đối nhanh, đồng thời giảm thiểu tác dụng phụ.</p>
+<p>Task force đề xuất hướng dẫn sơ bộ về liều MMI khởi đầu hằng ngày: <strong>5–10 mg</strong> nếu FT4 gấp 1–1,5 lần giới hạn trên; <strong>10–20 mg</strong> nếu FT4 gấp 1,5–2 lần; <strong>30–40 mg</strong> nếu FT4 gấp 2–3 lần giới hạn trên. Các hướng dẫn sơ bộ này cần điều chỉnh theo từng bệnh nhân, kết hợp thêm thông tin về triệu chứng, kích thước bướu giáp, và mức T3 toàn phần khi phù hợp. Theo dõi T3 huyết thanh ban đầu quan trọng vì một số bệnh nhân bình thường hoá FT4 với MMI nhưng T3 vẫn tăng dai dẳng, cho thấy nhiễm độc giáp còn tiếp diễn.</p>
+<p>MMI có ưu điểm dùng 1 lần/ngày và nguy cơ tác dụng phụ nặng thấp hơn PTU. PTU có thời gian tác dụng ngắn hơn, thường dùng 2–3 lần/ngày, khởi đầu 50–150 mg × 3 lần/ngày tuỳ mức độ nặng cường giáp. Khi lâm sàng và xét nghiệm chức năng giáp trở về bình thường, thường có thể giảm về liều duy trì PTU 50 mg × 2–3 lần/ngày. Khi cần kiểm soát sinh hoá nhanh hơn ở bệnh nhân nhiễm độc giáp nặng, chia liều MMI (ví dụ 15 hoặc 20 mg × 2 lần/ngày) có thể hiệu quả hơn liều 1 lần/ngày vì thời gian tác dụng của MMI có thể dưới 24 giờ. Đôi khi dùng liều cao thuốc kháng giáp liên tục phối hợp L-thyroxine liều duy trì bình giáp (gọi là liệu pháp "block-and-replace" — ức chế và thay thế). Tuy nhiên cách này thường không được khuyến cáo vì đã chứng minh làm tăng tỷ lệ tác dụng phụ của ATD.</p>
+<p>Việc dùng kali iodide (KI) như một phụ trợ có lợi cho điều trị ATD trong GD đã được nghiên cứu trước đây. Một thử nghiệm ngẫu nhiên gần đây mô tả việc dùng 38 mg KI cùng 15 mg MMI mỗi ngày, cho kết quả kiểm soát cường giáp tốt hơn và ít phản ứng bất lợi hơn so với chỉ dùng 30 mg MMI đơn thuần.</p>
+
+<h3 id="h-tac-dung-phu-atd">[E2] Tác dụng phụ của ATD</h3>
+<p>Nhìn chung, tác dụng phụ của ATD chia thành nhóm phản ứng dị ứng nhẹ thường gặp và nhóm biến cố dị ứng/độc tính hiếm nhưng nghiêm trọng như mất bạch cầu hạt, viêm mạch, hoặc tổn thương gan. Trong một tổng quan hệ thống gần đây gồm 8 nghiên cứu trên 667 bệnh nhân GD dùng MMI hoặc PTU, 13% bệnh nhân gặp biến cố bất lợi. Phản ứng dị ứng nhẹ gồm ngứa hoặc phát ban giới hạn ở 6% bệnh nhân dùng MMI và 3% dùng PTU. Tổn thương tế bào gan xảy ra ở 2,7% bệnh nhân dùng PTU và 0,4% dùng MMI. Trong một nghiên cứu khác trên 449 bệnh nhân GD dùng MMI hoặc PTU, 24% có phản ứng da, 3,8% tăng transaminase trên 3 lần bình thường, và 0,7% mất bạch cầu hạt (bạch cầu trung tính tuyệt đối &lt;500). Phản ứng da thường gặp hơn với PTU hoặc MMI liều cao (30 mg/ngày) so với MMI liều thấp (15 mg/ngày). Độc gan thường gặp hơn với PTU. Phản ứng da xuất hiện sau trung vị 18–22 ngày điều trị, sớm hơn đáng kể so với tăng transaminase (trung vị 28 ngày). Tỷ lệ ngừng ATD là 17% ở nhóm MMI liều thấp, 29% ở nhóm MMI liều cao, và 34% ở nhóm PTU.</p>
+
+<h3 id="h-mat-bach-cau-hat">[E3] Mất bạch cầu hạt</h3>
+<p>Dù mất bạch cầu hạt liên quan ATD hiếm gặp, nó đe doạ tính mạng. PTU ở bất kỳ liều nào dường như dễ gây mất bạch cầu hạt hơn so với MMI liều thấp. Ba báo cáo lớn gần đây về bệnh nhân điều trị ATD gặp biến chứng huyết học cung cấp thông tin về yếu tố nguy cơ, điều trị, và kết cục (2 nghiên cứu từ Nhật Bản, 1 từ Đan Mạch; ở cả hai nước đa số bệnh nhân dùng MMI nên dữ liệu về PTU hạn chế hơn). Trong nghiên cứu đầu — phân tích hồi cứu trên hơn 50.000 bệnh nhân GD — 55 người mất bạch cầu hạt, 5 người trong đó giảm toàn thể huyết cầu, tỷ lệ tích luỹ ước tính 0,3% trong 100 ngày, thời gian trung vị đến khởi phát 69 ngày. Toàn bộ 50 bệnh nhân chỉ mất bạch cầu hạt được điều trị thành công bằng yếu tố kích thích dòng bạch cầu hạt (G-CSF), steroid, hoặc chăm sóc hỗ trợ, nhưng 1/5 bệnh nhân giảm toàn thể huyết cầu tử vong. Không xác định được yếu tố nguy cơ dự báo mất bạch cầu hạt. Nghiên cứu thứ hai dựa trên cơ sở dữ liệu phản ứng thuốc bất lợi quốc gia (có thể trùng lặp một phần với nghiên cứu 1): tổng cộng 754 bệnh nhân GD có biến chứng huyết học do ATD, tỷ lệ ước tính 0,1–0,15%. Trong đó 725 dùng MMI, 28 dùng PTU, 1 dùng cả hai. 89% mất bạch cầu hạt, 11% giảm toàn thể huyết cầu hoặc thiếu máu bất sản. Khi khởi phát mất bạch cầu hạt, liều MMI trung bình 25 mg/ngày, liều PTU trung bình 217 mg/ngày. Tuổi trung bình bệnh nhân mất bạch cầu hạt hơi lớn hơn (45 so với 40 tuổi) — quan sát cũng được ghi nhận ở các nghiên cứu khác. 72% mất bạch cầu hạt trong 60 ngày đầu dùng ATD, 85% trong 90 ngày đầu. 7% xảy ra muộn hơn 4 tháng sau khi bắt đầu ATD, một số trong đó đã ngừng thuốc thời gian dài và mất bạch cầu hạt sau lần phơi nhiễm lại thứ hai. 30 trường hợp (4%) tử vong. Nghiên cứu thứ ba từ Đan Mạch: tần suất mất bạch cầu hạt 0,27% với PTU và 0,11% với MMI; thời gian trung vị điều trị trước khi mất bạch cầu hạt là 36 ngày (MMI) và 38 ngày (PTU).</p>
+
+<h3 id="h-doc-gan">[E4] Độc gan</h3>
+<p>Độc gan là tác dụng phụ nghiêm trọng khác của ATD. Độc gan do MMI thường được mô tả kiểu ứ mật, nhưng cũng có thể gặp bệnh tế bào gan. Ngược lại, PTU có thể gây hoại tử gan tối cấp có thể tử vong; một số bệnh nhân dùng PTU đã phải ghép gan. Vì lý do này, FDA đã ban hành cảnh báo an toàn năm 2010 về PTU, và phân tích dữ liệu FDA Medwatch kết luận trẻ em dễ bị phản ứng độc gan do PTU hơn người lớn.</p>
+<p>Một nghiên cứu dược dịch tễ gần đây từ Đài Loan thách thức quan niệm cho rằng độc gan do MMI thường kiểu ứ mật còn PTU thường kiểu tế bào gan. Trong 71.379 người mới dùng ATD với thời gian theo dõi trung vị 196 ngày, MMI liên quan tỷ lệ chẩn đoán viêm gan không nhiễm trùng cao hơn PTU (0,25% so với 0,08%), trong khi ứ mật không khác biệt (0,019% so với 0,016%). Chẩn đoán suy gan thường gặp hơn sau PTU (0,048% so với 0,026% ở nhóm MMI). Kết quả tương tự cũng được báo cáo gần đây từ Trung Quốc. Những kết quả bất ngờ này từ châu Á — trái ngược với dữ liệu khác từ Hoa Kỳ — gợi ý dữ liệu trước đây về độc gan liên quan MMI từ các loạt ca nhỏ có thể cần xem xét lại. Trong nghiên cứu Đan Mạch, phản ứng độc gan không được phân loại ứ mật hay tế bào gan, nhưng tần suất "suy gan" tương tự giữa MMI (0,03%) và PTU (0,03%).</p>
+
+<h3 id="h-viem-mach">[E5] Viêm mạch</h3>
+<p>Ngoài tác dụng phụ huyết học và gan, ATD còn có các tác dụng phụ hiếm khác. PTU và hiếm khi MMI có thể gây viêm mạch máu nhỏ dương tính kháng thể kháng bào tương bạch cầu trung tính (pANCA) cũng như lupus do thuốc. Nguy cơ dường như tăng theo thời gian điều trị — khác với các tác dụng phụ khác của ATD thường xảy ra sớm. Kháng nguyên đích của ANCA thường là myeloperoxidase bạch cầu hạt, nhưng cũng gặp kháng thể với nhiều protein khác. Viêm mạch dương tính ANCA thường gặp hơn ở người gốc Á, đa số báo cáo đến từ châu Á. Dù tới 40% bệnh nhân dùng PTU dương tính ANCA, đại đa số không phát triển viêm mạch lâm sàng. Khi ngừng thuốc, ANCA giảm dần biến mất ở đa số người bệnh. Trẻ em dường như dễ bị viêm mạch dương tính ANCA liên quan PTU hơn. Đa số trường hợp viêm mạch tự khỏi khi ngừng thuốc, dù có thể cần điều trị ức chế miễn dịch.</p>
+<p>Đã có báo cáo hiếm về hội chứng tự miễn kháng insulin gây hạ đường huyết có triệu chứng ở bệnh nhân dùng MMI.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Nên cân nhắc xét nghiệm máu nền để hỗ trợ diễn giải các giá trị xét nghiệm sau này trước khi khởi trị ATD. Đề xuất này một phần vì bạch cầu thấp thường gặp ở bệnh nhân GD và ở người Mỹ gốc Phi (10% có bạch cầu trung tính dưới 2000), và men gan bất thường thường gặp ở bệnh nhân nhiễm độc giáp. Dù chưa có bằng chứng giảm bạch cầu trung tính hoặc bệnh gan làm tăng nguy cơ biến chứng do ATD, quan điểm của task force là bạch cầu trung tính tuyệt đối nền &lt;1000/mm³ hoặc men gan tăng &gt;5 lần giới hạn trên nên khiến cân nhắc nghiêm túc lại việc khởi trị ATD. Nên cung cấp thông tin về tác dụng phụ ATD cho bệnh nhân bằng lời nói và văn bản để đảm bảo bệnh nhân hiểu, và ghi nhận đã thực hiện.</p>
+</div>
+
+<h3 id="h-theo-doi-atd">[E6] Theo dõi bệnh nhân dùng ATD</h3>
+<p>Cần đánh giá lâm sàng và sinh hoá định kỳ tình trạng giáp ở bệnh nhân dùng ATD, và bệnh nhân cần hiểu tầm quan trọng của việc này. Nên đo FT4 và T3 toàn phần khoảng 2–6 tuần sau khởi trị (tuỳ mức độ nặng cường giáp), điều chỉnh liều theo kết quả. Cần theo dõi T3 vì FT4 có thể bình thường hoá dù T3 toàn phần vẫn tăng dai dẳng. TSH có thể vẫn ức chế trong nhiều tháng sau khởi trị nên không phải chỉ số tốt để theo dõi giai đoạn đầu.</p>
+<p>Khi bệnh nhân đã bình giáp, thường có thể giảm liều MMI 30–50%, làm lại xét nghiệm sinh hoá sau 4–6 tuần. Khi đạt bình giáp với liều thuốc tối thiểu, có thể đánh giá lâm sàng và xét nghiệm mỗi 2–3 tháng. Nếu bệnh nhân dùng MMI dài hạn (&gt;18 tháng), khoảng cách này có thể tăng lên 6 tháng.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 16</span> — Cần làm công thức bạch cầu khi có sốt và khi khởi phát viêm họng ở mọi bệnh nhân dùng thuốc kháng giáp.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 17</span> — Chưa đủ bằng chứng để khuyến cáo ủng hộ hay phản đối theo dõi thường quy công thức bạch cầu ở bệnh nhân dùng ATD.
+<span class="grade">Không khuyến cáo; chưa đủ bằng chứng đánh giá lợi ích/nguy cơ</span>
+</div>
+<p>Chưa có đồng thuận về giá trị theo dõi định kỳ bạch cầu và men gan trong dự báo sớm phản ứng bất lợi với thuốc. Dù theo dõi bạch cầu thường quy có thể phát hiện mất bạch cầu hạt sớm, thực hành này khó phát hiện được ca bệnh vì tần suất khá thấp (0,2–0,5%) và tình trạng thường khởi phát đột ngột. Trong phân tích gần đây trên 211 bệnh nhân mất bạch cầu hạt do ATD có ít nhất 1 lần đo bạch cầu trước đó, 21% có công thức bạch cầu bình thường trong vòng 1 tuần và 53% trong vòng 2 tuần trước khi mất bạch cầu hạt. Tuy nhiên, một số bệnh nhân khác có giảm bạch cầu dần trước khi mất bạch cầu hạt, gợi ý theo dõi có thể hữu ích ở một số ca. Vì bệnh nhân thường có triệu chứng, đo bạch cầu khi sốt và khởi phát viêm họng là cách tiếp cận theo dõi tiêu chuẩn. Nếu áp dụng theo dõi, lợi ích tối đa nằm ở 90 ngày đầu điều trị — khi đa số mất bạch cầu hạt xảy ra. Ở bệnh nhân mất bạch cầu hạt hoặc tác dụng phụ nghiêm trọng khác khi dùng MMI hoặc PTU, chống chỉ định chuyển sang thuốc còn lại do nguy cơ phản ứng chéo giữa hai thuốc. Chống chỉ định dùng PTU có thể được cân nhắc lại trong nhiễm độc giáp đe doạ tính mạng (cơn bão giáp) ở bệnh nhân dùng MMI đã mất bạch cầu hạt, đặc biệt nếu thời gian điều trị ngắn.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 18</span> — Cần đánh giá chức năng gan và tính toàn vẹn tế bào gan ở bệnh nhân dùng MMI hoặc PTU có phát ban ngứa, vàng da, phân nhạt màu hoặc nước tiểu sậm màu, đau khớp, đau/chướng bụng, chán ăn, buồn nôn, hoặc mệt mỏi.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Bản thân cường giáp có thể gây bất thường men gan nhẹ ở tới 30% bệnh nhân. PTU có thể gây tăng transaminase thoáng qua ở tới 1/3 bệnh nhân. Tăng đáng kể (gấp 3 lần giới hạn trên) gặp ở tới 4% bệnh nhân dùng PTU — cao hơn MMI. PTU cũng có thể gây hoại tử gan tối cấp gây tử vong, dẫn tới đề xuất theo dõi thường quy chức năng gan ở bệnh nhân dùng PTU, đặc biệt 6 tháng đầu. Một tổng quan 2009 cho thấy độc gan do PTU xảy ra sau trung vị 120 ngày kể từ khởi trị. Phân biệt các bất thường này với hiệu ứng của nhiễm độc giáp dai dẳng là khó nếu không theo dõi tiến cứu. Ở bệnh nhân đang cải thiện nhiễm độc giáp, phosphatase kiềm tăng kèm các chỉ số gan khác bình thường hoá không phản ánh độc gan nặng thêm vì phosphatase kiềm có nguồn gốc từ xương, không phải gan. Độc gan do PTU có thể khởi phát cấp tính, khó nhận biết lâm sàng, và tiến triển nhanh. Nếu không nhận ra kịp thời, có thể dẫn đến suy gan và tử vong. Theo dõi thường quy chức năng gan ở mọi bệnh nhân dùng ATD chưa được chứng minh phòng ngừa được độc gan nặng. Nếu áp dụng theo dõi, lợi ích tối đa nằm ở 120 ngày đầu điều trị.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Nên ngừng PTU nếu transaminase (phát hiện tình cờ hoặc đo theo chỉ định lâm sàng) đạt &gt;3 lần giới hạn trên, hoặc nếu mức tăng ngay từ đầu điều trị tiếp tục tăng thêm. Sau khi ngừng thuốc, theo dõi chức năng gan hằng tuần đến khi có bằng chứng hồi phục. Nếu không hồi phục, cần chuyển gấp đến chuyên khoa tiêu hoá/gan mật. Trừ trường hợp độc gan nặng do PTU, có thể dùng MMI để kiểm soát nhiễm độc giáp mà không gây hại.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 19</span> — Chưa đủ thông tin để khuyến cáo ủng hộ hay phản đối theo dõi thường quy chức năng gan ở bệnh nhân dùng ATD.
+<span class="grade">Không khuyến cáo; chưa đủ bằng chứng đánh giá lợi ích/nguy cơ</span>
+</div>
+
+<h3 id="h-xu-tri-di-ung">[E7] Xử trí phản ứng dị ứng</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 20</span> — Phản ứng da nhẹ có thể xử trí bằng kháng histamine đồng thời mà không cần ngừng ATD. Tác dụng phụ nhẹ có triệu chứng dai dẳng nên được xử trí bằng ngừng thuốc và chuyển sang RAI hoặc phẫu thuật, hoặc đổi sang ATD còn lại nếu RAI/phẫu thuật không khả thi. Trong trường hợp phản ứng dị ứng nặng, không khuyến cáo kê thuốc thay thế còn lại.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Một nghiên cứu gần đây cho thấy đổi từ ATD này sang ATD kia an toàn trong trường hợp tác dụng phụ nhẹ, dù bệnh nhân có thể gặp lại tác dụng phụ tương tự với thuốc thứ hai. Trong nghiên cứu này, 71 bệnh nhân có biến cố bất lợi với MMI hoặc PTU đổi sang thuốc còn lại (liều cá thể hoá). Liều trung vị thuốc thứ hai là 15 mg/ngày với MMI (10–30) và 300 mg/ngày với PTU (150–450). 34% bệnh nhân đổi sang PTU và 30% đổi sang MMI xuất hiện tác dụng phụ — thường cùng loại với thuốc ban đầu — số còn lại dung nạp tốt thuốc thứ hai. Một báo cáo ca gần đây mô tả phản ứng MMI nặng hơn (phát ban, ngứa, sưng lưỡi và họng) được xử trí thành công bằng kháng histamine, nhưng cách này không được khuyến cáo chung do nguy cơ phản vệ.</p>
+
+<h3 id="h-thoi-gian-atd">[E8] Thời gian điều trị ATD cho GD</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 21</span> — Nên đo TRAb trước khi ngừng ATD vì giúp dự đoán bệnh nhân nào có thể cai thuốc; TRAb bình thường cho thấy khả năng thuyên giảm cao hơn.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 22</span> — Nếu MMI được chọn làm điều trị chính cho GD, nên duy trì khoảng 12–18 tháng, sau đó ngừng nếu TSH và TRAb bình thường tại thời điểm đó.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng cao</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 23</span> — Nếu bệnh nhân GD tái cường giáp sau khi hoàn tất một đợt MMI, nên cân nhắc điều trị bằng RAI hoặc phẫu thuật cắt giáp. Có thể cân nhắc tiếp tục MMI liều thấp lâu hơn 12–18 tháng ở bệnh nhân chưa thuyên giảm mà ưu tiên cách này.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Bệnh nhân được coi là thuyên giảm nếu TSH, FT4, T3 toàn phần bình thường trong 1 năm sau ngừng ATD. Tỷ lệ thuyên giảm thay đổi đáng kể theo khu vực địa lý. Các nghiên cứu trước đây tại Hoa Kỳ cho thấy khoảng 20–30% bệnh nhân thuyên giảm bền vững sau 12–18 tháng điều trị, nhưng chưa có dữ liệu mới hơn. Tỷ lệ thuyên giảm có thể cao hơn ở châu Âu và Nhật Bản: một nghiên cứu châu Âu dài hạn cho tỷ lệ thuyên giảm 50–60% sau 5–6 năm điều trị, một nghiên cứu Nhật Bản báo cáo tỷ lệ 68% sau 2 năm. Một phân tích gộp cho thấy tỷ lệ thuyên giảm ở người lớn không cải thiện khi kéo dài ATD quá 18 tháng. Tỷ lệ thuyên giảm thấp hơn được ghi nhận ở nam giới, người hút thuốc (đặc biệt nam), và người có bướu giáp lớn (≥80 g). Liều MMI khởi đầu cao hơn (60–80 mg/ngày) không cải thiện tỷ lệ thuyên giảm; chỉ làm tăng nguy cơ tác dụng phụ, do đó không khuyến cáo.</p>
+<p>Đánh giá TRAb vào cuối đợt điều trị ATD là cách hữu ích để phân nhóm bệnh nhân: nhóm TRAb còn tăng dai dẳng ít khả năng thuyên giảm; nhóm TRAb thấp hoặc không đo được có khả năng thuyên giảm vĩnh viễn cao hơn. Ở nhóm TRAb tăng, tỷ lệ tái phát gần 80–100%; ở nhóm còn lại, tỷ lệ tái phát khoảng 20–30%.</p>
+
+<h3 id="h-trab-dai-dang">[E9] TRAb tăng dai dẳng</h3>
+<p>Bệnh nhân TRAb cao dai dẳng có thể tiếp tục ATD (đo lại TRAb sau thêm 12–18 tháng) hoặc chọn điều trị dứt điểm bằng RAI hoặc phẫu thuật. Ở một số bệnh nhân chọn lọc (trẻ tuổi, bệnh nhẹ ổn định với MMI liều thấp), MMI dài hạn là lựa chọn hợp lý. Một nghiên cứu khác báo cáo liều MMI 2,5–10 mg/ngày dùng trung bình 14 năm an toàn và hiệu quả kiểm soát GD ở 59 bệnh nhân. Một phân tích hồi cứu gần đây so sánh kết cục dài hạn (theo dõi trung bình 6–7 năm) ở bệnh nhân tái phát sau một đợt ATD, được điều trị bằng RAI + levothyroxine hoặc ATD dài hạn. Nhóm điều trị RAI (n=114) thường gặp bệnh mắt Basedow dai dẳng, rối loạn chức năng giáp tiếp diễn, và tăng cân nhiều hơn so với nhóm ATD dài hạn (n=124).</p>
+<p>Nếu chọn tiếp tục MMI, có thể theo dõi TRAb mỗi 1–2 năm, cân nhắc ngừng MMI nếu TRAb trở nên âm tính khi theo dõi lâu dài. Với bệnh nhân chọn MMI dài hạn, theo dõi chức năng giáp mỗi 4–6 tháng là hợp lý, tái khám mỗi 6–12 tháng.</p>
+
+<h3 id="h-trab-am-tinh">[E10] TRAb âm tính</h3>
+<p>Nếu TRAb âm tính và chức năng giáp bình thường vào cuối 12–18 tháng điều trị MMI, hợp lý để ngừng thuốc. Nếu tái phát khi theo dõi, có thể cân nhắc RAI hoặc phẫu thuật.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Ở bệnh nhân TRAb âm tính, tái phát có xu hướng xảy ra muộn hơn so với bệnh nhân ngừng MMI khi TRAb còn dương tính, dù 5% xảy ra trong 2 tháng đầu ở một nghiên cứu. Do đó, nên theo dõi chức năng giáp mỗi 2–3 tháng trong 6 tháng đầu, sau đó mỗi 4–6 tháng trong 6 tháng tiếp theo, rồi mỗi 6–12 tháng để phát hiện tái phát sớm nhất có thể. Cần dặn bệnh nhân liên hệ bác sĩ nếu nhận thấy triệu chứng cường giáp. Nếu tái phát, cần tư vấn bệnh nhân về các lựa chọn điều trị (thêm đợt MMI, RAI, hoặc phẫu thuật). Nếu chọn lại ATD, bệnh nhân cần biết rằng mất bạch cầu hạt có thể xảy ra ở lần phơi nhiễm thứ hai, dù đã dùng thuốc an toàn trước đó nhiều năm. Nếu bệnh nhân bình giáp trên 1 năm (tức đã thuyên giảm), vẫn nên theo dõi chức năng giáp ít nhất hằng năm vì tái phát có thể xảy ra nhiều năm sau, và một số bệnh nhân cuối cùng trở nên suy giáp.</p>
+</div>
+
+<h2 id="h-phau-thuat-basedow">[F] Nếu chọn phẫu thuật cắt giáp cho GD, thực hiện như thế nào?</h2>
+
+<h3 id="h-chuan-bi-phau-thuat">[F1] Chuẩn bị bệnh nhân GD trước phẫu thuật cắt giáp</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 24</span> — Nếu chọn phẫu thuật cho GD, cần đưa bệnh nhân về bình giáp trước mổ bằng ATD (có hoặc không kèm chẹn beta). Cần dùng chế phẩm chứa KI ngay trước mổ.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 25</span> — Cần đánh giá calci và 25-hydroxy vitamin D trước mổ, bù nếu thiếu hoặc dự phòng. Nên cân nhắc bổ sung calcitriol trước mổ ở bệnh nhân nguy cơ suy cận giáp thoáng qua hoặc vĩnh viễn.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 26</span> — Trong trường hợp đặc biệt (không thể đưa bệnh nhân GD về bình giáp trước mổ, cần mổ cấp cứu, hoặc dị ứng ATD), cần điều trị đầy đủ bằng chẹn beta, KI, glucocorticoid, và có thể cholestyramine ngay trước mổ. Phẫu thuật viên và bác sĩ gây mê cần có kinh nghiệm với tình huống này.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Cơn bão giáp có thể khởi phát do stress phẫu thuật, gây mê, hoặc thao tác trên tuyến giáp, và có thể phòng ngừa bằng điều trị trước với ATD. Bất cứ khi nào có thể, bệnh nhân nhiễm độc giáp chuẩn bị cắt giáp nên được đưa về bình giáp bằng MMI trước mổ.</p>
+<p>Nên dùng KI, SSKI, hoặc dung dịch Lugol trước mổ ở đa số bệnh nhân GD. Điều trị này có lợi vì giảm lưu lượng máu, mức độ mạch máu tuyến giáp, và mất máu trong mổ. Trong một loạt ca gần đây gồm 162 bệnh nhân GD và 102 bệnh nhân TMNG không dùng SSKI trước mổ, không thấy khác biệt đáng kể về thời gian mổ, mất máu, hay biến chứng sau mổ giữa hai nhóm; tác giả kết luận việc bỏ SSKI trước mổ ở bệnh nhân GD không ảnh hưởng kết cục. Tuy nhiên nghiên cứu này thực hiện tại một trung tâm khối lượng ca lớn duy nhất nên khó khái quát hoá; so sánh giữa hai bệnh lý khác nhau, và không có nhóm đối chứng GD có dùng SSKI. Cũng chưa rõ nghiên cứu có đủ lực thống kê để phát hiện khác biệt nếu có hay không. Dù vậy, nghiên cứu này giúp giảm lo ngại khi lịch mổ đã định mà không dùng được SSKI (do thiếu thuốc, vấn đề lịch trình, dị ứng, hoặc không dung nạp). Ngoài ra, có thể dùng corticosteroid và có thể cholestyramine để chuẩn bị nhanh cho phẫu thuật cấp cứu.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Có thể dùng KI dạng 5–7 giọt (0,25–0,35 mL) dung dịch Lugol (8 mg iodide/giọt) hoặc 1–2 giọt (0,05–0,1 mL) SSKI (50 mg iodide/giọt) × 3 lần/ngày pha trong nước hoặc nước ép, trong 10 ngày trước mổ.</p>
+</div>
+<p>Dữ liệu gần đây gợi ý bổ sung calci uống, vitamin D, hoặc cả hai trước mổ có thể giảm nguy cơ hạ calci máu sau mổ do tổn thương cận giáp hoặc tăng chu chuyển xương. Một nghiên cứu so sánh 45 bệnh nhân Basedow dùng 1 g calci carbonat uống × 3 lần/ngày trong 2 tuần trước mổ với 38 bệnh nhân Basedow mổ không điều trị trước và 38 người bình giáp đối chứng: tỷ lệ hạ calci máu sinh hoá và có triệu chứng cao hơn đáng kể ở nhóm Basedow không điều trị trước so với hai nhóm còn lại. Một nghiên cứu khác tập trung vào hạ calci máu sau mổ ung thư giáp (không phải cường giáp) cho thấy giảm hạ calci máu có triệu chứng sau mổ khi 25-hydroxy vitamin D huyết thanh trước mổ &gt;20 ng/mL. Một phân tích gộp yếu tố nguy cơ hạ calci máu sau mổ xác định thiếu vitamin D trước mổ là yếu tố nguy cơ, cũng như bản thân GD. Trong hai nghiên cứu thuộc một phân tích gộp khác, bổ sung calcitriol ngắn hạn trước mổ giúp giảm hạ calci máu thoáng qua sau cắt giáp.</p>
+
+<h3 id="h-quy-trinh-phau-thuat">[F2] Quy trình phẫu thuật và lựa chọn phẫu thuật viên</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 27</span> — Nếu chọn phẫu thuật là điều trị chính cho GD, cắt giáp gần toàn bộ hoặc toàn bộ là phương pháp được chọn.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Cắt giáp có tỷ lệ chữa khỏi cường giáp GD cao. Cắt giáp toàn bộ có nguy cơ tái phát gần 0%, trong khi cắt giáp bán phần có thể có 8% khả năng cường giáp tồn tại/tái phát sau 5 năm. Các biến chứng thường gặp nhất sau cắt giáp gần toàn bộ/toàn bộ là hạ calci máu do suy cận giáp (có thể thoáng qua hoặc vĩnh viễn), tổn thương thần kinh thanh quản quặt ngược hoặc thanh quản trên (thoáng qua hoặc vĩnh viễn), chảy máu sau mổ, và biến chứng liên quan gây mê toàn thân.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 28</span> — Nếu chọn phẫu thuật là điều trị chính cho GD, nên chuyển bệnh nhân đến phẫu thuật viên giáp có khối lượng ca cao.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Cải thiện kết cục bệnh nhân được chứng minh liên quan độc lập với số ca cắt giáp của phẫu thuật viên; cụ thể, tỷ lệ biến chứng trung bình, thời gian nằm viện, chi phí giảm khi phẫu thuật viên thực hiện nhiều ca cắt giáp. Có mối liên hệ đáng kể giữa số ca cắt giáp tăng và cải thiện kết cục; mối liên hệ này vững chắc và rõ hơn khi số ca cắt giáp càng tăng. Dữ liệu cho thấy phẫu thuật viên thực hiện &gt;25 ca mổ giáp/năm có kết cục lâm sàng và kinh tế tốt hơn phẫu thuật viên làm ít ca hơn; tỷ lệ biến chứng cao hơn trung bình 51% khi mổ bởi phẫu thuật viên khối lượng ca thấp.</p>
+<p>Phẫu thuật viên cần được đào tạo bài bản, có hoạt động thực hành mổ giáp tích cực, và đã thực hiện số lượng đáng kể ca cắt giáp với tỷ lệ biến chứng thấp. Khi cắt giáp cho GD bởi phẫu thuật viên khối lượng ca cao, tỷ lệ suy cận giáp vĩnh viễn &lt;2%, tổn thương thần kinh thanh quản quặt ngược vĩnh viễn &lt;1%. Tần suất chảy máu cần mổ lại 0,3–0,7%. Tử vong sau cắt giáp trong khoảng 1/10.000 đến 5/1.000.000.</p>
+
+<h3 id="h-cham-soc-sau-mo">[F3] Chăm sóc sau mổ</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 29</span> — Sau cắt giáp cho GD, có thể áp dụng các chiến lược khác nhau để quản lý calci: đo calci huyết thanh có/không kèm PTH nguyên vẹn (iPTH) và bổ sung calci/calcitriol uống theo kết quả, hoặc kê dự phòng calci có/không kèm calcitriol theo kinh nghiệm.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Có thể dự đoán thành công tình trạng calci sau cắt giáp toàn bộ bằng độ dốc calci đo tại 6 và 12 giờ sau mổ. Bổ sung calci và calcitriol uống thường quy sau mổ giảm triệu chứng hạ calci máu và nhu cầu calci tĩnh mạch, cho phép xuất viện sớm an toàn hơn. iPTH thấp (&lt;10–15 pg/mL) ngay sau mổ dường như dự báo hạ calci máu có triệu chứng và nhu cầu bổ sung calci/calcitriol (1,25 vitamin D). Tuy nhiên, iPTH bình thường có thể không dự đoán được tình trạng calci bình thường ở bệnh nhân GD. Thiếu vitamin D có thể là nguyên nhân nền.</p>
+<p>Bệnh nhân có thể xuất viện nếu không triệu chứng và calci huyết thanh hiệu chỉnh theo albumin ≥8,0 mg/dL (2,0 mmol/L) và không giảm thêm trong 24 giờ. Một số ưu tiên đo calci ion hoá, hữu ích khi protein huyết thanh bất thường. Cần sẵn có calci gluconat tĩnh mạch, dùng khi triệu chứng hạ calci máu nặng thêm dù đã bổ sung uống, hoặc calci huyết thanh tiếp tục giảm dù đã bù uống. Ở bệnh nhân hạ calci máu nặng, dùng teriparatide cho kết quả sơ bộ khả quan (hết triệu chứng, xuất viện sớm hơn), nhưng cần thêm dữ liệu trước khi áp dụng lâm sàng. Hạ calci máu dai dẳng sau mổ nên được đo thêm magne huyết thanh và bù nếu cần. Ngoài giảm calci, hội chứng "xương đói" (hungry bone syndrome) có thể kèm giảm phosphat và tăng kali huyết thanh. Sau xuất viện, nên đo iPTH khi hạ calci máu dai dẳng để xác định có suy cận giáp vĩnh viễn thực sự hay còn "đói xương". Khi đạt calci bình thường, có thể giảm dần calci và calcitriol.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Bổ sung calci uống thường dùng calci carbonat 1250–2500 mg (tương đương 500–1000 mg calci nguyên tố) × 4 lần/ngày, giảm dần 500 mg calci nguyên tố mỗi 2 ngày, hoặc 1000 mg mỗi 4 ngày tuỳ dung nạp. Ngoài ra, có thể bắt đầu calcitriol 0,5 μg/ngày, duy trì 1–2 tuần, điều chỉnh theo mức calci và/hoặc iPTH. Có thể xuất viện nếu không triệu chứng và calci huyết thanh ổn định. Đánh giá sau mổ thường thực hiện 1–2 tuần sau xuất viện, tiếp tục bổ sung theo thông số lâm sàng.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 30</span> — Cần ngừng ATD tại thời điểm cắt giáp cho GD, và giảm dần chẹn beta giao cảm sau mổ.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 31</span> — Nên bắt đầu L-thyroxine sau cắt giáp cho GD với liều hằng ngày phù hợp cân nặng (0,8 μg/lb hay 1,6 μg/kg), người cao tuổi cần liều thấp hơn đôi chút, đo TSH huyết thanh sau 6–8 tuần.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Nếu TSH bị ức chế trước mổ, nên đo cả FT4 và TSH sau 6–8 tuần vì phục hồi trục tuyến yên–giáp đôi khi bị trì hoãn. Liều L-thyroxine phù hợp sẽ thay đổi theo BMI bệnh nhân và tỷ lệ hấp thu levothyroxine qua ruột. Khi ổn định và bình thường, nên đo TSH hằng năm hoặc thường xuyên hơn nếu có chỉ định lâm sàng.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 32</span> — Cần giao tiếp giữa các thành viên nhóm đa chuyên khoa, đặc biệt trong giai đoạn chuyển tiếp chăm sóc trước và sau mổ.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Quan trọng phải đảm bảo giao tiếp đầy đủ giữa nhóm nội khoa và phẫu thuật viên để đảm bảo đạt bình giáp trước can thiệp phẫu thuật; ngoài ra, nếu bệnh nhân thiếu vitamin D đáng kể, có thể bù trước mổ và sắp lịch mổ phù hợp. Các phát hiện quan trọng trong mổ và chi tiết chăm sóc sau mổ — gồm nhu cầu bổ sung calci và xử trí suy giáp do phẫu thuật — cần được phẫu thuật viên thông báo cho bệnh nhân và các bác sĩ khác tham gia chăm sóc sau mổ.</p>
+
+<h2 id="h-nhan-giap-kem-gd">[G] Xử trí nhân giáp ở bệnh nhân GD như thế nào?</h2>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 33</span> — Nếu phát hiện nhân giáp ở bệnh nhân GD, cần đánh giá và xử trí theo hướng dẫn gần đây về nhân giáp ở người bình giáp.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Ung thư giáp xảy ra trong GD với tần suất 2% hoặc thấp hơn. Nhân giáp &gt;1–1,5 cm cần được đánh giá trước điều trị RAI. Nếu làm xạ hình RAI, mọi nhân không chức năng hoặc giảm chức năng nên được cân nhắc chọc hút kim nhỏ (FNA) vì có khả năng ác tính cao hơn. Nếu tế bào học nghi ngờ hoặc chẩn đoán ác tính, khuyến cáo phẫu thuật sau khi đã bình thường hoá chức năng giáp bằng ATD. Cũng nên cân nhắc phẫu thuật với tế bào học không xác định. Sống không bệnh sau 20 năm đạt 99% sau cắt giáp cho GD ở bệnh nhân có ung thư giáp nhỏ đồng mắc (≤1 cm).</p>
+<p>Dùng siêu âm giáp thường quy ở mọi bệnh nhân GD đã cho thấy phát hiện nhiều nhân và ung thư hơn so với sờ nắn và xạ hình ¹²³I. Tuy nhiên, vì đa số ung thư này là vi ung thư nhú với ảnh hưởng lâm sàng tối thiểu, cần thêm nghiên cứu trước khi khuyến cáo siêu âm thường quy (có thể dẫn đến chỉ định phẫu thuật không cần thiết).</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">ATA gần đây đã công bố hướng dẫn cập nhật về xử trí nhân giáp và ung thư giáp biệt hoá.</p>
+</div>
+
+<h2 id="h-con-bao-giap">[H] Xử trí cơn bão giáp như thế nào?</h2>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 34</span> — Chẩn đoán cơn bão giáp cần dựa trên lâm sàng ở bệnh nhân nhiễm độc giáp nặng có bằng chứng mất bù hệ thống. Nên cân nhắc dùng thêm hệ thống chẩn đoán nhạy hỗ trợ. Bệnh nhân có điểm Burch–Wartofsky (BWPS) ≥45, hoặc thuộc phân loại TS1/TS2 của Hiệp hội Giáp Nhật Bản (JTA) kèm bằng chứng mất bù hệ thống, cần điều trị tích cực. Quyết định điều trị tích cực ở bệnh nhân BWPS 25–44 nên dựa trên phán đoán lâm sàng.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 35</span> — Nên dùng tiếp cận điều trị đa phương thức ở bệnh nhân cơn bão giáp, bao gồm chẹn beta giao cảm, ATD, iodide vô cơ, corticosteroid, hạ sốt bằng acetaminophen và chăn làm mát, bù dịch, hỗ trợ dinh dưỡng, chăm sóc và theo dõi hô hấp tại khoa hồi sức tích cực, tuỳ theo từng bệnh nhân.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Nhiễm độc giáp đe doạ tính mạng hoặc cơn bão giáp là bệnh cảnh hiếm gặp, đặc trưng bởi tổn thương đa cơ quan, tỷ lệ tử vong 8–25% trong các loạt ca hiện đại. Cần duy trì chỉ số nghi ngờ cao với cơn bão giáp ở bệnh nhân nhiễm độc giáp kèm bất kỳ bằng chứng mất bù hệ thống nào. Tiêu chuẩn chẩn đoán cơn bão giáp ở bệnh nhân nhiễm độc giáp nặng lần đầu được đề xuất năm 1993, sau đó được áp dụng rộng rãi dưới tên BWPS. Các tiêu chuẩn này (Bảng 6) bao gồm sốt cao, nhịp nhanh, loạn nhịp, suy tim sung huyết, kích động, mê sảng, loạn thần, sững sờ, hôn mê, cũng như buồn nôn, nôn, tiêu chảy, suy gan, và có yếu tố khởi phát xác định được. Điểm trong hệ thống BWPS dựa trên mức độ nặng từng biểu hiện, tổng điểm ≥45 phù hợp cơn bão giáp, 25–44 điểm xếp loại "bão giáp sắp xảy ra" (impending storm), &lt;25 điểm ít khả năng bão giáp. Gần đây, JTA đề xuất thêm một hệ thống chẩn đoán thực nghiệm khác, dùng tổ hợp các đặc điểm lâm sàng tương tự để xếp bệnh nhân vào nhóm chẩn đoán TS1 hoặc TS2.</p>
+<p>Dữ liệu so sánh hai hệ thống chẩn đoán cho thấy có sự đồng thuận nhìn chung, nhưng xu hướng chẩn đoán thiếu khi dùng phân loại JTA TS1/TS2 so với BWPS ≥45. Trong một nghiên cứu gần đây trên 25 bệnh nhân chẩn đoán lâm sàng cơn bão giáp, BWPS ≥45 ở 20 bệnh nhân và 25–44 ở 5 bệnh nhân còn lại, nhưng 5 bệnh nhân này (20%) không được xác định bằng hệ thống JTA.</p>
+<p>Quan trọng là, trong cùng loạt ca, trong số 125 bệnh nhân nhập viện chẩn đoán lâm sàng nhiễm độc giáp bù trừ (không phải bão giáp), 27 người (21,6%) có BWPS ≥45 và 21 người (16,8%) có phân loại TS1 hoặc TS2 — cho thấy tỷ lệ chẩn đoán dư khá tương đồng giữa hai hệ thống. Tuy nhiên, thêm 50 bệnh nhân (40%) nhập viện chẩn đoán lâm sàng nhiễm độc giáp không bão giáp sẽ được chẩn đoán "bão giáp sắp xảy ra" theo BWPS — củng cố rằng BWPS trong khoảng 25–44 không thay thế được phán đoán lâm sàng khi chọn bệnh nhân điều trị tích cực.</p>
+<p>Tóm lại, chẩn đoán cơn bão giáp vẫn là chẩn đoán lâm sàng, được hỗ trợ bởi các hệ thống chẩn đoán hiện có. BWPS ≥45 có vẻ nhạy hơn phân loại JTA TS1/TS2 trong phát hiện bệnh nhân có chẩn đoán lâm sàng bão giáp, nhưng bệnh nhân BWPS 25–44 là nhóm mà quyết định điều trị tích cực nên dựa vào phán đoán lâm sàng vững chắc, không chỉ dựa vào phân loại chẩn đoán, để tránh điều trị quá mức và nguy cơ độc tính thuốc. Tối thiểu, nhóm trung gian này cần được theo dõi sát để phát hiện diễn tiến xấu. Cần thận trọng với cả hai hệ thống để tránh áp dụng sai ở bệnh nhân không có nhiễm độc giáp nặng, vì mỗi biểu hiện của bão giáp (trừ có thể sốt cao) đều có thể gặp trong bất kỳ bệnh nặng nào khác — nhiều trong số đó cũng là yếu tố khởi phát bão giáp đã biết.</p>
+<p>Các yếu tố khởi phát cơn bão giáp ở bệnh nhân nhiễm độc giáp trước đó đã bù trừ gồm: ngừng ATD đột ngột, cắt giáp hoặc phẫu thuật ngoài tuyến giáp ở bệnh nhân nhiễm độc giáp chưa được nhận biết hoặc điều trị chưa đủ, và một số bệnh cấp tính không liên quan bệnh giáp. Cơn bão giáp đôi khi xảy ra sau điều trị RAI.</p>
+<p>Điều trị tích cực cơn bão giáp bao gồm nhắm sớm vào từng bước có thể can thiệp bằng thuốc trong sản xuất và tác động của hormon giáp (Bảng 7). Chiến lược điều trị chia rộng thành: (i) liệu pháp nhắm vào bài tiết và tổng hợp hormon giáp; (ii) biện pháp nhắm vào tác động ngoại biên của hormon giáp ở mô; (iii) đảo ngược mất bù hệ thống; (iv) điều trị yếu tố khởi phát hoặc bệnh xen kẽ; và (v) điều trị dứt điểm. Một số biện pháp điều trị nhắm đặc hiệu giảm chuyển T4 thành T3, như ưu tiên dùng PTU thay vì MMI, glucocorticoid, và chẹn beta như propranolol (có khả năng chọn lọc ức chế deiodinase type 1). Ví dụ, một bài báo sớm so sánh thay đổi cấp tính nồng độ hormon giáp sau khởi trị PTU hoặc MMI cho thấy T3 giảm khoảng 45% trong 24 giờ đầu điều trị PTU, so với giảm khoảng 10–15% sau khởi trị MMI. Cả thay huyết tương (plasmapheresis) và phẫu thuật cấp cứu đã được dùng điều trị cơn bão giáp ở bệnh nhân đáp ứng kém với các biện pháp điều trị truyền thống.</p>
+<p>Phòng ngừa cơn bão giáp bao gồm nhận biết và chủ động tránh các yếu tố khởi phát thường gặp, giáo dục bệnh nhân tránh ngừng ATD đột ngột, và đảm bảo bệnh nhân bình giáp trước phẫu thuật chương trình, chuyển dạ sinh, hoặc các stress cấp tính khác.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Điều trị bằng iodine vô cơ (SSKI/dung dịch Lugol) hoặc thuốc cản quang đường uống dùng chụp túi mật dẫn đến giảm nhanh cả T4 và T3. Kết hợp với ATD ở bệnh nhân nhiễm độc giáp nặng, các thuốc này giúp cải thiện lâm sàng nhanh. Đáng tiếc, các thuốc cản quang đường uống ipodate và acid iopanoic hiện không còn sẵn có ở nhiều nước.</p>
+</div>
+
+<div class="tbl-wrap">
+<table>
+<caption>Bảng 6. Thang điểm Burch–Wartofsky chẩn đoán cơn bão giáp</caption>
+<tr><th>Rối loạn điều nhiệt (nhiệt độ, °C)</th><th>Điểm</th></tr>
+<tr><td>37,2–37,7</td><td>5</td></tr>
+<tr><td>37,8–38,3</td><td>10</td></tr>
+<tr><td>38,3–38,8</td><td>15</td></tr>
+<tr><td>38,9–39,4</td><td>20</td></tr>
+<tr><td>39,4–39,9</td><td>25</td></tr>
+<tr><td>≥40,0</td><td>30</td></tr>
+<tr><th>Tim mạch — nhịp tim (lần/phút)</th><th>Điểm</th></tr>
+<tr><td>100–109</td><td>5</td></tr>
+<tr><td>110–119</td><td>10</td></tr>
+<tr><td>120–129</td><td>15</td></tr>
+<tr><td>130–139</td><td>20</td></tr>
+<tr><td>≥140</td><td>25</td></tr>
+<tr><th>Rung nhĩ</th><th>Điểm</th></tr>
+<tr><td>Không có / Có</td><td>0 / 10</td></tr>
+<tr><th>Suy tim sung huyết</th><th>Điểm</th></tr>
+<tr><td>Không có</td><td>0</td></tr>
+<tr><td>Nhẹ (phù chi)</td><td>5</td></tr>
+<tr><td>Vừa (ran ẩm hai đáy phổi)</td><td>10</td></tr>
+<tr><td>Nặng (phù phổi)</td><td>15</td></tr>
+<tr><th>Rối loạn thần kinh trung ương</th><th>Điểm</th></tr>
+<tr><td>Không có</td><td>0</td></tr>
+<tr><td>Nhẹ (kích động)</td><td>10</td></tr>
+<tr><td>Vừa (mê sảng, loạn thần, lơ mơ nặng)</td><td>20</td></tr>
+<tr><td>Nặng (co giật, hôn mê)</td><td>30</td></tr>
+<tr><th>Rối loạn tiêu hoá–gan</th><th>Điểm</th></tr>
+<tr><td>Không có</td><td>0</td></tr>
+<tr><td>Vừa (tiêu chảy, đau bụng, buồn nôn/nôn)</td><td>10</td></tr>
+<tr><td>Nặng (vàng da)</td><td>20</td></tr>
+<tr><th>Tiền sử yếu tố khởi phát</th><th>Điểm</th></tr>
+<tr><td>Có / Không có</td><td>0 / 10</td></tr>
+</table>
+</div>
+<p style="font-size:12.5px;color:var(--ink-2);margin-top:-14px;">Cách tính: tổng điểm &gt;45 = cơn bão giáp; 25–44 = bão giáp sắp xảy ra; &lt;25 = ít khả năng bão giáp. Nguồn: Burch và Wartofsky (đã được cấp phép in lại).</p>
+
+<div class="tbl-wrap">
+<table>
+<caption>Bảng 7. Cơn bão giáp: thuốc và liều dùng</caption>
+<tr><th>Thuốc</th><th>Liều</th><th>Ghi chú</th></tr>
+<tr><td>Propylthiouracil*</td><td>Liều nạp 500–1000 mg, sau đó 250 mg mỗi 4 giờ</td><td>Ức chế tổng hợp hormon mới; ức chế chuyển T4→T3</td></tr>
+<tr><td>Methimazole</td><td>60–80 mg/ngày</td><td>Ức chế tổng hợp hormon mới</td></tr>
+<tr><td>Propranolol*</td><td>60–80 mg mỗi 4 giờ</td><td>Ức chế chuyển T4→T3 ở liều cao; thuốc thay thế: truyền esmolol; cân nhắc theo dõi xâm lấn ở bệnh nhân suy tim sung huyết</td></tr>
+<tr><td>Iod (dung dịch kali iodide bão hoà)</td><td>5 giọt (0,25 mL hay 250 mg) uống mỗi 6 giờ</td><td>Không bắt đầu cho đến ≥1 giờ sau ATD; ức chế tổng hợp hormon mới, ức chế giải phóng hormon; thuốc thay thế: dung dịch Lugol</td></tr>
+<tr><td>Hydrocortison</td><td>Liều nạp TM 300 mg, sau đó 100 mg mỗi 8 giờ</td><td>Có thể ức chế chuyển T4→T3; dự phòng suy thượng thận tương đối; thuốc thay thế: dexamethasone</td></tr>
+</table>
+</div>
+<p style="font-size:12.5px;color:var(--ink-2);margin-top:-14px;">* Có thể dùng đường tĩnh mạch.</p>
+
+<h2 id="h-iod-don-thuan">[I] Có vai trò của iod đơn thuần trong điều trị GD không?</h2>
+<p>Trước khi ATD ra đời, iod thường được báo cáo cải thiện cường giáp trong GD. Iod làm giảm nhanh nồng độ hormon giáp bằng cách giảm bài tiết hormon, và ức chế chính quá trình hữu cơ hoá của bản thân nó (hiệu ứng Wolff–Chaikoff). Tuy nhiên, các báo cáo về hiện tượng "thoát" khỏi tác dụng có lợi này của iod, cũng như báo cáo cường giáp do iod ở bệnh nhân bướu giáp đa nhân, đã khiến việc dùng iod trong GD không được ưa chuộng. Các nghiên cứu gần đây gợi ý vai trò tiềm năng của iod ở bệnh nhân có phản ứng bất lợi với ATD và có chống chỉ định hoặc e ngại RAI/phẫu thuật.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 36</span> — Kali iodide có thể có lợi ở một số bệnh nhân chọn lọc cường giáp do GD, ở người có phản ứng bất lợi với ATD, và người có chống chỉ định hoặc e ngại điều trị RAI (hoặc e ngại lặp lại RAI) hoặc phẫu thuật. Điều trị có thể phù hợp hơn ở bệnh nhân cường giáp nhẹ hoặc đã từng điều trị RAI trước đó.
+<span class="grade">Không khuyến cáo; chưa đủ bằng chứng đánh giá lợi ích/nguy cơ</span>
+</div>
+<p>Trong nghiên cứu, một số bệnh nhân "thoát" khỏi tác dụng ức chế của iod và một số không đáp ứng với KI. Không bệnh nhân nào có tác dụng phụ. Nồng độ FT4 ban đầu và kích thước bướu giáp không dự báo được đáp ứng điều trị. Trong 20 bệnh nhân Nhật Bản cường giáp nhẹ điều trị ban đầu chỉ bằng KI, so khớp điểm xu hướng với nhóm điều trị chỉ bằng MMI, 85% bệnh nhân dùng KI đơn thuần có chức năng giáp bình thường tại 6 tháng và 1 năm — tương đương nhóm chứng dùng MMI. Đa số bệnh nhân dùng 50 mg KI/ngày.</p>
+<p>Tác dụng ức chế của iod mạnh hơn ở bệnh nhân từng phơi nhiễm RAI trước đó, gợi ý vai trò của KI ở bệnh nhân vẫn cường giáp sau 1 liều RAI và muốn tránh liều RAI thứ hai. Việc dùng KI trước cắt giáp cho GD được thảo luận ở mục [F1], dùng KI phụ trợ sau RAI ở mục [D1], dùng KI phối hợp MMI trong điều trị GD ở mục [E1], và dùng KI trong cường giáp thai kỳ ở mục [T].</p>
+
+<hr class="sect">
+<div class="box">
+<div class="box-title">TÓM TẮT PHẦN 2 — SẼ TIẾP TỤC Ở PHẦN 3</div>
+<p style="margin:0;">Phần 3 sẽ trình bày: cường giáp rõ do bướu giáp đa nhân độc/bướu nhân độc (TMNG/TA) [J], điều trị bằng RAI [K], phẫu thuật [L], ATD [M], vai trò cồn/sóng cao tần [N] cho TMNG/TA, và toàn bộ phần Basedow ở trẻ em và thanh thiếu niên [O–R] (khởi trị ATD, RAI, phẫu thuật ở trẻ).</p>
+</div>
+
+
+    <hr class="sect">
+    <p style="font-size:12.5px; color:var(--ink-2);">Nguồn đầy đủ: Ross DS, Burch HB, Cooper DS, Greenlee MC, Laurberg P, Maia AL, Rivkees SA, Samuels M, Sosa JA, Stan MN, Walter MA. 2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis. Thyroid 2016;26(10):1343–1421. DOI: 10.1089/thy.2016.0229. Danh mục 139 tài liệu tham khảo đầy đủ có trong bản gốc, không chép lại ở đây.</p>
+  </main>
+</div>
+
+<div id="hlbtn">Đánh dấu</div>
+
+<script>
+(function(){
+  const content = document.getElementById('content');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const menuBtn = document.getElementById('menuBtn');
+  const progress = document.getElementById('progress');
+  const readpct = document.getElementById('readpct');
+  const tocEl = document.getElementById('toc');
+  const hlbtn = document.getElementById('hlbtn');
+  const hlcount = document.getElementById('hlcount');
+  const clearHlBtn = document.getElementById('clearHl');
+  const STORAGE_KEY = 'ata2016_hyperthyroid_p2_v1';
+
+  menuBtn.addEventListener('click', ()=>{ sidebar.classList.add('open'); overlay.classList.add('show'); });
+  overlay.addEventListener('click', ()=>{ sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+
+  const headings = Array.from(content.querySelectorAll('h2, h3'));
+  const links = [];
+  headings.forEach(h=>{
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#'+h.id;
+    a.textContent = h.textContent;
+    a.className = h.tagName === 'H2' ? 'lvl2' : 'lvl3';
+    a.addEventListener('click', ()=>{ sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+    li.appendChild(a);
+    tocEl.appendChild(li);
+    links.push({id:h.id, el:a});
+  });
+
+  function onScroll(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.min(100, Math.round((scrollTop/docHeight)*100)) : 0;
+    progress.style.width = pct + '%';
+    readpct.textContent = 'Đã đọc: ' + pct + '%';
+    let currentId = links[0] ? links[0].id : null;
+    for (const h of headings){
+      const rect = h.getBoundingClientRect();
+      if (rect.top - 90 <= 0) currentId = h.id;
+    }
+    links.forEach(l=> l.el.classList.toggle('active', l.id === currentId));
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  const blocks = Array.from(content.querySelectorAll('p, li, td'));
+  blocks.forEach((el, i)=>{ el.setAttribute('data-hid', 'b'+i); });
+
+  function getTextOffset(container, node, offset){
+    let total = 0; let found = false;
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+    let n;
+    while(n = walker.nextNode()){
+      if (n === node){ total += offset; found = true; break; }
+      total += n.textContent.length;
+    }
+    return found ? total : null;
+  }
+
+  function wrapRange(container, start, end, hlid){
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+    let pos = 0; let n; const toWrap = [];
+    while(n = walker.nextNode()){
+      const len = n.textContent.length;
+      const nStart = pos, nEnd = pos+len;
+      if (nEnd > start && nStart < end){
+        const wStart = Math.max(0, start-nStart);
+        const wEnd = Math.min(len, end-nStart);
+        toWrap.push({node:n, wStart, wEnd});
+      }
+      pos += len;
+      if (pos >= end) break;
+    }
+    toWrap.reverse().forEach(({node, wStart, wEnd})=>{
+      const range = document.createRange();
+      range.setStart(node, wStart);
+      range.setEnd(node, wEnd);
+      const mark = document.createElement('mark');
+      mark.className = 'hl';
+      mark.setAttribute('data-hlid', hlid);
+      mark.title = 'Bấm để xoá highlight';
+      try{ range.surroundContents(mark); }catch(e){}
+    });
+  }
+
+  function loadHighlights(){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    list.forEach(item=>{
+      const container = content.querySelector('[data-hid="'+item.bid+'"]');
+      if (container) wrapRange(container, item.start, item.end, item.id);
+    });
+    updateHlCount();
+  }
+
+  function saveHighlight(bid, start, end, text){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    const id = 'h'+Date.now()+Math.floor(Math.random()*1000);
+    list.push({id, bid, start, end, text});
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    updateHlCount();
+  }
+
+  function removeHighlight(hlid){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    list = list.filter(x=>x.id !== hlid);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    document.querySelectorAll('mark.hl[data-hlid="'+hlid+'"]').forEach(m=>{
+      const parent = m.parentNode;
+      while(m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+      parent.normalize();
+    });
+    updateHlCount();
+  }
+
+  function updateHlCount(){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    hlcount.textContent = list.length + ' đoạn đã highlight';
+  }
+
+  content.addEventListener('click', (e)=>{
+    if (e.target.tagName === 'MARK' && e.target.classList.contains('hl')){
+      const hlid = e.target.getAttribute('data-hlid');
+      if (confirm('Xoá highlight này?')) removeHighlight(hlid);
+    }
+  });
+
+  clearHlBtn.addEventListener('click', ()=>{
+    if (!confirm('Xoá toàn bộ highlight đã lưu?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    document.querySelectorAll('mark.hl').forEach(m=>{
+      const parent = m.parentNode;
+      while(m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+      parent.normalize();
+    });
+    updateHlCount();
+  });
+
+  let pendingSelection = null;
+  document.addEventListener('mouseup', (e)=>{
+    if (e.target === hlbtn) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || sel.rangeCount === 0){ hlbtn.style.display='none'; return; }
+    const range = sel.getRangeAt(0);
+    const container = range.commonAncestorContainer;
+    const el = container.nodeType === 1 ? container : container.parentElement;
+    const block = el.closest ? el.closest('[data-hid]') : null;
+    if (!block || !content.contains(block)){ hlbtn.style.display='none'; return; }
+    const start = getTextOffset(block, range.startContainer, range.startOffset);
+    const end = getTextOffset(block, range.endContainer, range.endOffset);
+    if (start === null || end === null || end <= start){ hlbtn.style.display='none'; return; }
+    pendingSelection = { bid: block.getAttribute('data-hid'), start, end, text: sel.toString() };
+    const rect = range.getBoundingClientRect();
+    hlbtn.style.left = (window.scrollX + rect.left + rect.width/2 - 34) + 'px';
+    hlbtn.style.top = (window.scrollY + rect.top - 38) + 'px';
+    hlbtn.style.display = 'block';
+  });
+
+  hlbtn.addEventListener('mousedown', (e)=> e.preventDefault());
+  hlbtn.addEventListener('click', ()=>{
+    if (!pendingSelection) return;
+    const { bid, start, end } = pendingSelection;
+    const container = content.querySelector('[data-hid="'+bid+'"]');
+    const id = 'h'+Date.now()+Math.floor(Math.random()*1000);
+    if (container) wrapRange(container, start, end, id);
+    saveHighlight(bid, start, end, pendingSelection.text);
+    window.getSelection().removeAllRanges();
+    hlbtn.style.display = 'none';
+    pendingSelection = null;
+  });
+
+  document.addEventListener('mousedown', (e)=>{
+    if (e.target !== hlbtn) hlbtn.style.display = 'none';
+  });
+
+  loadHighlights();
+})();
+</script>
+</body>
+</html>

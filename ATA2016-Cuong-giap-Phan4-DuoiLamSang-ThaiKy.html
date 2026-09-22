@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ATA 2016 – Cường giáp (Phần 4): Cường giáp dưới lâm sàng & Thai kỳ</title>
+<style>
+  :root{
+    --bg:#FAFAF7; --surface:#FFFFFF; --ink:#211F1B; --ink-2:#6B6862;
+    --border:#E4E1D8; --accent:#A6192E; --accent-ink:#6E0F1D; --accent-bg:#FBEAEC;
+    --warn-bg:#FBEFE0; --warn-ink:#6B3E06; --warn-border:#EBCE9C;
+    --hl:#FFE58A;
+    --serif:"Source Serif 4","Iowan Old Style",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --sidebar-w:290px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.7; font-size:16px;}
+  a{color:var(--accent-ink);}
+  #progress{position:fixed; top:0; left:0; height:3px; background:var(--accent); width:0%; z-index:100; transition:width .1s linear;}
+  #topbar{display:none; position:sticky; top:0; z-index:60; background:var(--surface); border-bottom:1px solid var(--border); padding:10px 14px; align-items:center; gap:10px;}
+  #topbar button{background:none; border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:14px; color:var(--ink); cursor:pointer;}
+  #topbar .ttl{font-family:var(--serif); font-size:15px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .layout{display:flex; max-width:1180px; margin:0 auto;}
+  #sidebar{width:var(--sidebar-w); flex-shrink:0; position:sticky; top:0; align-self:flex-start; height:100vh; overflow-y:auto; padding:28px 18px 40px 28px; border-right:1px solid var(--border);}
+  #sidebar .eyebrow{font-size:11px; letter-spacing:.03em; color:var(--accent-ink); font-weight:600; margin-bottom:6px;}
+  #sidebar .doc-title{font-family:var(--serif); font-size:16.5px; font-weight:600; line-height:1.35; margin-bottom:14px;}
+  #readpct{font-size:12px; color:var(--ink-2); margin-bottom:18px;}
+  #toc{list-style:none; margin:0; padding:0; font-size:13.5px;}
+  #toc li{margin:0;}
+  #toc a{display:block; padding:6px 8px; border-radius:6px; color:var(--ink-2); text-decoration:none; border-left:2px solid transparent;}
+  #toc a.lvl2{font-weight:600; color:var(--ink); margin-top:6px;}
+  #toc a.lvl3{padding-left:20px; font-size:13px;}
+  #toc a:hover{background:var(--accent-bg);}
+  #toc a.active{border-left:2px solid var(--accent); color:var(--accent-ink); background:var(--accent-bg); font-weight:600;}
+  #sidebar-foot{margin-top:22px; padding-top:14px; border-top:1px solid var(--border);}
+  #sidebar-foot button{width:100%; background:none; border:1px solid var(--border); border-radius:6px; padding:8px; font-size:12.5px; color:var(--ink-2); cursor:pointer;}
+  #sidebar-foot button:hover{border-color:var(--accent); color:var(--accent-ink);}
+  #hlcount{font-size:12px; color:var(--ink-2); margin-bottom:8px;}
+  main{flex:1; min-width:0; padding:44px 48px 120px; max-width:780px;}
+  .kicker{display:inline-block; background:var(--accent); color:#fff; font-size:11.5px; letter-spacing:.06em; font-weight:600; padding:4px 10px; border-radius:4px; margin-bottom:16px;}
+  h1{font-family:var(--serif); font-size:32px; line-height:1.22; font-weight:600; margin:0 0 10px;}
+  .byline{color:var(--ink-2); font-size:14px; margin-bottom:4px;}
+  .cite{color:var(--ink-2); font-size:12.5px; margin-bottom:30px; border-bottom:1px solid var(--border); padding-bottom:26px;}
+  h2{font-family:var(--serif); font-size:23px; font-weight:600; margin:44px 0 14px; scroll-margin-top:20px;}
+  h3{font-family:var(--serif); font-size:18.5px; font-weight:600; margin:30px 0 10px; scroll-margin-top:20px;}
+  p{margin:0 0 16px;}
+  .sup{font-size:11px; vertical-align:super; color:var(--accent-ink);}
+  strong{font-weight:600;}
+  .box{background:var(--accent-bg); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin:20px 0;}
+  .box .box-title{font-weight:600; color:var(--accent-ink); font-size:13px; letter-spacing:.02em; margin-bottom:8px;}
+  .box ul{margin:0; padding-left:20px;}
+  .box li{margin-bottom:6px;}
+  .rec{background:#F1EFE6; border-left:3px solid var(--accent); border-radius:6px; padding:12px 16px; margin:14px 0; font-size:14.5px;}
+  .rec .num{font-weight:700; color:var(--accent-ink);}
+  .grade{display:inline-block; font-weight:700; font-size:11.5px; background:var(--accent); color:#fff; border-radius:4px; padding:1px 6px; margin-left:4px;}
+  .warn{background:var(--warn-bg); border:1px solid var(--warn-border); border-radius:10px; padding:16px 20px; margin:20px 0; color:var(--warn-ink); font-size:14.5px;}
+  table{width:100%; border-collapse:collapse; margin:18px 0 26px; font-size:13.5px;}
+  caption{caption-side:top; text-align:left; font-weight:600; font-size:13.5px; margin-bottom:8px; color:var(--ink);}
+  th,td{border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top;}
+  th{background:#F1EFE6; font-weight:600;}
+  tr:nth-child(even) td{background:#FCFCFA;}
+  .tbl-wrap{overflow-x:auto;}
+  ul,ol{padding-left:22px;}
+  li{margin-bottom:6px;}
+  .fig-caption{font-size:13px; color:var(--ink-2); font-style:italic; margin-top:8px;}
+  hr.sect{border:none; border-top:1px solid var(--border); margin:36px 0;}
+  mark.hl{background:var(--hl); padding:0 1px; border-radius:2px; cursor:pointer;}
+  #hlbtn{position:absolute; display:none; z-index:80; background:var(--ink); color:#fff; font-size:12.5px; padding:7px 12px; border-radius:6px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.2); user-select:none;}
+  #hlbtn:hover{background:#000;}
+  @media (max-width:880px){
+    #topbar{display:flex;}
+    .layout{flex-direction:column;}
+    #sidebar{position:fixed; top:0; left:0; height:100%; z-index:70; background:var(--surface); width:82vw; max-width:320px; transform:translateX(-100%); transition:transform .22s ease; box-shadow:8px 0 30px rgba(0,0,0,.12);}
+    #sidebar.open{transform:translateX(0);}
+    #overlay{display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:65;}
+    #overlay.show{display:block;}
+    main{padding:28px 20px 100px; max-width:100%;}
+    h1{font-size:25px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="topbar"><button id="menuBtn" aria-label="Mục lục">☰ Mục lục</button><div class="ttl">ATA 2016 Cường giáp – P4</div></div>
+<div id="overlay"></div>
+
+<div class="layout">
+  <aside id="sidebar">
+    <div class="eyebrow">HƯỚNG DẪN CHUYÊN ĐỀ · THYROID (ATA) 2016</div>
+    <div class="doc-title">Hướng dẫn ATA 2016 về Chẩn đoán và Xử trí Cường giáp — Phần 4/5</div>
+    <div id="readpct">Đã đọc: 0%</div>
+    <ul id="toc"></ul>
+    <div id="sidebar-foot">
+      <div id="hlcount">0 đoạn đã highlight</div>
+      <button id="clearHl">Xoá tất cả highlight</button>
+    </div>
+  </aside>
+
+  <main id="content">
+    <span class="kicker">PHẦN 4/5 · DƯỚI LÂM SÀNG — THAI KỲ</span>
+    <h1>Hướng dẫn ATA 2016: Chẩn đoán và Xử trí Cường giáp — Phần 4</h1>
+    <div class="byline">Douglas S. Ross, Henry B. Burch, David S. Cooper và cộng sự — American Thyroid Association Task Force</div>
+    <div class="cite">Nguồn: Ross DS, Burch HB, Cooper DS, et al. 2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis. Thyroid. 2016;26(10):1343–1421. DOI: 10.1089/thy.2016.0229. Bản dịch tham khảo phục vụ học tập lâm sàng — không thay thế bản gốc.</div>
+
+    <div class="box">
+<div class="box-title">VỀ TÀI LIỆU NÀY</div>
+<p style="margin:0;">Đây là <strong>Phần 4/5</strong> của bộ tài liệu dịch Hướng dẫn ATA 2016 về cường giáp. Phần 4 bao gồm: cường giáp dưới lâm sàng [S] (Khuyến cáo 73–77, Bảng 10) và toàn bộ cường giáp trong thai kỳ [T] (Khuyến cáo 78–98, Bảng 11). Xem <strong>Phần 1–3</strong> để đọc phần Nền tảng, Basedow ở người lớn và trẻ em, TMNG/TA.</p>
+</div>
+
+<h2 id="h-cuong-giap-duoi-lam-sang">[S] Xử trí cường giáp dưới lâm sàng như thế nào?</h2>
+
+<h3 id="h-ty-le-nguyen-nhan-sh">[S1] Tỷ lệ và nguyên nhân cường giáp dưới lâm sàng (SH)</h3>
+<p>Tỷ lệ SH ở người trưởng thành phụ thuộc tuổi, giới, và lượng iod khẩu phần. Trong một mẫu đại diện người Mỹ không có bệnh giáp đã biết, 0,7% có TSH ức chế (&lt;0,1 mU/L), 1,8% có TSH thấp (&lt;0,4 mU/L). Tỷ lệ tương tự được báo cáo ở châu Âu, cao hơn ở nữ và người lớn tuổi. Chẩn đoán phân biệt TSH thấp/ức chế đơn độc gồm dùng hormon giáp ngoại sinh, bệnh không do giáp, tác dụng thuốc, và bệnh tuyến yên/vùng dưới đồi — tất cả cần loại trừ trước khi chẩn đoán SH ở bệnh nhân có TSH thấp/ức chế đơn độc. Ngoài ra, TSH trung bình thấp hơn ở người Mỹ gốc Phi không gốc Tây Ban Nha, một số người trong nhóm này có thể có TSH hơi thấp mà không có bệnh giáp. Cuối cùng, một số người cao tuổi khoẻ mạnh có thể có TSH thấp, FT4 và T3 toàn phần ở mức thấp-bình thường, không có bằng chứng bệnh giáp hay tuyến yên, gợi ý thay đổi điểm đặt (set point) của trục tuyến yên–giáp.</p>
+<p>Diễn tiến tự nhiên của SH thay đổi, với tỷ lệ hằng năm tiến triển thành cường giáp rõ 0,5–7% và tỷ lệ trở về TSH bình thường 5–12%. Trong một nghiên cứu, 51,2% bệnh nhân tự nhiên có TSH bình thường khi kiểm tra lại trong vòng 5 năm (thời gian trung bình đến lần đo lại 13 tháng). Tiến triển từ SH sang cường giáp rõ có vẻ dễ xảy ra hơn nếu TSH bị ức chế (&lt;0,01 mU/L) so với thấp nhưng còn đo được (0,01–0,4 mU/L). Bệnh nhân SH do GD (thay vì TMNG) có thể dễ tự thuyên giảm hơn. Ở bệnh nhân nguy cơ cao biến chứng do SH, nên đo lại TSH và FT4 trong 2–6 tuần. Với các bệnh nhân khác, quan trọng cần xác nhận SH là vấn đề dai dẳng bằng cách đo lại TSH huyết thanh sau 3–6 tháng trước khi khởi trị. Trong các loạt ca lâm sàng, TMNG là nguyên nhân SH thường gặp nhất, đặc biệt ở người cao tuổi. Nguyên nhân thường gặp thứ hai là GD, phổ biến hơn ở người trẻ và cũng thường gặp ở bệnh nhân từng điều trị ATD. Các nguyên nhân hiếm khác gồm nhân tự động chức năng đơn độc và các thể viêm giáp khác nhau (chính xác hơn nên gọi là "nhiễm độc giáp dưới lâm sàng").</p>
+
+<h3 id="h-y-nghia-lam-sang-sh">[S2] Ý nghĩa lâm sàng của SH</h3>
+<p>Vì SH là thể nhẹ của cường giáp, không ngạc nhiên khi các tác động bất lợi thấy ở cường giáp rõ cũng có thể gặp ở SH. Nhiều nghiên cứu gần đây đã làm rõ các tác động này.</p>
+<p><strong>Tử vong chung.</strong> Nhiều nghiên cứu dọc đã khảo sát mối liên quan giữa SH và tử vong chung, kết quả khác nhau. Một số nghiên cứu báo cáo tăng tử vong chung ở người SH (đặc biệt người cao tuổi), số khác không thấy liên quan. Hạn chế của một số nghiên cứu gồm cỡ mẫu, khoảng tuổi, thời gian theo dõi, và chẩn đoán SH chỉ dựa một lần đo TSH. Một phân tích gộp gần đây dùng dữ liệu cá thể từ 52.674 người, gộp từ 10 cohort, cho lực thống kê lớn hơn, kết luận SH làm tăng 24% nguy cơ tử vong chung.</p>
+<p><strong>Bệnh tim mạch.</strong> Một nghiên cứu lớn gần đây trên 26.707 người theo dõi 12 năm báo cáo tăng tử vong tim mạch ở SH. Một số nghiên cứu nhỏ khác cũng kết luận tương tự, dù một số nghiên cứu nhỏ khác không tìm thấy mối liên quan. Có hai phân tích gộp gần đây khảo sát vấn đề này (một dùng dữ liệu cấp nghiên cứu từ 17 cohort, một dùng dữ liệu cá thể từ 52.674 người). Cả hai đều kết luận SH làm tăng nguy cơ tử vong tim mạch, với tỷ số nguy cơ (HR) 1,52 và 1,29. Trong phân tích gộp dữ liệu cá thể, nguy cơ tương đối không khác biệt theo tuổi, giới, bệnh tim mạch sẵn có, hay yếu tố nguy cơ tim mạch. Tuy nhiên, nguy cơ cao hơn ở người có TSH &lt;0,1 mU/L so với 0,1–0,4 mU/L.</p>
+<p>Một số nghiên cứu này, kể cả các phân tích gộp, cũng khảo sát biến cố tim mạch không tử vong ở SH, với nguy cơ tăng tương tự. Dữ liệu gần đây nhất cho thấy người SH có vẻ có nguy cơ đặc biệt phát triển suy tim, đặc biệt người cao tuổi và người có TSH thấp hơn. Cơ chế liên quan gồm tăng khối lượng thất trái và suy giảm chức năng thất trái ở SH — cải thiện khi điều trị. Ngoài ra, hai nghiên cứu cho thấy giảm dung nạp glucose và giảm nhạy cảm insulin ở SH, gợi ý có thể góp phần tăng nguy cơ tim mạch.</p>
+<p>Loạn nhịp là một lo ngại khác trong SH. Sawin và cộng sự lần đầu báo cáo năm 1994 tăng nguy cơ rung nhĩ gấp 2,8 lần ở người SH trên 60 tuổi, các nghiên cứu sau đó xác nhận nguy cơ loạn nhịp (đặc biệt rung nhĩ) tăng ở SH. Trong nghiên cứu lớn nhất đến nay (586.460 người, theo dõi trung vị 5,5 năm), nguy cơ tương đối cao nhất với rung nhĩ xảy ra ở người trẻ hơn (có thể vì nguyên nhân khác chiếm ưu thế khi tuổi tăng) và ở người có TSH thấp hơn. Tuy nhiên, tỷ lệ mắc tuyệt đối rung nhĩ thấp hơn nhiều ở người trẻ; ví dụ phụ nữ &lt;65 tuổi có tỷ lệ rung nhĩ 2,3 biến cố/1000 người-năm (nguy cơ tương đối 1,89 so với phụ nữ bình giáp cùng tuổi), trong khi phụ nữ ≥65 tuổi có tỷ lệ 22,7/1000 người-năm (nguy cơ tương đối 1,27). Xu hướng tương tự ở nam giới. Một nghiên cứu dân số khác cho thấy SH tăng nguy cơ đột quỵ ở người &gt;50 tuổi với HR 3,39, dù một phân tích gộp gần đây về nguy cơ đột quỵ trong SH cho thấy chưa đủ số biến cố để kết luận chắc chắn. Bổ sung cho các nghiên cứu dịch tễ này, các khảo sát trên số lượng nhỏ hơn bệnh nhân SH cho thấy tăng nhịp tim nghỉ và khi gắng sức, giảm biến thiên nhịp tim, và tăng tần suất ngoại tâm thu nhĩ/thất — cải thiện khi điều trị SH.</p>
+<p>Tổng hợp lại, các dữ liệu này ủng hộ mạnh mẽ việc điều trị SH ở người cao tuổi để tránh loạn nhịp và nguy cơ đột quỵ sau đó. Việc có nên điều trị người trẻ vì cùng chỉ định dự phòng hay không thì chưa rõ ràng. Dữ liệu gần đây nhất cho thấy nguy cơ tương đối tử vong tim mạch và rung nhĩ tăng ở cả người trẻ lẫn người cao tuổi có SH. Tuy nhiên, nguy cơ tuyệt đối của các biến cố này rất thấp ở người trẻ, nên tỷ số lợi ích/nguy cơ khi điều trị SH ở người trẻ chưa rõ ràng. Cần dùng phán đoán lâm sàng trong các trường hợp này, quyết định điều trị nên cá thể hoá.</p>
+<p><strong>Loãng xương và gãy xương.</strong> Đa số nghiên cứu về SH nội sinh cho thấy giảm mật độ xương ở phụ nữ mãn kinh, nhưng không ở nam giới hoặc phụ nữ tiền mãn kinh. Tuy nhiên, chưa rõ phát hiện này có chuyển thành tăng nguy cơ gãy xương hay không. Một số nghiên cứu dân số báo cáo một số nhóm SH tăng tỷ lệ gãy xương, gồm mọi người trưởng thành, phụ nữ mãn kinh, nam giới, hoặc người tiến triển thành cường giáp rõ theo thời gian. Nghiên cứu cá thể lớn nhất và gần đây nhất (231.355 người) báo cáo tỷ số nguy cơ gãy xương loãng xương chính (háng, xương cánh tay, cẳng tay, cột sống) gộp là 1,13 [KTC 1,014–1,26]. Nguy cơ tăng theo thời gian SH: sau theo dõi trung vị 7,5 năm, 13,5% người có TSH thấp từng gãy xương loãng xương chính, so với 6,9% người TSH bình thường. Các nghiên cứu khác không thấy tăng tỷ lệ gãy xương ở SH. Một phân tích gộp dữ liệu cá thể gần đây từ 13 cohort (70.298 người, theo dõi trung vị 12,1 năm) kết luận người SH có HR tăng có ý nghĩa: 1,36 với gãy xương háng (6 so với 4,9/1000 người-năm) và 1,28 với mọi loại gãy xương (14,4 so với 11,2/1000 người-năm). Nguy cơ tăng thêm nếu TSH &lt;0,1 mU/L so với 0,1–0,44 mU/L, và nếu SH do nguyên nhân nội sinh thay vì dùng hormon giáp. Nguy cơ không khác biệt theo tuổi, dù tỷ lệ gãy xương tuyệt đối thấp hơn ở người trẻ. Một số thử nghiệm nhỏ, không ngẫu nhiên cho thấy cải thiện mật độ xương khi điều trị SH bằng ATD hoặc RAI.</p>
+<p><strong>Tâm trạng và nhận thức.</strong> Nhiều nghiên cứu đã khảo sát mối liên quan giữa SH và suy giảm nhận thức. Số nghiên cứu cho thấy liên quan có ý nghĩa với suy giảm nhận thức/sa sút trí tuệ xấp xỉ bằng số nghiên cứu không thấy liên quan. Do đó, hiện chưa thể kết luận về vấn đề này. Dường như không có liên quan giữa SH và trầm cảm.</p>
+<p><strong>Chức năng thể chất.</strong> Bốn nghiên cứu khảo sát liệu SH có liên quan khả năng chức năng tự báo cáo hoặc đo lường khách quan chức năng thể chất. Ba nghiên cứu không thấy liên quan, nghiên cứu thứ tư thấy liên quan giữa SH và giảm hiệu suất thể chất chỉ ở nam giới. Một nghiên cứu không đối chứng khác cho thấy tăng khối cơ và sức cơ ở phụ nữ trung niên SH sau điều trị RAI hoặc cắt giáp.</p>
+
+<h3 id="h-khi-nao-dieu-tri-sh">[S3] Khi nào điều trị SH</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 73</span> — Khi TSH ức chế dai dẳng &lt;0,1 mU/L, khuyến cáo điều trị SH ở mọi người ≥65 tuổi; ở bệnh nhân có yếu tố nguy cơ tim mạch, bệnh tim, hoặc loãng xương; ở phụ nữ mãn kinh không dùng estrogen/bisphosphonate; và ở người có triệu chứng cường giáp.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 74</span> — Khi TSH dai dẳng &lt;0,1 mU/L, nên cân nhắc điều trị SH ở người không triệu chứng &lt;65 tuổi không có các yếu tố nguy cơ nêu ở Khuyến cáo 73.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Điều trị SH còn gây tranh cãi, vì rất ít nghiên cứu can thiệp chứng minh lợi ích, đặc biệt với các tiêu chí quan trọng lâm sàng như biến cố tim mạch, rung nhĩ, gãy xương. Ngoài ra, không nghiên cứu nào trong số đó có nhóm chứng. Do đó, bằng chứng chỉ dựa trên các nghiên cứu nhỏ không đối chứng cho thấy cải thiện cấu trúc/chức năng tim, nhịp tim và tần suất ngoại tâm thu, mật độ xương, và sức cơ. Năm 2004, một hội đồng chuyên gia xác định bằng chứng lợi ích đủ để chỉ định điều trị SH ở người cao tuổi có TSH &lt;0,1 mU/L. Khuyến cáo này chủ yếu dựa trên các nghiên cứu cho thấy tăng tỷ lệ rung nhĩ và thay đổi sức khoẻ xương khi TSH ức chế như đã nêu trên. Dữ liệu dịch tễ mới xuất hiện từ đó về nguy cơ tử vong chung và tử vong tim mạch đã củng cố thêm lập luận này, dù chưa có dữ liệu can thiệp. Hiệp hội Giáp châu Âu gần đây đã xem xét các dữ liệu này và công bố hướng dẫn điều trị cường giáp dưới lâm sàng, phần lớn tương đồng với khuyến cáo ở đây.</p>
+<p>Chưa đủ dữ liệu ủng hộ hay phản đối điều trị SH ở người trẻ hoặc phụ nữ tiền mãn kinh có TSH &lt;0,1 mU/L. Một nghiên cứu không đối chứng ở bệnh nhân trung niên cho thấy cải thiện triệu chứng cường giáp khi điều trị. Dù nghiên cứu này không gồm người trẻ, task force quyết định khuyến cáo điều trị SH ở bệnh nhân &lt;65 tuổi có TSH &lt;0,1 mU/L dai dẳng kèm triệu chứng cường giáp. Khi không có triệu chứng hay yếu tố nguy cơ, quyết định điều trị cần cá thể hoá.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">TSH &lt;0,1 mU/L đo lặp lại qua 3–6 tháng được coi là dai dẳng, loại trừ hiệu quả viêm giáp thoáng qua là nguyên nhân. Cần chẩn đoán bệnh giáp nền gây SH — thường gặp nhất là TMNG, GD, hoặc TA.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 75</span> — Khi TSH dai dẳng dưới giới hạn dưới bình thường nhưng ≥0,1 mU/L, nên cân nhắc điều trị SH ở người ≥65 tuổi và bệnh nhân có bệnh tim, loãng xương, hoặc triệu chứng cường giáp.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng trung bình</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 76</span> — Khi TSH dai dẳng dưới giới hạn dưới bình thường nhưng ≥0,1 mU/L, bệnh nhân không triệu chứng dưới 65 tuổi không có bệnh tim hoặc loãng xương có thể theo dõi mà không cần điều tra thêm nguyên nhân TSH thấp hoặc điều trị.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Một số nghiên cứu dịch tễ nêu trên đã phân tích riêng nhóm SH có TSH thấp nhưng còn đo được (thường 0,1–0,4 mU/L). Một số nghiên cứu này báo cáo tăng nguy cơ tử vong chung ở người cao tuổi, biến cố tim mạch, suy tim, và rung nhĩ ở mọi lứa tuổi hoặc ở người cao tuổi, và gãy xương đốt sống ở phụ nữ cao tuổi. Tuy nhiên, không có dữ liệu can thiệp ủng hộ hay phản đối điều trị người có TSH giữa 0,1 mU/L và giới hạn dưới bình thường. Do đó, quyết định điều trị cần cá thể hoá, dựa trên bằng chứng dịch tễ hạn chế và yếu tố nguy cơ bệnh nhân. Task force nhận thấy dữ liệu hạn chế này mạnh hơn ở người cao tuổi, nên nên cân nhắc điều trị ở nhóm này, nhưng không khuyến cáo ở người &lt;65 tuổi. Tuy nhiên, người trẻ hơn nên được theo dõi định kỳ mỗi 6–12 tháng, cân nhắc điều trị nếu TSH giảm dai dẳng &lt;0,1 mU/L. Ở bệnh nhân có triệu chứng cường giáp, thử dùng chẹn beta có thể hữu ích để xác định liệu điều trị triệu chứng có đủ hay không.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">TSH 0,1–0,4 mU/L đo lặp lại qua 3–6 tháng được coi là dai dẳng, loại trừ hiệu quả viêm giáp thoáng qua. Cần chẩn đoán bệnh giáp nền gây SH ở khoảng TSH này trước khi cân nhắc điều trị, để tránh điều trị nhầm bệnh nhân có rối loạn chức năng thoáng qua liên quan bệnh cấp, thuốc, và nguyên nhân khác gây TSH thấp. Bảng 10 tóm tắt các yếu tố cần cân nhắc khi quyết định điều trị SH.</p>
+</div>
+
+<div class="tbl-wrap">
+<table>
+<caption>Bảng 10. Cường giáp dưới lâm sàng: khi nào điều trị</caption>
+<tr><th>Yếu tố</th><th>TSH &lt;0,1 mU/L</th><th>TSH 0,1–0,4 mU/L*</th></tr>
+<tr><td>Tuổi &gt;65</td><td>Có</td><td>Cân nhắc điều trị</td></tr>
+<tr><td>Tuổi &lt;65 kèm bệnh đồng mắc</td><td>Có</td><td>Cân nhắc điều trị</td></tr>
+<tr><td>Bệnh tim</td><td>Có</td><td>Cân nhắc điều trị</td></tr>
+<tr><td>Loãng xương</td><td>Có</td><td>Cân nhắc điều trị</td></tr>
+<tr><td>Mãn kinh, không dùng estrogen/bisphosphonate</td><td>Có</td><td>Cân nhắc điều trị</td></tr>
+<tr><td>Triệu chứng cường giáp</td><td>Có</td><td>Cân nhắc điều trị</td></tr>
+<tr><td>Tuổi &lt;65, không triệu chứng</td><td>Cân nhắc điều trị</td><td>Theo dõi</td></tr>
+</table>
+</div>
+<p style="font-size:12.5px;color:var(--ink-2);margin-top:-14px;">* 0,4 mU/L là giới hạn dưới của khoảng bình thường.</p>
+
+<h3 id="h-cach-dieu-tri-sh">[S4] Cách điều trị SH</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 77</span> — Nếu điều trị SH, nên dựa trên nguyên nhân rối loạn chức năng giáp và theo cùng nguyên tắc như điều trị cường giáp rõ.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Điều trị SH tương tự điều trị cường giáp rõ. RAI phù hợp với đa số bệnh nhân, đặc biệt người cao tuổi khi TMNG là nguyên nhân thường gặp của SH. Chưa có dữ liệu cho biết bệnh nhân cao tuổi SH có hưởng lợi từ điều trị trước bằng ATD để bình thường hoá chức năng giáp trước RAI hay không. Vì nguy cơ bùng phát thấp, nguy cơ của ATD có thể lớn hơn lợi ích nhỏ tiềm năng.</p>
+<p>Một đợt ATD là lựa chọn thay thế hợp lý cho RAI ở bệnh nhân GD kèm SH, đặc biệt bệnh nhân trẻ, vì tỷ lệ thuyên giảm cao nhất ở người bệnh nhẹ. Một số bệnh nhân SH do GD có thể tự thuyên giảm mà không cần điều trị, nên tiếp tục theo dõi không điều trị là hợp lý cho bệnh nhân trẻ SH do GD. Một nhóm nhỏ bệnh nhân cao tuổi có TSH thấp dai dẳng mà không có bằng chứng rối loạn chức năng giáp thực sự có thể được theo dõi mà không can thiệp, đặc biệt khi FT4 và T3 toàn phần ở nửa dưới khoảng bình thường. Điều trị bằng chẹn beta có thể đủ để kiểm soát bệnh suất liên quan tim mạch từ SH, đặc biệt rung nhĩ.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Một số bệnh nhân SH do GD nhẹ có thể tự thuyên giảm, có thể theo dõi không điều trị với theo dõi chức năng giáp thường xuyên (mỗi 3–6 tháng). Ở bệnh nhân chọn lọc SH do TMNG có triệu chứng chèn ép, hoặc lo ngại ác tính, phẫu thuật cũng là một lựa chọn.</p>
+</div>
+
+<h3 id="h-tieu-chi-danh-gia-sh">[S5] Tiêu chí đánh giá hiệu quả điều trị SH</h3>
+<p>Mục tiêu điều trị SH là đưa bệnh nhân về bình giáp với TSH bình thường. Vì lý do điều trị SH chủ yếu mang tính dự phòng, có ít tiêu chí có thể dùng để xác nhận điều trị thành công. Dựa trên chỉ định điều trị ban đầu, hợp lý để theo dõi triệu chứng cường giáp hoặc mật độ xương; nếu không, tiêu chí chính là TSH trong khoảng tham chiếu hiệu chỉnh theo tuổi.</p>
+
+<h2 id="h-cuong-giap-thai-ky">[T] Xử trí cường giáp trong thai kỳ như thế nào?</h2>
+<p>Thai kỳ bình thường gây thay đổi sinh lý tuyến giáp phản ánh qua xét nghiệm chức năng giáp thay đổi. Ở giai đoạn sớm thai kỳ, các thay đổi này có thể giả cường giáp sinh hoá không cần điều trị. Cường giáp do GD xảy ra ở 0,5–1,0% phụ nữ trong độ tuổi sinh sản, 0,1–0,2% trong số họ được điều trị ATD trong thai kỳ. Cả nhiễm độc giáp lẫn điều trị bệnh đều có thể gây biến chứng nghiêm trọng cho thai kỳ và kết cục thai. Trong hướng dẫn này, chỉ đề cập các vấn đề thường gặp nhất liên quan cường giáp thai kỳ, chờ hướng dẫn đầy đủ về bệnh giáp và thai kỳ đang được ATA cập nhật.</p>
+
+<h3 id="h-chan-doan-cuong-giap-thai">[T1] Chẩn đoán cường giáp trong thai kỳ</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 78</span> — Chẩn đoán cường giáp trong thai kỳ nên dựa trên TSH huyết thanh, kèm T4 và T3 toàn phần với khoảng tham chiếu tăng lên 1,5 lần so với người không mang thai vào tam cá nguyệt 2 và 3, hoặc ước tính FT4 và T3 toàn phần với khoảng tham chiếu riêng theo từng tam cá nguyệt.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Chẩn đoán cường giáp thai kỳ có thể khó khăn. Ở đa số bệnh nhân, bệnh do bất thường tuyến giáp nguyên phát, biểu hiện chính là TSH ức chế kèm FT4 (hoặc T4 toàn phần) và/hoặc T3 trên khoảng tham chiếu (cường giáp rõ), hoặc trong khoảng tham chiếu (SH). Điểm mấu chốt là khoảng tham chiếu xét nghiệm chức năng giáp khác nhau theo từng giai đoạn thai kỳ, và các thay đổi này có thể phụ thuộc xét nghiệm sử dụng.</p>
+<p>Hiểu các biến đổi chức năng giáp liên quan thai kỳ quan trọng để chẩn đoán cường giáp thai kỳ. TSH huyết thanh có thể dưới khoảng tham chiếu không mang thai ở nửa đầu thai kỳ bình thường, đặc biệt ở tuần 9–13, khi một số phụ nữ có thể có TSH ức chế. Giảm TSH sớm thai kỳ do kích thích tuyến giáp bình thường bởi nồng độ hCG cao, đôi khi biểu hiện sinh hoá tương ứng cường giáp rõ (cường giáp thai kỳ — thảo luận dưới đây). Tuy nhiên, TSH thấp kèm FT4 (hoặc T4 toàn phần) bình thường ở đầu thai kỳ không chỉ điểm bệnh cần điều trị. Ở nửa sau thai kỳ, có thể dùng giới hạn dưới bình thường của TSH ở dân số không mang thai.</p>
+<p>FT4 và T3 đo bằng thẩm tách cân bằng hoặc siêu lọc huyết thanh quanh tuần 10 thai kỳ có thể cao hơn nhẹ (5–10%) giá trị không mang thai, tương ứng giai đoạn hCG cao và TSH thấp. Từ mức bình thường hoặc hơi cao, giảm dần xảy ra qua thai kỳ, giá trị tham chiếu cuối tam cá nguyệt 3 thấp hơn 10–30% giá trị không mang thai.</p>
+<p>T4 và T3 toàn phần tăng song song ở đầu thai kỳ, chủ yếu do tăng TBG. Một nghiên cứu dọc ghi nhận khoảng tham chiếu T4 và T3 tăng với tốc độ 5% giá trị không mang thai mỗi tuần trong 10 tuần (tuần 7–16 thai kỳ). Sau mức tăng 50% này, giá trị T4 và T3 toàn phần ổn định với giới hạn tham chiếu gấp 1,5 lần khoảng không mang thai suốt phần còn lại thai kỳ. T4 và T3 toàn phần có thể kết hợp với test hấp thu T3 hoặc đo TBG để hiệu chỉnh biến đổi TBG liên quan thai kỳ. Các giá trị "chỉ số FT4" hoặc "T4 hiệu chỉnh TBG" này có thể hữu ích chẩn đoán cường giáp thai kỳ; tuy nhiên cần thiết lập khoảng tham chiếu bình thường riêng theo tam cá nguyệt cho từng xét nghiệm cụ thể. Nếu không có, nên cân nhắc dùng T4 và T3 toàn phần nhân khoảng tham chiếu không mang thai với 1,5 sau tuần 16, như đã thảo luận.</p>
+<p>Loại trừ bệnh nhân TSH ức chế hoặc nhiễm độc giáp thai kỳ (gestational thyrotoxicosis) trong tam cá nguyệt 1, GD là nguyên nhân cường giáp thai kỳ thường gặp nhất; bệnh giáp có nhân ít gặp hơn. Cường giáp do thai trứng tiết hCG hoặc ung thư nguyên bào nuôi biểu hiện tuyến giáp tăng hoạt lan toả tương tự GD, nhưng không có dấu hiệu mắt và TRAb huyết thanh không phát hiện được. Ở bệnh nhân này, hCG huyết thanh cao hơn dự kiến, nguyên nhân xác định qua khảo sát sản khoa.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Độ tin cậy của xét nghiệm FT4/FT3 tự động dựa trên analog đã bị nghi ngờ hơn 25 năm, nhưng các ước tính này hiện được dùng rộng rãi vì phù hợp phân tích tự động quy mô lớn trong thời gian ngắn. Ở nhiều phòng khám, đây là chuẩn đo trong thai kỳ. Vì thai kỳ có thể ảnh hưởng kết quả các xét nghiệm này khác nhau tuỳ nhà sản xuất, một số xét nghiệm có thể cho kết quả thấp giả tạo, nên dùng khoảng tham chiếu riêng theo phương pháp cho từng tam cá nguyệt do nhà sản xuất cung cấp. Nếu không có khoảng tham chiếu riêng theo tam cá nguyệt cho FT4 (và FT3), và không có xét nghiệm T4 (T3) toàn phần tại chỗ, mẫu xét nghiệm chức năng giáp trong thai kỳ nên gửi đến phòng xét nghiệm tham chiếu.</p>
+</div>
+
+<h3 id="h-xu-tri-cuong-giap-thai">[T2] Xử trí cường giáp trong thai kỳ</h3>
+<p>Bảng 11 tóm tắt các khuyến cáo xử trí GD trong thai kỳ.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 79</span> — Không điều trị bằng ATD tình trạng ức chế TSH thoáng qua do hCG ở đầu thai kỳ.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Khi đã chẩn đoán cường giáp ở phụ nữ mang thai, cần tập trung xác định nguyên nhân và liệu có cần điều trị hay không. Đặc điểm lâm sàng gợi ý cường giáp gồm không tăng cân, không chịu được nóng, ra mồ hôi nhiều, và nhịp nhanh vượt quá mức bình thường liên quan thai kỳ. Hai loại cường giáp sinh hoá thường gặp nhất trong thai kỳ là cường giáp thai kỳ (do hCG, thoáng qua) và GD. Cường giáp thai kỳ thường không triệu chứng, nhẹ, và tự giới hạn, có thể gặp ở tam cá nguyệt 1 thai kỳ bình thường. Rối loạn này thiếu đặc điểm của GD và do hCG cao đầu thai kỳ. Không liên quan kết cục thai kỳ bất lợi. Mức độ nặng hơn của cường giáp thai kỳ liên quan nôn nghén; phụ nữ bị ảnh hưởng có thể phát triển cường giáp sinh hoá rõ kèm triệu chứng và dấu hiệu cường giáp lâm sàng. Các ca phức tạp của cường giáp thai kỳ cần chuyển đến trung tâm y tế có chuyên môn điều trị nhóm bệnh nhân này.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Không có bằng chứng điều trị cường giáp thai kỳ bằng ATD có lợi, và dùng ATD đầu thai kỳ liên quan tăng nguy cơ dị tật bẩm sinh. Ở nhóm bệnh nhân này, khuyến cáo khám thực thể và làm lại xét nghiệm chức năng giáp mỗi 3–4 tuần. Trong ca có triệu chứng rất nặng, có thể cân nhắc thử chẹn beta (propranolol hoặc metoprolol, không dùng atenolol) cho rối loạn thoáng qua này.</p>
+</div>
+
+<div class="tbl-wrap">
+<table>
+<caption>Bảng 11. Tóm tắt khuyến cáo xử trí Basedow gây cường giáp rõ trong thai kỳ</caption>
+<tr><th>Thời điểm chẩn đoán</th><th>Tình huống cụ thể</th><th>Khuyến cáo</th></tr>
+<tr><td rowspan="2">GD chẩn đoán trong thai kỳ</td><td>Chẩn đoán trong tam cá nguyệt 1</td><td>Bắt đầu PTU*. Đo TRAb lúc chẩn đoán, nếu tăng, đo lại tại tuần 18–22 và 30–34. Nếu cần phẫu thuật, tối ưu thực hiện ở tam cá nguyệt 2.</td></tr>
+<tr><td>Chẩn đoán sau tam cá nguyệt 1</td><td>Bắt đầu MMI*. Đo TRAb lúc chẩn đoán, nếu tăng, đo lại tại tuần 18–22 và 30–34 (tuỳ tuần chẩn đoán). Nếu cần phẫu thuật, tối ưu thực hiện ở tam cá nguyệt 2.</td></tr>
+<tr><td rowspan="3">GD chẩn đoán và điều trị trước thai kỳ</td><td>Đang dùng methimazole</td><td>Chuyển sang PTU hoặc ngừng ATD ngay khi xác nhận có thai bằng xét nghiệm sớm*. Đo TRAb ban đầu, nếu tăng, đo lại tại tuần 18–22 và 30–34.</td></tr>
+<tr><td>Đã thuyên giảm sau ngừng ATD</td><td>Làm xét nghiệm chức năng giáp xác nhận bình giáp. Không cần đo TRAb.</td></tr>
+<tr><td>Đã điều trị RAI hoặc phẫu thuật trước đó</td><td>Đo TRAb ban đầu trong tam cá nguyệt 1, nếu tăng, đo lại tại tuần 18–22.</td></tr>
+</table>
+</div>
+<p style="font-size:12.5px;color:var(--ink-2);margin-top:-14px;">* Xem ghi chú Khuyến cáo 83, 86, 87 về đổi thuốc ATD hoặc ngừng thuốc trong thai kỳ. Nếu phụ nữ TRAb dương tính chuyển sang âm tính trong thai kỳ, có thể cần giảm/ngừng ATD để tránh suy giáp thai nhi (xem ghi chú Khuyến cáo 89, 93). Nếu mẹ dùng ATD có TRAb cao cuối thai kỳ, nguy cơ cường giáp sơ sinh muộn (xem ghi chú Khuyến cáo 87, 94). Nếu mẹ đã hủy giáp (RAI/phẫu thuật) và TRAb cao, cần đánh giá kỹ thai nhi về cường giáp nửa sau thai kỳ và điều chỉnh/bắt đầu ATD phù hợp (xem ghi chú Khuyến cáo 92).</p>
+
+<div class="rec">
+<span class="num">KHUYẾN CÁO 80</span> — Nên dùng ATD điều trị cường giáp rõ do GD trong thai kỳ. Dùng PTU khi điều trị ATD trong tam cá nguyệt 1. Dùng MMI khi bắt đầu ATD sau tam cá nguyệt 1.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Cường giáp không điều trị hoặc điều trị chưa đủ có thể gây biến chứng nghiêm trọng cho thai kỳ, bệnh nhân nên được điều trị tại trung tâm có chuyên môn về lĩnh vực này. GD là nguyên nhân cường giáp thai kỳ có thể chẩn đoán từ đặc điểm lâm sàng điển hình, gồm GO và/hoặc TRAb huyết thanh ở bệnh nhân cường giáp. Khoảng 5% bệnh nhân mới chẩn đoán cường giáp Basedow âm tính TRAb với xét nghiệm cũ, 3% âm tính với xét nghiệm thế hệ 3, đặc biệt bệnh nhẹ hơn.</p>
+<p>Một nghiên cứu ghi nhận tăng nhẹ tỷ lệ mắc GD đầu thai kỳ, phù hợp quan sát lâm sàng GD hiện có đôi khi nặng thêm đầu thai kỳ. Mặt khác, tỷ lệ mắc GD giảm mạnh cuối thai kỳ, phù hợp với quan điểm tự miễn giáp cải thiện ở nửa sau thai kỳ.</p>
+<p>Phụ nữ từng điều trị ATD cho GD và được coi là thuyên giảm sau điều trị có nguy cơ tái phát nhỏ khi mang thai, nên xét nghiệm chức năng giáp đầu thai kỳ. Ngược lại, nguy cơ tái phát (cũng như nguy cơ nhiễm độc giáp do viêm giáp phá huỷ hậu sản) trong giai đoạn hậu sản tương đối cao, và vẫn tăng hơn 1 năm.</p>
+<p>ATD tác động lên chức năng giáp tương tự ở phụ nữ mang thai và không mang thai. Cả ATD lẫn TRAb đều qua nhau thai và có thể ảnh hưởng tuyến giáp thai nhi. Tuy nhiên, T4 và T3 chỉ qua nhau thai với lượng hạn chế do bị thoái giáng bởi hoạt tính deiodinase type 3 cao trong nhau thai.</p>
+<p>PTU thường được ưu tiên trong thai kỳ do lo ngại về tính gây quái thai của MMI đã được ghi nhận rõ, lần đầu mô tả năm 1972. Dị tật có thể gặp ở 2–4% trẻ phơi nhiễm gồm: bất sản da (aplasia cutis); teo lỗ mũi sau, teo thực quản và các dạng teo ruột khác; bất thường thành bụng (thoát vị rốn); và dị tật mắt, tim, đường tiết niệu. Ngoài ra, đặc điểm khuôn mặt điển hình của trẻ phơi nhiễm MMI đã được mô tả trong báo cáo ca. Trong một nghiên cứu Hoa Kỳ, 31% phụ nữ dùng MMI quanh thời điểm thụ thai đã chấm dứt thai kỳ tự chọn so với 9% dùng PTU, được cho là do lo ngại dị tật liên quan MMI.</p>
+<p>Gần đây, tăng tỷ lệ dị tật bẩm sinh (2,3% trên nền cơ bản) cũng được ghi nhận sau phơi nhiễm PTU đầu thai kỳ, nhưng các dị tật này thường nhẹ hơn MMI, gồm xoang/nang trước tai và bất thường đường tiết niệu. Trong một nhóm lớn trẻ được chọn vì có dị tật bẩm sinh lớn và từng phơi nhiễm thuốc đầu thai kỳ, trẻ phơi nhiễm PTU có tần suất đảo ngược phủ tạng và bất thường đường ra tim cao hơn có ý nghĩa so với trẻ phơi nhiễm thuốc khác, nhưng các dạng dị tật này chưa thấy tăng vượt trội trong các nghiên cứu so sánh trẻ phơi nhiễm PTU với nhóm chứng không chọn lọc. Tương tự các thuốc gây quái thai khác, giai đoạn nguy cơ cao nhất gây dị tật do ATD là tuần thai 6–10.</p>
+<p>Lo ngại về độc gan hiếm nhưng có thể tử vong liên quan PTU đã khiến FDA Hoa Kỳ khuyến cáo dành PTU cho bệnh nhân đang trong tam cá nguyệt 1 hoặc dị ứng/không dung nạp MMI.</p>
+<p>Cả MMI và PTU đều xuất hiện trong sữa mẹ với nồng độ thấp, các nghiên cứu trên trẻ bú mẹ có mẹ dùng ATD cho thấy chức năng giáp bình thường và phát triển trí tuệ sau này bình thường. Tuy nhiên, vì nguy cơ hoại tử gan ở mẹ hoặc con từ PTU của mẹ, MMI là ATD ưu tiên ở bà mẹ cho con bú.</p>
+<p>Như thảo luận ở các mục khác, liều nhỏ chẹn beta nhìn chung hữu ích giảm nhịp tim và triệu chứng cường giao cảm của nhiễm độc giáp trong giai đoạn từ khi khởi trị ATD đến khi bình giáp. Các thuốc này đã được nghiên cứu rộng rãi khi dùng điều trị tăng huyết áp thai kỳ, chưa phát hiện tác dụng phụ lớn, dù thai chậm phát triển đã liên quan dùng kéo dài atenolol đặc biệt. Điều trị bằng propranolol (ví dụ 10–20 mg mỗi 8 giờ) hoặc metoprolol (ví dụ 100 mg 1 lần/ngày) hữu ích và có thể coi an toàn trong thời gian ngắn để giảm triệu chứng ở phụ nữ mang thai bị nhiễm độc giáp.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 81</span> — Ở phụ nữ cường giáp trong độ tuổi sinh sản, cần thảo luận khả năng và thời điểm mang thai trong tương lai. Vì nguy cơ của tình trạng cường giáp lên thai kỳ và kết cục thai, đề nghị phụ nữ nên trì hoãn mang thai đến khi đã bình giáp với điều trị.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Cả rối loạn chức năng giáp của mẹ lẫn điều trị cường giáp đều có thể ảnh hưởng tiêu cực kết cục thai kỳ. Các yếu tố này cần được cân nhắc khi chọn điều trị cho bệnh nhân đang mang thai hoặc có thể mang thai trong tương lai. Một lần xét nghiệm chức năng giáp trong giới hạn bình thường có thể không đảm bảo bình giáp quá một thời gian ngắn trong giai đoạn đầu điều trị cường giáp. Hai lần xét nghiệm trong giới hạn bình thường, cách nhau ít nhất 1 tháng và không thay đổi điều trị, là chỉ dấu tốt hơn cho bình giáp.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 82</span> — Đề nghị phụ nữ cường giáp do GD cần liều ATD cao để đạt bình giáp nên được cân nhắc điều trị dứt điểm trước khi mang thai.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Cả cắt giáp lẫn RAI đều hữu ích để đưa bệnh nhân GD về suy giáp vĩnh viễn với khả năng đạt bình giáp ổn định bằng hormon thay thế. Cắt giáp thường đi kèm giảm hoặc mất TRAb tuần hoàn, trong khi RAI thường đi kèm tăng thoáng qua TRAb. Sự khác biệt này là lập luận ủng hộ phẫu thuật ở phụ nữ TRAb cao có thể mang thai trong vài năm tới, đặc biệt người dự định điều trị trong năm tới. Tuy nhiên, tầm quan trọng của khác biệt hoạt tính tự miễn này với kết cục thai kỳ chưa được nghiên cứu, cần cân nhắc với các lợi ích/hại khác của phẫu thuật và RAI.</p>
+<p>Để dự đoán mức giảm TRAb sau phẫu thuật, một nghiên cứu hồi cứu Nhật Bản gần đây trên 45 bệnh nhân (41 nữ) TRAb cao (trung vị 64 IU/L, khoảng 5,6–400, bình thường &lt;1,9 IU/L) có thể hữu ích. Theo dõi 12 tháng. Hút thuốc và có bệnh mắt Basedow dự báo TRAb biến mất chậm hơn (thời gian bán huỷ 162 ngày, hoặc 357 ngày nếu có cả hai yếu tố), trong khi TRAb ở bệnh nhân còn lại giảm với thời gian bán huỷ 94 ngày.</p>
+<p>Truyền thống y khoa và kinh nghiệm với các loại điều trị GD khác nhau giữa các quốc gia và phòng khám, nguy cơ tái phát cường giáp sau ngừng ATD có thể khác biệt đáng kể tuỳ lượng iod khẩu phần và các yếu tố khác chưa hiểu đầy đủ. Do đó, lời khuyên cho phụ nữ GD đang điều trị liên quan khả năng mang thai tương lai có thể khác nhau. Tuy nhiên, bất kể khác biệt này, bác sĩ chăm sóc phụ nữ trẻ mới chẩn đoán GD nên thảo luận và tư vấn về GD và thai kỳ. Bệnh nhân cường giáp nặng có thể chưa thể tiếp thu đầy đủ nhiều thông điệp cùng lúc, thảo luận chi tiết hơn nên thực hiện khi bệnh nhân đã bình giáp.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 83</span> — Phụ nữ cường giáp do GD kiểm soát tốt bằng MMI và mong muốn mang thai có một số lựa chọn: (a) cân nhắc điều trị dứt điểm trước khi mang thai; (b) chuyển sang PTU trước khi cố gắng thụ thai; (c) chuyển sang PTU ngay khi phát hiện có thai; (d) bệnh nhân được chọn lọc phù hợp có thể ngừng ATD ngay khi phát hiện có thai (nếu ngừng ATD, cần đánh giá chức năng giáp mỗi tuần suốt tam cá nguyệt 1, sau đó mỗi tháng).
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Chưa đủ bằng chứng để đưa hướng dẫn thống nhất chọn giữa các lựa chọn này; do đó cần thảo luận lợi ích/nguy cơ tiềm ẩn của từng lựa chọn với bệnh nhân, cân nhắc giá trị và ưu tiên của bệnh nhân. Mỗi lựa chọn được trình bày chi tiết dưới đây:</p>
+<p><strong>Điều trị dứt điểm trước khi mang thai:</strong> đã thảo luận ở Khuyến cáo 82. Ưu điểm cho phép bệnh nhân mang thai mà không lo tác động bất lợi của ATD lên thai nhi. Nhược điểm là bệnh nhân cần dùng levothyroxine suốt thai kỳ và suốt đời, và sẽ phơi nhiễm biến chứng tiềm ẩn của RAI (gồm nặng thêm/khởi phát GO) hoặc kết cục phẫu thuật không mong muốn.</p>
+<p><strong>Chuyển từ MMI sang PTU trước khi mang thai:</strong> loại bỏ nguy cơ phơi nhiễm MMI đầu thai kỳ ở phụ nữ chưa nhận biết có thai trong vài tuần đầu sau thụ thai. Dị tật liên quan MMI xảy ra ở 2–4% trẻ phơi nhiễm đầu thai kỳ, có thể nặng. Dị tật liên quan PTU ít được ghi nhận hơn, có thể xảy ra ở 2–3% trẻ nhưng phần lớn có vẻ nhẹ hơn. PTU liên quan suy gan với nguy cơ ước tính 1:10.000 ở người lớn. Do đó, các bà mẹ cần cân nhắc nguy cơ PTU cho bản thân so với nguy cơ cho con. Chuyển sang PTU trước khi thụ thai có thể ưu tiên ở phụ nữ trẻ có kinh nguyệt đều, dự kiến thụ thai trong 1–3 tháng. Trong một nghiên cứu tiến cứu Đức trên 340 phụ nữ như vậy, 68% có thai trong 3 tháng.</p>
+<p>Một biến thể đặc biệt là phụ nữ được chẩn đoán cường giáp khi mong muốn có thai sớm. Chưa đủ dữ liệu để khuyến cáo ủng hộ hay phản đối bắt đầu điều trị bằng PTU bỏ qua giai đoạn MMI ở nhóm này.</p>
+<p><strong>Chuyển từ MMI sang PTU sau khi thụ thai:</strong> Cách khác, bệnh nhân có thể tiếp tục MMI nhưng sẵn sàng phát hiện thai sớm và đổi thuốc ngay theo khuyến cáo dưới đây. Chuyển sang PTU ngay khi phát hiện thai có thể ưu tiên ở phụ nữ lớn tuổi và người có bệnh lý liên quan chậm thụ thai. Chiến lược này có thể tránh dùng PTU kéo dài trước thụ thai nhưng có nguy cơ thai nhi phơi nhiễm MMI nếu chẩn đoán thai chậm.</p>
+<p><strong>Ngừng ATD sau thụ thai:</strong> Phụ nữ bình giáp ổn định với MMI 5–10 mg/ngày đạt được trong vài tháng và TRAb đang giảm có khả năng phù hợp ngừng ATD đầu thai kỳ.</p>
+<p>Chưa có nghiên cứu trực tiếp khảo sát nguy cơ tái phát cường giáp sau ngừng ATD đầu thai kỳ, bằng chứng đến từ nghiên cứu đối chứng hoặc cohort ở bệnh nhân không mang thai từng điều trị ATD thời gian khác nhau trước khi ngừng thuốc. Dựa trên các nghiên cứu này, nguy cơ tái phát cường giáp trong 2 tháng sau ngừng ATD ở bệnh nhân TRAb âm tính, không hút thuốc, đã điều trị 12–24 tháng là &lt;10%.</p>
+<p>Tuy nhiên, nguy cơ tái phát sớm rất cao ở bệnh nhân dùng ATD dưới 6 tháng và/hoặc vẫn có dấu hiệu hoạt tính bệnh cao như TSH thấp, TRAb cao, dấu hiệu GO đang hoạt động, hoặc cần liều MMI &gt;5–10 mg/ngày để duy trì bình giáp.</p>
+<p>Nếu tái phát cường giáp sau ngừng ATD, thường phát triển dần qua vài tuần, nhưng chưa có thông tin chính xác về diễn tiến thời gian này ở đầu thai kỳ. Do đó, khuyến cáo xét nghiệm chức năng giáp thường xuyên trong phần còn lại của tam cá nguyệt 1 cho đến khi có thêm dữ liệu an toàn.</p>
+<p>Một số phụ nữ GD sẽ tái phát cường giáp trong thai kỳ nếu ngừng ATD theo Khuyến cáo 81. Xét nghiệm chức năng giáp thường xuyên cho phép phát hiện sớm tái phát và bắt đầu điều trị PTU (hoặc MMI nếu tái phát ở tam cá nguyệt 2) để giữ mẹ bình giáp. Nguy cơ cho mẹ từ cường giáp này được coi là không đáng kể.</p>
+<p>Xét về thai nhi, hai nghiên cứu gần đây tại Nhật Bản gợi ý cường giáp nhẹ thoáng qua ở mẹ như vậy không tăng nguy cơ dị tật. Một nghiên cứu quan sát nguy cơ dị tật bẩm sinh thấp hơn có ý nghĩa ở các bà mẹ chuyển từ MMI sang iod đầu thai kỳ, dù một số bà mẹ nhóm iod có cường giáp sinh hoá và cần điều trị lại ATD. Trong một nghiên cứu khác cùng cơ sở, dị tật bẩm sinh lớn liên quan việc dùng MMI đầu thai kỳ nhưng không liên quan rối loạn chức năng giáp của mẹ.</p>
+<p>Nguy cơ liên quan hơn có thể là mất thai do cường giáp mẹ trong thai kỳ. Tuy nhiên, nguy cơ từ giai đoạn ngắn tăng nhẹ chức năng giáp mẹ đầu thai kỳ có thể thấp hoặc không có. Trong một cohort lớn phụ nữ mang thai tại Hoa Kỳ, TSH thấp hoặc ức chế đầu thai kỳ (chủ yếu do hCG cao đầu thai kỳ) không liên quan kết cục thai kỳ bất lợi. Trong một nghiên cứu hồi cứu Nhật Bản gần đây trên phụ nữ GD dùng MMI đầu thai kỳ hoặc chuyển sang iod đầu thai kỳ, không tăng mất thai ở nhóm iod dù có nhiều ca cường giáp mẹ hơn trong nhóm này.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 84</span> — Đề nghị phụ nữ đang điều trị ATD có khả năng mang thai nên được hướng dẫn làm test thai trong vài ngày đầu sau khi trễ kinh hoặc kinh bất thường ít.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 85</span> — Đề nghị phụ nữ có kết quả thai dương tính theo Khuyến cáo 84 liên hệ bác sĩ phụ trách ATD trong 24 giờ để thảo luận lựa chọn điều trị tiếp theo.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Khung thời gian cho phép ngừng/đổi thuốc đầu thai kỳ để phòng dị tật rất hẹp, có thể giới hạn ở tuần thai thứ 5. Do đó, cần phát hiện thai kỳ sớm và hành động ngay lập tức.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 86</span> — Đề nghị bác sĩ được liên hệ theo Khuyến cáo 85 đánh giá liệu ngừng ATD trong tam cá nguyệt 1 có khả năng gây tái phát cường giáp hay không. Đánh giá dựa trên hồ sơ bệnh nhân, đặc biệt mức độ nặng GD lúc chẩn đoán và hoạt tính bệnh hiện tại, thời gian điều trị ATD, liều ATD hiện cần, kết quả xét nghiệm chức năng giáp/TRAb gần đây. Nếu nguy cơ tái phát được coi là thấp, có thể ngừng điều trị kèm xét nghiệm chức năng giáp hằng tuần suốt tam cá nguyệt 1.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Ở đa số bệnh nhân GD, điều trị ATD dẫn đến thuyên giảm dần với khả năng TRAb biến mất khỏi tuần hoàn. Khi đã điều trị ATD 12–18 tháng, tái phát nhanh sau ngừng ít khả năng hơn, dù tần suất tái phát có thể khoảng 50% trong 1 năm. Nguy cơ tái phát sau ngừng ATD thay đổi đáng kể giữa các cá thể, phụ thuộc nhiều yếu tố như đã thảo luận.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 87</span> — Đề nghị phụ nữ đầu thai kỳ có nguy cơ cao tái phát/nặng thêm cường giáp nếu ngừng ATD nên được chuyển từ MMI sang PTU ngay khi chẩn đoán thai.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Giai đoạn nguy cơ chính gây dị tật do thuốc trong thai kỳ là tuần 6–10, một nghiên cứu về thời điểm phơi nhiễm ATD và nguy cơ dị tật gợi ý khoảng thời gian này cũng là giai đoạn chính gây quái thai của ATD. Do đó, ngừng ATD trước tuần thứ 5 có thể về lý thuyết ngăn dị tật do ATD.</p>
+<p>Tuần thai được tính từ ngày đầu kỳ kinh cuối bình thường, thụ thai xảy ra khoảng 2 tuần sau đó. Dấu hiệu thực sự đầu tiên của thai kỳ — trễ kinh hoặc kinh bất thường ít — xuất hiện 2 tuần sau. Lúc này, nồng độ hCG trong máu và nước tiểu đã bắt đầu tăng, test thai thông thường dựa vào hCG nước tiểu thường dương tính sớm trong tuần thai thứ 5. Xét nghiệm thai rất sớm để cho phép ngừng thuốc trước giai đoạn gây quái thai chính được khuyến cáo cho các thuốc gây quái thai khác.</p>
+<p>Dù dị tật bẩm sinh có thể xảy ra sau phơi nhiễm cả MMI lẫn PTU đầu thai kỳ, dị tật sau phơi nhiễm MMI được ghi nhận rõ hơn. Lý do có vẻ vì dị tật liên quan MMI nặng hơn, trong khi dị tật liên quan PTU thường nhẹ hơn và có thể không được chẩn đoán ngay sau sinh. Dị tật liên quan cả PTU lẫn MMI đã được ghi nhận ở trẻ sơ sinh của các bà mẹ đổi thuốc trong tam cá nguyệt 1. Do đó, việc chẩn đoán thai và chuyển từ MMI sang PTU càng sớm càng tốt trong tam cá nguyệt 1 là rất quan trọng.</p>
+<p>Cả MMI và PTU đều là liệu pháp hiệu quả điều trị cường giáp ở đa số bệnh nhân, tác động chính của cả hai thuốc là tương tác với quá trình tổng hợp hormon giáp qua trung gian thyroid peroxidase. Ngoài khác biệt về tác dụng phụ đã thảo luận, quan trọng cần cân nhắc khác biệt về hiệu lực trên mỗi mg thuốc và thời gian tác dụng.</p>
+<p>Tỷ lệ liều MMI/PTU 1:20 được khuyến cáo khi đổi thuốc, dù chỉ có hai nghiên cứu khảo sát trực tiếp tỷ lệ này. Ngoài ra, cần cân nhắc khác biệt thời gian tác dụng. Ví dụ, 15 mg MMI tương đương khoảng 300 mg PTU, nhưng vì thời gian bán huỷ PTU ngắn hơn đáng kể MMI, liều PTU nên chia trong ngày; ví dụ MMI 15 mg 1 lần/ngày có thể thay bằng PTU 100 mg × 3 lần/ngày.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 88</span> — Phụ nữ dùng PTU trong tam cá nguyệt 1 theo Khuyến cáo 80, 83, hoặc 87 có thể chuyển sang MMI vào đầu tam cá nguyệt 2, hoặc có thể tiếp tục PTU phần còn lại thai kỳ nếu vẫn cần ATD.
+<span class="grade">Không khuyến cáo; chưa đủ bằng chứng đánh giá lợi ích/nguy cơ</span>
+</div>
+<p>Lý do FDA cảnh báo khung đen với PTU sau tam cá nguyệt 1 là nguy cơ suy gan liên quan PTU. Tuy nhiên, dù nguy cơ này có thật, nguy cơ tuyệt đối quan sát trong các nghiên cứu cơ sở dữ liệu y tế Hoa Kỳ là thấp. Tương tự, một nghiên cứu sổ bộ quốc gia Đan Mạch gần đây chỉ ghi nhận 1 ca suy gan hồi phục trong 1103 phụ nữ điều trị PTU thai kỳ.</p>
+<p>Nguy cơ tác dụng phụ của PTU cần cân nhắc với nguy cơ đổi thuốc từ PTU sang MMI gây rối loạn chức năng giáp thoáng qua ở phụ nữ đang kiểm soát tốt với PTU. Từ tam cá nguyệt 2, phụ nữ GD có thể bắt đầu thuyên giảm dần bất thường tự miễn, cần tập trung vào khả năng giảm liều ATD để bảo vệ thai nhi khỏi bướu giáp và suy giáp, như thảo luận dưới đây. Bệnh nhân tiếp tục PTU trong tam cá nguyệt 2 và 3 có thể đo men gan cùng thời điểm đánh giá chức năng giáp. Tuy nhiên, chưa có dữ liệu tiến cứu cho thấy loại theo dõi này hiệu quả phòng ngừa độc gan tối cấp do PTU. Một khía cạnh khác cần cân nhắc là cả mất bạch cầu hạt lẫn suy gan liên quan MMI/PTU thường xảy ra trong 3 tháng đầu điều trị, nhưng nguy cơ có thể tái diễn khi dùng lại thuốc sau thời gian dài. Ví dụ, trong một nghiên cứu Nhật Bản trên 14 bệnh nhân mất bạch cầu hạt sau điều trị lại cùng loại ATD, không bệnh nhân nào dùng lại thuốc dưới 5 tháng sau đợt trước phát triển tác dụng phụ này. Chưa có dữ liệu trực tiếp đánh giá việc đổi từ PTU sang MMI tam cá nguyệt 2 ảnh hưởng nguy cơ các tác dụng phụ nặng nhưng hiếm này như thế nào.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 89</span> — GD trong thai kỳ nên điều trị với liều ATD thấp nhất có thể giữ hormon giáp mẹ ở mức hoặc hơi trên khoảng tham chiếu cho T4 và T3 toàn phần trong thai kỳ (1,5 lần khoảng tham chiếu không mang thai ở tam cá nguyệt 2 và 3), và TSH dưới khoảng tham chiếu thai kỳ. Tương tự, FT4 nên giữ ở mức hoặc hơi trên giới hạn trên của khoảng tham chiếu theo tam cá nguyệt cho xét nghiệm dùng. Cần đánh giá chức năng giáp ít nhất hằng tháng, điều chỉnh liều ATD khi cần.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Dù mẹ bình giáp khi dùng ATD, vẫn có nguy cơ gây suy giáp và bướu giáp thai nhi ở tam cá nguyệt 2 và 3 khi tuyến giáp thai nhi đã bắt đầu hoạt động. Do đó, liều ATD nên giữ càng thấp càng tốt. Không nên dùng liệu pháp block-replace (ATD kèm levothyroxine) trong thai kỳ. Nếu phụ nữ đang dùng phác đồ này mang thai và vẫn cần ATD, nên chuyển sang chỉ dùng ATD.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">FT4 là thông số tương quan chặt nhất với kết cục thai nhi tốt. TSH huyết thanh mẹ có thể vẫn ức chế và không nên dùng làm chỉ số duy nhất hướng dẫn điều trị, dù TSH mẹ bình thường hoá khi dùng ATD có thể gợi ý cần giảm liều. Trong các nghiên cứu Nhật Bản, FT4 mẹ dùng ATD được giữ trên khoảng tham chiếu không mang thai ở cuối thai kỳ để tránh TSH cao ở máu cuống rốn sơ sinh. Tuy nhiên, với một số xét nghiệm FT4 tự động, FT4 không mang thai cao hơn nhiều FT4 cuối thai kỳ. Do đó, FT4 mẹ trên khoảng tham chiếu không mang thai kèm TSH ức chế có thể khiến mẹ cường giáp rõ, điều không được khuyến cáo.</p>
+<p style="margin:8px 0 0;">Dù nhiều bệnh nhân GD có thể thuyên giảm bất thường tự miễn nửa sau thai kỳ cần giảm/ngừng ATD, đây không phải hiện tượng phổ biến. Một nhóm nhỏ bệnh nhân có bệnh nặng có thể tiến triển trong thai kỳ, cường giáp khó điều trị, TRAb cao, thường kèm bướu giáp đáng kể tăng tưới máu. Những bệnh nhân này có thể biểu hiện "mẫu hình T3 cao–T4 thấp" khi điều trị ATD, có thể do hoạt tính deiodinase type 1 cao trong tuyến hoạt động quá mức và ưu tiên tổng hợp T3 trong tuyến bị kích thích quá mức và thiếu iod do điều trị ATD. Cần theo dõi chức năng giáp mẹ thường xuyên và đánh giá không xâm lấn chức năng giáp thai nhi (nhịp tim thai, trưởng thành xương, bướu giáp thai nhi trên siêu âm), cân bằng ATD để giữ chức năng giáp chấp nhận được cho cả mẹ lẫn thai nhi.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 90</span> — Thai kỳ là chống chỉ định tương đối của cắt giáp, chỉ dùng khi điều trị nội khoa thất bại hoặc không dùng được ATD.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Trong một nghiên cứu dân số Hoa Kỳ, phụ nữ mang thai có kết cục lâm sàng và kinh tế kém hơn sau phẫu thuật giáp (và cận giáp) so với phụ nữ không mang thai, chênh lệch kết cục theo chủng tộc/dân tộc, bảo hiểm, và khả năng tiếp cận phẫu thuật viên khối lượng ca cao.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 91</span> — Khi cần cắt giáp điều trị cường giáp trong thai kỳ, nên thực hiện ở tam cá nguyệt 2 nếu có thể.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Nên tránh cắt giáp tam cá nguyệt 1 và 3 vì nguy cơ quái thai liên quan thuốc mê và tăng nguy cơ mất thai ở tam cá nguyệt 1, tăng nguy cơ sinh non ở tam cá nguyệt 3. Tối ưu, cắt giáp nên thực hiện ở nửa sau tam cá nguyệt 2. Dù đây là thời điểm an toàn nhất, vẫn không phải không có nguy cơ (4,5–5,5% nguy cơ sinh non).</p>
+<p>Khuyến cáo đánh giá bởi bác sĩ sản khoa nguy cơ cao kèm tư vấn trước mổ về các nguy cơ liên quan. Cắt giáp chữa khỏi cường giáp và thường đi kèm giảm dần TRAb tuần hoàn. Cho đến khi thuyên giảm xảy ra, TRAb do mẹ sản xuất có thể kích thích tuyến giáp thai nhi/sơ sinh gây cường giáp. Trong tình huống mẹ vẫn còn TRAb sau cắt giáp, cần theo dõi thai nhi sát về thay đổi tim mạch và xương bằng siêu âm thai.</p>
+<p>Chưa có dữ liệu về việc có nên dùng SSKI hoặc iod chuẩn bị bệnh nhân mang thai trước cắt giáp hay không. Nguy cơ điều trị iodide cho thai nhi liên quan ức chế hữu cơ hoá iod qua hiệu ứng Wolff–Chaikoff. Tuyến giáp thai nhi đặc biệt nhạy cảm với tác dụng ức chế của dư iod ở nửa sau thai kỳ, bướu giáp thai nhi có thể xảy ra khi điều trị kéo dài. Tuy nhiên, không có bằng chứng chuẩn bị iod ngắn hạn cho mẹ trước mổ để giảm lưu lượng máu giáp và kiểm soát cường giáp gây hại cho thai nhi.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Ở bệnh nhân cường giáp khó điều trị, chuẩn bị trước mổ cắt giáp trong tam cá nguyệt 2 gồm 10 ngày iod (ví dụ SSKI 1 giọt × 3 lần/ngày), kèm ATD và chẹn beta (propranolol hoặc metoprolol, không dùng atenolol) để kiểm soát cường giáp. Ở bệnh nhân bình giáp không có dấu hiệu tăng hoạt tính giáp cao nhưng được chỉ định cắt giáp vì lý do khác (ví dụ không dung nạp ATD), dùng iod chuẩn bị mổ được coi là không cần thiết.</p>
+</div>
+
+<h3 id="h-vai-tro-trab-thai">[T3] Vai trò đo TRAb trong thai kỳ</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 92</span> — Nên đo TRAb khi nguyên nhân cường giáp thai kỳ chưa chắc chắn.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Hai chỉ số tốt nhất đánh giá hoạt tính GD trong thai kỳ là chức năng giáp ở bệnh nhân chưa điều trị và đo TRAb huyết thanh. Đo TRAb hữu ích chẩn đoán GD ở phụ nữ mang thai mới chẩn đoán cường giáp không có dấu hiệu lâm sàng đặc hiệu GD, lưu ý độ nhạy chẩn đoán của xét nghiệm tốt khoảng 95%, độ đặc hiệu 99%.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 93</span> — Bệnh nhân từng điều trị RAI hoặc cắt giáp cho GD trước khi mang thai nên đo TRAb bằng xét nghiệm nhạy lần đầu trong xét nghiệm chức năng giáp tam cá nguyệt 1, nếu tăng, đo lại tại tuần 18–22.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Đo TRAb có thể phát hiện tự miễn thụ thể TSH tồn tại ở phụ nữ mang thai từng điều trị dứt điểm (RAI hoặc cắt giáp) cho GD, nay đã bình giáp có/không kèm thay hormon giáp. Nếu mẹ vẫn sản xuất TRAb, kháng thể sẽ qua nhau thai và có thể ảnh hưởng chức năng giáp thai nhi ở nửa sau thai kỳ. Vì IgG mẹ đào thải chậm khỏi tuần hoàn trẻ sơ sinh, rối loạn chức năng giáp ở trẻ có thể kéo dài vài tháng sau sinh. Để đánh giá nguy cơ biến chứng này, nên đo TRAb ở phụ nữ mang thai lần đầu trong tam cá nguyệt 1, nếu tăng, đo lại tại tuần 18–22. Nếu mức cao, cần bắt đầu chương trình giám sát rối loạn chức năng giáp thai nhi/sơ sinh.</p>
+<p>Ưu điểm của đo TRAb lần đầu trong tam cá nguyệt 1 là cho phép thời gian hội chẩn chuyên khoa, và nếu mức đặc biệt cao lúc đó, có thể cần can thiệp trước tam cá nguyệt 2. Dù thường được cho rằng nhiễm độc giáp thai nhi đơn độc ở mẹ đã hủy giáp còn TRAb chỉ bắt đầu xuất hiện quanh tuần 20–22 thai kỳ, một báo cáo ca gần đây mô tả nhiễm độc giáp thai nhi nặng đã xuất hiện từ tuần thai 18. Phụ nữ này từng làm RAI thất bại, sau đó cắt giáp toàn bộ, dùng levothyroxine thay thế. Mẹ bình giáp nhưng TRAb vẫn rất cao.</p>
+<p>Không cần đo TRAb ở bệnh nhân mang thai bình giáp từng được chẩn đoán GD nếu còn tuyến giáp nguyên vẹn (chưa từng phẫu thuật/RAI) và hiện không dùng ATD.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 94</span> — Bệnh nhân đang dùng ATD cho GD khi mang thai hoặc phát hiện GD trong thai kỳ nên đo TRAb bằng xét nghiệm nhạy tại lần khám thai đầu tiên hoặc lúc chẩn đoán, nếu tăng, đo lại tại tuần 18–22.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Đo TRAb (TBII hoặc TSI) có thể hữu ích hỗ trợ đánh giá hoạt tính bệnh ở phụ nữ đang điều trị ATD cho GD trong thai kỳ. Ở nhiều bệnh nhân, GD thuyên giảm dần trong thai kỳ. TRAb biến mất là dấu hiệu có thể không còn cần ATD, tiếp tục dùng có thể đặt thai nhi vào nguy cơ suy giáp, dù mẹ vẫn bình giáp khi dùng thuốc.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 95</span> — Bệnh nhân TRAb tăng tại tuần 18–22 nên đo lại TRAb cuối thai kỳ (tuần 30–34) để hướng dẫn quyết định theo dõi sơ sinh. Ngoại lệ là phụ nữ còn nguyên tuyến giáp không còn cần ATD.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Đo TRAb cuối thai kỳ có thể đánh giá nguy cơ cường giáp sơ sinh muộn, khi mẹ vẫn cần ATD kiểm soát cường giáp đến khi sinh. Sau sinh, ATD truyền qua nhau thai đến thai nhi bị chuyển hoá nhanh ở trẻ sơ sinh, trong khi TRAb của mẹ biến mất chậm hơn, thời gian bán huỷ khoảng 3 tuần. Do đó, TRAb mẹ cao cuối thai kỳ là chỉ dấu trẻ sơ sinh có thể cần theo dõi khởi phát cường giáp sơ sinh từ vài ngày sau sinh. Trong một nghiên cứu gần đây trên 47 trẻ sơ sinh có mẹ TRAb dương tính khi mang thai, 9 trẻ có cường giáp sinh hoá sơ sinh, 5 trong đó (9% tổng số) cần điều trị ATD. Toàn bộ trẻ sơ sinh cường giáp có mẹ TRAb ≥5 IU/L (&gt;3 lần giới hạn trên xét nghiệm) ở tam cá nguyệt 2 (độ nhạy 100%, độ đặc hiệu 43%). Toàn bộ các bà mẹ sinh con cường giáp đều cần ATD cuối thai kỳ.</p>
+
+<h3 id="h-viem-giap-hau-san">[T4] Viêm giáp hậu sản</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 96</span> — Ở phụ nữ phát triển nhiễm độc giáp sau sinh, cần làm các xét nghiệm chẩn đoán chọn lọc phân biệt viêm giáp phá huỷ hậu sản với GD hậu sản.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Rối loạn chức năng giáp hậu sản xảy ra tới 10% thai kỳ tại Hoa Kỳ. Viêm giáp hậu sản là rối loạn tự miễn được bộc lộ ở phụ nữ có yếu tố nguy cơ khi giám sát miễn dịch hồi phục sau thai kỳ. Mẫu hình ba pha kinh điển là nhiễm độc giáp tại 1–6 tháng hậu sản, sau đó suy giáp và trở về bình giáp tại 9–12 tháng hậu sản. Tuy nhiên, trình tự này không thấy ở mọi bệnh nhân. Trong 371 ca thuộc 13 nghiên cứu, 25% có mẫu hình ba pha, 43% suy giáp không kèm nhiễm độc giáp trước đó, 32% nhiễm độc giáp không kèm suy giáp sau đó. Trong một nghiên cứu tiến cứu phụ nữ mang thai, người có kháng thể kháng peroxidase giáp dương tính tam cá nguyệt 1 có khả năng viêm giáp hậu sản cao gấp 27 lần so với người âm tính. Trong nghiên cứu này, hút thuốc và cho bú bình làm tăng nguy cơ viêm giáp.</p>
+<p>Viêm giáp hậu sản cần phân biệt với GD để khuyến nghị điều trị phù hợp. Đợt tăng tự miễn giáp hậu sản gây viêm giáp hậu sản cũng liên quan tăng 3–4 lần tỷ lệ mắc GD, đỉnh điểm 3–12 tháng sau sinh. Trong một nghiên cứu bệnh viện Nhật Bản, nhiễm độc giáp do viêm giáp khởi phát sớm hơn sau sinh so với GD, dù có chồng lấp. Toàn bộ bệnh nhân nhiễm độc giáp rõ trong 3 tháng đầu sau sinh đều do viêm giáp phá huỷ, trong khi GD khởi phát sau giai đoạn 3 tháng này. Bướu giáp thường rõ hơn ở GD, tiếng thổi tuyến giáp hoặc GO cũng gợi ý mạnh GD.</p>
+<p>TRAb đôi khi đo được ở bệnh nhân viêm giáp hậu sản, gợi ý một số bệnh nhân có thể có cả GD lẫn viêm giáp phá huỷ, nhưng TRAb cao hơn gợi ý GD hơn. Khi cần xét nghiệm in vivo để phân biệt ở phụ nữ đang cho con bú, nên dùng đồng vị phát gamma ¹²³I (bán huỷ 13 giờ) hoặc ⁹⁹ᵐTc pertechnetate (bán huỷ 6 giờ) thay vì đồng vị phát beta ¹³¹I (bán huỷ 8 ngày). Thời gian bán huỷ ngắn hơn của các chất này cho phép hút và bỏ sữa trong 10 lần bán huỷ (5 hoặc 3 ngày tương ứng) rồi cho bú lại, trong khi lý tưởng nên ngừng cho bú 3 tháng trước khi dùng ¹³¹I để tránh phơi nhiễm bức xạ vào vú, và không nên cho bú lại nếu dùng ¹³¹I điều trị GD.</p>
+<p>Thường có thể tránh dùng chất phóng xạ, chẩn đoán dựa trên kết hợp biểu hiện lâm sàng, đo TRAb, và đánh giá T4/T3 huyết thanh. Sản xuất T3 so với T4 tại tuyến tương đối cao trong GD, không cao trong viêm giáp phá huỷ; T3 có xu hướng tăng vượt giới hạn trên nhiều hơn T4 trong GD, trong khi T4 tăng nhiều hơn T3 trong viêm giáp phá huỷ. Nếu cần, siêu âm Doppler màu tuyến giáp có thể hỗ trợ phân biệt viêm giáp phá huỷ với GD.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 97</span> — Ở phụ nữ nhiễm độc giáp có triệu chứng do viêm giáp phá huỷ hậu sản, khuyến cáo dùng chẹn beta thận trọng.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Điều trị viêm giáp hậu sản nhìn chung mang tính hỗ trợ, dùng chẹn beta như propranolol hoặc metoprolol để kiểm soát nhịp tim và triệu chứng cường giao cảm ở giai đoạn nhiễm độc giáp. Atenolol (chọn lọc β-1) không nên dùng ở bà mẹ cho con bú vì có thể gây triệu chứng chẹn beta ở trẻ sơ sinh. Tác dụng phụ này có thể do atenolol gắn protein huyết tương mẹ &lt;5% (so với 93% của propranolol), nên tích luỹ nhiều hơn trong sữa, cộng thêm bài tiết thận kém ở trẻ nhỏ có chức năng thận chưa trưởng thành. Levothyroxine có thể có lợi, ít nhất tạm thời, cho phụ nữ suy giáp có triệu chứng hoặc TSH &gt;10 mU/L.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Vì propranolol và metoprolol chỉ bài tiết vào sữa mẹ với lượng rất nhỏ, không cần theo dõi đặc biệt ở trẻ bú mẹ có mẹ dùng các thuốc này.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 98</span> — Ở phụ nữ mang thai chẩn đoán cường giáp do tự động đa nhân hoặc TA đơn độc, cần đặc biệt thận trọng để không gây suy giáp thai nhi khi dùng ATD.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Cường giáp do tự động tuyến giáp rất thường gặp ở người từng/đang thiếu iod nhẹ đến vừa, nhưng thường phát triển sau tuổi 50. Trong trường hợp hiếm gặp thể cường giáp này ở phụ nữ mang thai, cần cân nhắc khác biệt bệnh sinh so với GD.</p>
+<p>Sản xuất hormon giáp trong tự động phụ thuộc nguồn iod, nhưng chưa có nghiên cứu khảo sát tác động thay đổi lượng iod khẩu phần lên chức năng giáp ở phụ nữ mang thai có tự động giáp hoặc lên thai nhi. Có thể có lợi khi giữ lượng iod thấp, nhưng cần cẩn thận tránh thai nhi thiếu iod, đặc biệt ở vùng dân số thiếu iod. Mức độ cường giáp mẹ và đánh giá khẩu phần nên được cân nhắc trước khi quyết định bổ sung iod. Sản xuất hormon dư thừa thường hạn chế ở bệnh nhân tự động. Trong ca nhẹ, về lý thuyết có khả năng mức tăng sản xuất hormon giáp bình thường liên quan thai kỳ có thể "bắt kịp" sản xuất hormon tại vùng tự động của tuyến, giảm nhu cầu ATD. Tuy nhiên, hCG cao đầu thai kỳ về lý thuyết có thể kích thích mô giáp bình thường không chức năng ở các bệnh nhân này và làm nặng thêm cường giáp. Vì không có sản xuất TRAb, tuyến giáp thai nhi sẽ không bị kích thích bất thường ở nửa sau thai kỳ như trong GD. Do đó, thai nhi sẽ không phát triển cường giáp song song với mẹ cường giáp chưa điều trị như xảy ra nửa sau thai kỳ trong GD, và cường giáp sơ sinh không phải nguy cơ. Tuy nhiên, xu hướng gây suy giáp và bướu giáp thai nhi nửa sau thai kỳ từ ATD dùng cho mẹ thậm chí còn cao hơn trong thể cường giáp này so với GD. Dựa trên nguy cơ lý thuyết này, có thể cân nhắc điều trị phẫu thuật ở tam cá nguyệt 2 nếu cường giáp cần liều MMI cao hơn liều thấp (5–10 mg/ngày) để kiểm soát. Không đưa ra khuyến cáo chắc chắn vì chưa có bằng chứng tốt.</p>
+
+<hr class="sect">
+<div class="box">
+<div class="box-title">TÓM TẮT PHẦN 4 — SẼ TIẾP TỤC Ở PHẦN 5 (PHẦN CUỐI)</div>
+<p style="margin:0;">Phần 5 sẽ trình bày: cường giáp ở bệnh nhân có bệnh mắt Basedow [U] (đánh giá hoạt tính/mức độ nặng, dự phòng, điều trị theo mức độ GO — Bảng 12–15), nhiễm độc giáp do iod và do amiodarone [V] (kèm Hình 1 sơ đồ tiếp cận gốc), viêm giáp phá huỷ [W] (bán cấp, không đau, cấp, do sờ nắn), và các nguyên nhân khác của nhiễm độc giáp [X] (interferon, thuốc ức chế tyrosine kinase, lithium, u tuyến yên tiết TSH, bướu giáp buồng trứng, ung thư nguyên bào nuôi, nhiễm độc giáp tự ý, di căn ung thư giáp chức năng) — kèm Bảng 16, 17.</p>
+</div>
+
+
+    <hr class="sect">
+    <p style="font-size:12.5px; color:var(--ink-2);">Nguồn đầy đủ: Ross DS, Burch HB, Cooper DS, Greenlee MC, Laurberg P, Maia AL, Rivkees SA, Samuels M, Sosa JA, Stan MN, Walter MA. 2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis. Thyroid 2016;26(10):1343–1421. DOI: 10.1089/thy.2016.0229. Danh mục 139 tài liệu tham khảo đầy đủ có trong bản gốc, không chép lại ở đây.</p>
+  </main>
+</div>
+
+<div id="hlbtn">Đánh dấu</div>
+
+<script>
+(function(){
+  const content = document.getElementById('content');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const menuBtn = document.getElementById('menuBtn');
+  const progress = document.getElementById('progress');
+  const readpct = document.getElementById('readpct');
+  const tocEl = document.getElementById('toc');
+  const hlbtn = document.getElementById('hlbtn');
+  const hlcount = document.getElementById('hlcount');
+  const clearHlBtn = document.getElementById('clearHl');
+  const STORAGE_KEY = 'ata2016_hyperthyroid_p4_v1';
+
+  menuBtn.addEventListener('click', ()=>{ sidebar.classList.add('open'); overlay.classList.add('show'); });
+  overlay.addEventListener('click', ()=>{ sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+
+  const headings = Array.from(content.querySelectorAll('h2, h3'));
+  const links = [];
+  headings.forEach(h=>{
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#'+h.id;
+    a.textContent = h.textContent;
+    a.className = h.tagName === 'H2' ? 'lvl2' : 'lvl3';
+    a.addEventListener('click', ()=>{ sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+    li.appendChild(a);
+    tocEl.appendChild(li);
+    links.push({id:h.id, el:a});
+  });
+
+  function onScroll(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.min(100, Math.round((scrollTop/docHeight)*100)) : 0;
+    progress.style.width = pct + '%';
+    readpct.textContent = 'Đã đọc: ' + pct + '%';
+    let currentId = links[0] ? links[0].id : null;
+    for (const h of headings){
+      const rect = h.getBoundingClientRect();
+      if (rect.top - 90 <= 0) currentId = h.id;
+    }
+    links.forEach(l=> l.el.classList.toggle('active', l.id === currentId));
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  const blocks = Array.from(content.querySelectorAll('p, li, td'));
+  blocks.forEach((el, i)=>{ el.setAttribute('data-hid', 'b'+i); });
+
+  function getTextOffset(container, node, offset){
+    let total = 0; let found = false;
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+    let n;
+    while(n = walker.nextNode()){
+      if (n === node){ total += offset; found = true; break; }
+      total += n.textContent.length;
+    }
+    return found ? total : null;
+  }
+
+  function wrapRange(container, start, end, hlid){
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+    let pos = 0; let n; const toWrap = [];
+    while(n = walker.nextNode()){
+      const len = n.textContent.length;
+      const nStart = pos, nEnd = pos+len;
+      if (nEnd > start && nStart < end){
+        const wStart = Math.max(0, start-nStart);
+        const wEnd = Math.min(len, end-nStart);
+        toWrap.push({node:n, wStart, wEnd});
+      }
+      pos += len;
+      if (pos >= end) break;
+    }
+    toWrap.reverse().forEach(({node, wStart, wEnd})=>{
+      const range = document.createRange();
+      range.setStart(node, wStart);
+      range.setEnd(node, wEnd);
+      const mark = document.createElement('mark');
+      mark.className = 'hl';
+      mark.setAttribute('data-hlid', hlid);
+      mark.title = 'Bấm để xoá highlight';
+      try{ range.surroundContents(mark); }catch(e){}
+    });
+  }
+
+  function loadHighlights(){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    list.forEach(item=>{
+      const container = content.querySelector('[data-hid="'+item.bid+'"]');
+      if (container) wrapRange(container, item.start, item.end, item.id);
+    });
+    updateHlCount();
+  }
+
+  function saveHighlight(bid, start, end, text){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    const id = 'h'+Date.now()+Math.floor(Math.random()*1000);
+    list.push({id, bid, start, end, text});
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    updateHlCount();
+  }
+
+  function removeHighlight(hlid){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    list = list.filter(x=>x.id !== hlid);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    document.querySelectorAll('mark.hl[data-hlid="'+hlid+'"]').forEach(m=>{
+      const parent = m.parentNode;
+      while(m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+      parent.normalize();
+    });
+    updateHlCount();
+  }
+
+  function updateHlCount(){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    hlcount.textContent = list.length + ' đoạn đã highlight';
+  }
+
+  content.addEventListener('click', (e)=>{
+    if (e.target.tagName === 'MARK' && e.target.classList.contains('hl')){
+      const hlid = e.target.getAttribute('data-hlid');
+      if (confirm('Xoá highlight này?')) removeHighlight(hlid);
+    }
+  });
+
+  clearHlBtn.addEventListener('click', ()=>{
+    if (!confirm('Xoá toàn bộ highlight đã lưu?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    document.querySelectorAll('mark.hl').forEach(m=>{
+      const parent = m.parentNode;
+      while(m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+      parent.normalize();
+    });
+    updateHlCount();
+  });
+
+  let pendingSelection = null;
+  document.addEventListener('mouseup', (e)=>{
+    if (e.target === hlbtn) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || sel.rangeCount === 0){ hlbtn.style.display='none'; return; }
+    const range = sel.getRangeAt(0);
+    const container = range.commonAncestorContainer;
+    const el = container.nodeType === 1 ? container : container.parentElement;
+    const block = el.closest ? el.closest('[data-hid]') : null;
+    if (!block || !content.contains(block)){ hlbtn.style.display='none'; return; }
+    const start = getTextOffset(block, range.startContainer, range.startOffset);
+    const end = getTextOffset(block, range.endContainer, range.endOffset);
+    if (start === null || end === null || end <= start){ hlbtn.style.display='none'; return; }
+    pendingSelection = { bid: block.getAttribute('data-hid'), start, end, text: sel.toString() };
+    const rect = range.getBoundingClientRect();
+    hlbtn.style.left = (window.scrollX + rect.left + rect.width/2 - 34) + 'px';
+    hlbtn.style.top = (window.scrollY + rect.top - 38) + 'px';
+    hlbtn.style.display = 'block';
+  });
+
+  hlbtn.addEventListener('mousedown', (e)=> e.preventDefault());
+  hlbtn.addEventListener('click', ()=>{
+    if (!pendingSelection) return;
+    const { bid, start, end } = pendingSelection;
+    const container = content.querySelector('[data-hid="'+bid+'"]');
+    const id = 'h'+Date.now()+Math.floor(Math.random()*1000);
+    if (container) wrapRange(container, start, end, id);
+    saveHighlight(bid, start, end, pendingSelection.text);
+    window.getSelection().removeAllRanges();
+    hlbtn.style.display = 'none';
+    pendingSelection = null;
+  });
+
+  document.addEventListener('mousedown', (e)=>{
+    if (e.target !== hlbtn) hlbtn.style.display = 'none';
+  });
+
+  loadHighlights();
+})();
+</script>
+</body>
+</html>

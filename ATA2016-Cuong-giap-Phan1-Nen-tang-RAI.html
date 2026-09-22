@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ATA 2016 – Cường giáp (Phần 1): Nền tảng & Điều trị Basedow bằng RAI</title>
+<style>
+  :root{
+    --bg:#FAFAF7; --surface:#FFFFFF; --ink:#211F1B; --ink-2:#6B6862;
+    --border:#E4E1D8; --accent:#A6192E; --accent-ink:#6E0F1D; --accent-bg:#FBEAEC;
+    --warn-bg:#FBEFE0; --warn-ink:#6B3E06; --warn-border:#EBCE9C;
+    --hl:#FFE58A;
+    --serif:"Source Serif 4","Iowan Old Style",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --sidebar-w:290px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.7; font-size:16px;}
+  a{color:var(--accent-ink);}
+  #progress{position:fixed; top:0; left:0; height:3px; background:var(--accent); width:0%; z-index:100; transition:width .1s linear;}
+  #topbar{display:none; position:sticky; top:0; z-index:60; background:var(--surface); border-bottom:1px solid var(--border); padding:10px 14px; align-items:center; gap:10px;}
+  #topbar button{background:none; border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:14px; color:var(--ink); cursor:pointer;}
+  #topbar .ttl{font-family:var(--serif); font-size:15px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .layout{display:flex; max-width:1180px; margin:0 auto;}
+  #sidebar{width:var(--sidebar-w); flex-shrink:0; position:sticky; top:0; align-self:flex-start; height:100vh; overflow-y:auto; padding:28px 18px 40px 28px; border-right:1px solid var(--border);}
+  #sidebar .eyebrow{font-size:11px; letter-spacing:.03em; color:var(--accent-ink); font-weight:600; margin-bottom:6px;}
+  #sidebar .doc-title{font-family:var(--serif); font-size:16.5px; font-weight:600; line-height:1.35; margin-bottom:14px;}
+  #readpct{font-size:12px; color:var(--ink-2); margin-bottom:18px;}
+  #toc{list-style:none; margin:0; padding:0; font-size:13.5px;}
+  #toc li{margin:0;}
+  #toc a{display:block; padding:6px 8px; border-radius:6px; color:var(--ink-2); text-decoration:none; border-left:2px solid transparent;}
+  #toc a.lvl2{font-weight:600; color:var(--ink); margin-top:6px;}
+  #toc a.lvl3{padding-left:20px; font-size:13px;}
+  #toc a:hover{background:var(--accent-bg);}
+  #toc a.active{border-left:2px solid var(--accent); color:var(--accent-ink); background:var(--accent-bg); font-weight:600;}
+  #sidebar-foot{margin-top:22px; padding-top:14px; border-top:1px solid var(--border);}
+  #sidebar-foot button{width:100%; background:none; border:1px solid var(--border); border-radius:6px; padding:8px; font-size:12.5px; color:var(--ink-2); cursor:pointer;}
+  #sidebar-foot button:hover{border-color:var(--accent); color:var(--accent-ink);}
+  #hlcount{font-size:12px; color:var(--ink-2); margin-bottom:8px;}
+  main{flex:1; min-width:0; padding:44px 48px 120px; max-width:780px;}
+  .kicker{display:inline-block; background:var(--accent); color:#fff; font-size:11.5px; letter-spacing:.06em; font-weight:600; padding:4px 10px; border-radius:4px; margin-bottom:16px;}
+  h1{font-family:var(--serif); font-size:32px; line-height:1.22; font-weight:600; margin:0 0 10px;}
+  .byline{color:var(--ink-2); font-size:14px; margin-bottom:4px;}
+  .cite{color:var(--ink-2); font-size:12.5px; margin-bottom:30px; border-bottom:1px solid var(--border); padding-bottom:26px;}
+  h2{font-family:var(--serif); font-size:23px; font-weight:600; margin:44px 0 14px; scroll-margin-top:20px;}
+  h3{font-family:var(--serif); font-size:18.5px; font-weight:600; margin:30px 0 10px; scroll-margin-top:20px;}
+  p{margin:0 0 16px;}
+  .sup{font-size:11px; vertical-align:super; color:var(--accent-ink);}
+  strong{font-weight:600;}
+  .box{background:var(--accent-bg); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin:20px 0;}
+  .box .box-title{font-weight:600; color:var(--accent-ink); font-size:13px; letter-spacing:.02em; margin-bottom:8px;}
+  .box ul{margin:0; padding-left:20px;}
+  .box li{margin-bottom:6px;}
+  .rec{background:#F1EFE6; border-left:3px solid var(--accent); border-radius:6px; padding:12px 16px; margin:14px 0; font-size:14.5px;}
+  .rec .num{font-weight:700; color:var(--accent-ink);}
+  .grade{display:inline-block; font-weight:700; font-size:11.5px; background:var(--accent); color:#fff; border-radius:4px; padding:1px 6px; margin-left:4px;}
+  .warn{background:var(--warn-bg); border:1px solid var(--warn-border); border-radius:10px; padding:16px 20px; margin:20px 0; color:var(--warn-ink); font-size:14.5px;}
+  table{width:100%; border-collapse:collapse; margin:18px 0 26px; font-size:13.5px;}
+  caption{caption-side:top; text-align:left; font-weight:600; font-size:13.5px; margin-bottom:8px; color:var(--ink);}
+  th,td{border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top;}
+  th{background:#F1EFE6; font-weight:600;}
+  tr:nth-child(even) td{background:#FCFCFA;}
+  .tbl-wrap{overflow-x:auto;}
+  ul,ol{padding-left:22px;}
+  li{margin-bottom:6px;}
+  .fig-caption{font-size:13px; color:var(--ink-2); font-style:italic; margin-top:8px;}
+  hr.sect{border:none; border-top:1px solid var(--border); margin:36px 0;}
+  mark.hl{background:var(--hl); padding:0 1px; border-radius:2px; cursor:pointer;}
+  #hlbtn{position:absolute; display:none; z-index:80; background:var(--ink); color:#fff; font-size:12.5px; padding:7px 12px; border-radius:6px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.2); user-select:none;}
+  #hlbtn:hover{background:#000;}
+  @media (max-width:880px){
+    #topbar{display:flex;}
+    .layout{flex-direction:column;}
+    #sidebar{position:fixed; top:0; left:0; height:100%; z-index:70; background:var(--surface); width:82vw; max-width:320px; transform:translateX(-100%); transition:transform .22s ease; box-shadow:8px 0 30px rgba(0,0,0,.12);}
+    #sidebar.open{transform:translateX(0);}
+    #overlay{display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:65;}
+    #overlay.show{display:block;}
+    main{padding:28px 20px 100px; max-width:100%;}
+    h1{font-size:25px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="topbar"><button id="menuBtn" aria-label="Mục lục">☰ Mục lục</button><div class="ttl">ATA 2016 Cường giáp – P1</div></div>
+<div id="overlay"></div>
+
+<div class="layout">
+  <aside id="sidebar">
+    <div class="eyebrow">HƯỚNG DẪN CHUYÊN ĐỀ · THYROID (ATA) 2016</div>
+    <div class="doc-title">Hướng dẫn ATA 2016 về Chẩn đoán và Xử trí Cường giáp — Phần 1/5</div>
+    <div id="readpct">Đã đọc: 0%</div>
+    <ul id="toc"></ul>
+    <div id="sidebar-foot">
+      <div id="hlcount">0 đoạn đã highlight</div>
+      <button id="clearHl">Xoá tất cả highlight</button>
+    </div>
+  </aside>
+
+  <main id="content">
+    <span class="kicker">PHẦN 1/5 · NỀN TẢNG & BASEDOW — RAI</span>
+    <h1>Hướng dẫn ATA 2016: Chẩn đoán và Xử trí Cường giáp — Phần 1</h1>
+    <div class="byline">Douglas S. Ross, Henry B. Burch, David S. Cooper và cộng sự — American Thyroid Association Task Force</div>
+    <div class="cite">Nguồn: Ross DS, Burch HB, Cooper DS, et al. 2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis. Thyroid. 2016;26(10):1343–1421. DOI: 10.1089/thy.2016.0229. Bản dịch tham khảo phục vụ học tập lâm sàng — không thay thế bản gốc.</div>
+
+    <div class="box">
+<div class="box-title">VỀ TÀI LIỆU NÀY</div>
+<p style="margin:0;">Đây là <strong>Phần 1/5</strong> của bộ tài liệu dịch Hướng dẫn ATA 2016 về chẩn đoán và xử trí cường giáp — gồm 124 khuyến cáo dựa trên bằng chứng, chia thành 5 phần theo cấu trúc gốc của tài liệu. Phần 1 bao gồm: nền tảng bệnh học, tiếp cận chẩn đoán ban đầu, lựa chọn phương thức điều trị Basedow (Graves' disease – GD), và điều trị bằng I-131 (RAI) cho GD (Khuyến cáo 1–12).</p>
+</div>
+
+<h2 id="h-boi-canh">[A] Nền tảng</h2>
+
+<h3 id="h-nguyen-nhan-cuong-giap">[A1] Nguyên nhân gây nhiễm độc giáp</h3>
+<p>Nhìn chung, nhiễm độc giáp (thyrotoxicosis) có thể xảy ra khi: (i) tuyến giáp bị kích thích quá mức bởi các yếu tố hướng giáp; (ii) có sự hoạt hoá cấu thành (constitutive) trong tổng hợp và bài tiết hormon giáp, dẫn đến giải phóng tự động hormon giáp dư thừa; (iii) hormon giáp dự trữ sẵn bị giải phóng thụ động với số lượng lớn do tổn thương tự miễn, nhiễm trùng, hoá chất hoặc cơ học; hoặc (iv) có nguồn hormon giáp ngoài tuyến giáp, có thể là nội sinh (bướu giáp buồng trứng – struma ovarii, ung thư giáp di căn biệt hoá) hoặc ngoại sinh (nhiễm độc giáp do dùng thuốc/tự ý).</p>
+<p>Cường giáp thường được phân loại là rõ (overt) hoặc dưới lâm sàng (subclinical) tuỳ theo mức độ nặng về sinh hoá, mặc dù trên thực tế bệnh là một phổ liên tục của chức năng giáp hoạt động quá mức. <strong>Cường giáp rõ</strong> được định nghĩa là TSH huyết thanh thấp (thường không đo được) kèm T3 và/hoặc FT4 tăng. <strong>Cường giáp dưới lâm sàng</strong> được định nghĩa là TSH thấp hoặc không đo được nhưng T3 và FT4 vẫn trong giới hạn bình thường. Cả hai thể đều có thể gây triệu chứng và dấu hiệu đặc trưng, dù thể dưới lâm sàng thường nhẹ hơn. Việc dùng hormon giáp quá liều hoặc liều ức chế cũng có thể gây ra một trong hai thể nhiễm độc giáp này, đặc biệt là thể dưới lâm sàng.</p>
+<p>Cường giáp nội sinh thường gặp nhất do bệnh Basedow (GD) hoặc bệnh tuyến giáp đa nhân. GD là bệnh tự miễn trong đó kháng thể kháng thụ thể TSH (TRAb) kích thích thụ thể TSH, làm tăng sản xuất và giải phóng hormon giáp. Bệnh nhân đa nhân giáp phát triển qua thời gian bao gồm: nhân sẵn có lớn lên, hình thành nhân mới, và phát triển tính tự động chức năng. Trong bướu nhân độc (TA), sản xuất hormon tự động có thể do đột biến soma hoạt hoá các gen điều hoà tăng trưởng và tổng hợp hormon giáp. Đột biến dòng mầm (germline) ở gen mã hoá thụ thể TSH có thể gây cường giáp không tự miễn lẻ tẻ hoặc gia đình kèm phì đại tuyến giáp lan toả. Sản xuất hormon tự động có thể tiến triển từ dưới lâm sàng sang rõ, và việc dùng iod với liều dược lý ở những bệnh nhân này có thể gây cường giáp do iod. GD là nguyên nhân cường giáp thường gặp nhất tại Hoa Kỳ. Mặc dù bướu giáp đa nhân độc ít gặp hơn GD, tỷ lệ mắc tăng theo tuổi và khi thiếu iod trong khẩu phần — do đó ở người lớn tuổi, đặc biệt tại vùng thiếu iod, bướu giáp đa nhân độc có thể thực sự phổ biến hơn GD. Khác với bướu giáp đa nhân độc — vốn tiến triển dần (trừ khi bị khởi phát bởi dư iod) — thuyên giảm tự nhiên của GD thể nhẹ đã được ghi nhận ở tới 30% bệnh nhân không điều trị.</p>
+<p>Các nguyên nhân ít gặp hơn gồm viêm giáp không đau và viêm giáp bán cấp, xảy ra do viêm mô giáp làm giải phóng hormon dự trữ vào tuần hoàn. Viêm giáp không đau do viêm lympho bào có tần suất khác nhau tuỳ dân số nghiên cứu: tại Đan Mạch chỉ chiếm 0,5% bệnh nhân nhiễm độc giáp, nhưng tại Toronto là 6% và tại Wisconsin là 22%. Viêm giáp không đau có thể xảy ra khi dùng lithium, cytokine (ví dụ interferon-α), hoặc thuốc ức chế tyrosine kinase, và khi xảy ra trong giai đoạn hậu sản được gọi là viêm giáp hậu sản. Viêm giáp phá huỷ không đau (thường không phải type lympho bào) xảy ra ở 5–10% bệnh nhân dùng amiodarone. Viêm giáp bán cấp được cho là do nhiễm virus, đặc trưng bởi sốt và đau vùng giáp.</p>
+
+<h3 id="h-hau-qua-lam-sang">[A2] Hậu quả lâm sàng của nhiễm độc giáp</h3>
+<p>Tác động ở mức tế bào của hormon giáp được trung gian bởi T3 — dạng hoạt động của hormon giáp. T3 gắn vào hai thụ thể nhân đặc hiệu (thụ thể hormon giáp α và β) điều hoà biểu hiện nhiều gen. Các tác động không qua gen (nongenomic) của hormon giáp bao gồm điều hoà nhiều chức năng sinh lý quan trọng khác.</p>
+<p>Hormon giáp ảnh hưởng đến hầu như mọi mô và hệ cơ quan. Nó làm tăng sinh nhiệt mô và chuyển hoá cơ bản, giảm cholesterol huyết thanh và giảm sức cản mạch hệ thống. Một số tác động sâu sắc nhất của tăng hormon giáp xảy ra trên hệ tim mạch. Nhiễm độc giáp không điều trị hoặc điều trị chưa đủ có liên quan đến sụt cân, loãng xương, rung nhĩ, biến cố thuyên tắc, yếu cơ, run, triệu chứng tâm thần kinh, và hiếm khi là suy sụp tim mạch và tử vong. Mối tương quan giữa mức độ tăng hormon giáp với dấu hiệu/triệu chứng lâm sàng chỉ ở mức vừa phải. Các triệu chứng và dấu hiệu do tăng kích thích giao cảm — bao gồm nhịp nhanh và lo âu — có thể rõ hơn ở bệnh nhân trẻ và những người có bướu giáp lớn. Dấu hiệu và triệu chứng của nhiễm độc giáp nhẹ (dưới lâm sàng) tương tự thể rõ nhưng khác về mức độ. Những thay đổi có thể đo được về chuyển hoá cơ bản, huyết động tim mạch, và chức năng tâm thần kinh vẫn có thể hiện diện ở thể nhẹ.</p>
+
+<h2 id="h-danh-gia-ban-dau">[B] Tiếp cận đánh giá và xử trí ban đầu nhiễm độc giáp</h2>
+
+<h3 id="h-danh-gia-do-nang">[B1] Đánh giá mức độ nặng của bệnh</h3>
+<p>Đánh giá các biểu hiện nhiễm độc giáp, đặc biệt là các biến chứng tim mạch và thần kinh cơ tiềm ẩn, là thiết yếu để xây dựng kế hoạch điều trị phù hợp. Dù có thể dự đoán mức độ nặng triệu chứng tỷ lệ thuận với mức tăng FT4 và T3, trong một nghiên cứu nhỏ trên 25 bệnh nhân GD, thang điểm triệu chứng cường giáp không tương quan mạnh với FT4 hay T3 mà lại tương quan nghịch với tuổi. Vai trò của tuổi như một yếu tố quyết định tỷ lệ và mức độ nặng của triệu chứng cường giáp gần đây đã được xác nhận thêm. Đánh giá tim mạch có thể cần thiết, đặc biệt ở người lớn tuổi, và có thể cần siêu âm tim, điện tâm đồ, Holter, hoặc xạ hình tưới máu cơ tim. Nhu cầu đánh giá không nên trì hoãn việc điều trị nhiễm độc giáp. Ngoài dùng chẹn beta giao cảm, có thể cần điều trị đồng thời thiếu máu cơ tim, suy tim sung huyết, hoặc loạn nhịp nhĩ. Có thể cần kháng đông ở bệnh nhân rung nhĩ. Kích thước bướu giáp, triệu chứng chèn ép, và mức độ nặng của bệnh mắt Basedow (Graves' orbitopathy – GO) có thể không tương xứng với mức độ cường giáp hoặc triệu chứng cường giáp.</p>
+<p>Tất cả bệnh nhân nghi ngờ hoặc đã biết cường giáp cần được hỏi bệnh sử và khám toàn diện, bao gồm đo mạch, huyết áp, nhịp thở, cân nặng. Cần đánh giá kích thước, độ đau, tính đối xứng và tính nốt (nodularity) của tuyến giáp cùng với chức năng hô hấp, tim mạch, thần kinh cơ, và sự hiện diện/vắng mặt của phù ngoại biên, dấu hiệu mắt, hoặc phù niêm trước xương chày.</p>
+
+<h3 id="h-xet-nghiem-sinh-hoa">[B2] Đánh giá sinh hoá</h3>
+<p>Đo TSH huyết thanh có độ nhạy và độ đặc hiệu cao nhất trong số các xét nghiệm máu đơn lẻ dùng để đánh giá nghi ngờ nhiễm độc giáp, và nên dùng làm xét nghiệm sàng lọc ban đầu. Tuy nhiên, khi nghi ngờ nhiễm độc giáp mạnh, độ chính xác chẩn đoán sẽ tăng lên khi đánh giá đồng thời TSH, FT4 và T3 toàn phần ngay từ đầu. Mối quan hệ giữa FT4 và TSH khi trục tuyến yên–giáp còn nguyên vẹn là quan hệ log-tuyến tính nghịch; do đó, thay đổi nhỏ của FT4 gây thay đổi lớn ở nồng độ TSH huyết thanh. TSH huyết thanh nhạy hơn nhiều so với đo trực tiếp hormon giáp trong đánh giá dư thừa hormon giáp.</p>
+<p>Trong cường giáp rõ, FT4, T3 hoặc cả hai đều tăng, và TSH dưới ngưỡng bình thường (thường &lt;0,01 mU/L với xét nghiệm thế hệ 3). Trong cường giáp nhẹ, FT4 và T4 toàn phần có thể bình thường, chỉ T3 tăng, TSH thấp hoặc không đo được — tình trạng này gọi là "nhiễm độc T3" (T3-toxicosis), có thể là giai đoạn sớm nhất của cường giáp do GD hoặc nhân giáp tự động chức năng. Cũng như T4, đo T3 toàn phần chịu ảnh hưởng của gắn kết protein. Xét nghiệm ước tính T3 tự do ít được kiểm chứng và kém tin cậy hơn FT4, do đó trên lâm sàng thường ưu tiên đo T3 toàn phần hơn T3 tự do. Cường giáp dưới lâm sàng được định nghĩa là FT4 và T3 toàn phần/tự do bình thường kèm TSH dưới ngưỡng.</p>
+<p>Khi không có u tuyến yên tiết TSH hoặc kháng hormon giáp, hoặc không có kết quả xét nghiệm sai lệch do kháng thể gây nhiễu, TSH huyết thanh bình thường loại trừ chẩn đoán nhiễm độc giáp. Thuật ngữ "tăng thyroxine huyết bình giáp" (euthyroid hyperthyroxinemia) mô tả một số tình trạng — chủ yếu là rối loạn protein gắn hormon giáp — gây tăng T4 toàn phần (và thường cả T3 toàn phần) mà không có cường giáp thực sự. Các tình trạng này gồm: tăng globulin gắn thyroxine (TBG) hoặc transthyretin; albumin bất thường gắn T4 với ái lực cao (tăng thyroxine huyết loạn albumin gia đình); transthyretin bất thường tương tự; và hiếm gặp là immunoglobulin gắn trực tiếp T4 hoặc T3. Dư TBG có thể là di truyền liên kết X, hoặc mắc phải do thai kỳ, dùng estrogen, viêm gan, rối loạn chuyển hoá porphyrin cấp ngắt quãng, hoặc khi điều trị 5-fluorouracil, perphenazine, hoặc một số thuốc phiện. Các nguyên nhân khác gây tăng thyroxine huyết bình giáp gồm thuốc ức chế chuyển T4 thành T3 như amiodarone hoặc propranolol liều cao, loạn thần cấp, độ cao cực đại, và lạm dụng amphetamine. Ước tính hormon giáp tự do cũng thường cho kết quả sai lệch trong các rối loạn này. Tăng FT4 giả tạo có thể xảy ra do kháng thể dị hướng (heterophilic antibodies) hoặc khi dùng heparin, do hoạt hoá lipoprotein lipase in vitro và giải phóng acid béo tự do làm bật T4 ra khỏi protein gắn.</p>
+<p>Kháng thể dị hướng cũng có thể gây TSH tăng giả tạo, cần loại trừ bằng cách đo lại TSH ở xét nghiệm khác, pha loãng nối tiếp, hoặc đo trực tiếp kháng thể kháng chuột ở người.</p>
+<p>Dùng liều cao biotin có thể gây kết quả sai lệch ở các xét nghiệm dùng kỹ thuật tách streptavidin–biotin. Trong xét nghiệm miễn dịch đo TSH, biotin dư thừa cạnh tranh làm bật kháng thể gắn biotin, gây kết quả thấp giả tạo; còn trong xét nghiệm cạnh tranh đo FT4, biotin dư thừa cạnh tranh với chất tương tự gắn biotin, gây kết quả cao giả tạo. Bệnh nhân dùng liều cao biotin hoặc thực phẩm bổ sung chứa biotin, có T4 tăng và TSH ức chế, nên ngừng biotin và đo lại sau ít nhất 2 ngày.</p>
+<p>Sau khi loại trừ tăng thyroxine huyết bình giáp, cần nghĩ đến cường giáp do trung gian TSH khi nồng độ hormon giáp tăng mà TSH bình thường hoặc tăng. Tổn thương tuyến yên trên MRI cùng tỷ lệ bất tương xứng cao giữa tiểu đơn vị α của hormon glycoprotein tuyến yên với TSH ủng hộ chẩn đoán u tuyến yên tiết TSH. Tiền sử gia đình và xét nghiệm gen đột biến gen thụ thể hormon giáp β (THRB) ủng hộ chẩn đoán kháng hormon giáp.</p>
+
+<h3 id="h-xac-dinh-nguyen-nhan">[B3] Xác định nguyên nhân</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 1</span> — Cần xác định nguyên nhân nhiễm độc giáp. Nếu chẩn đoán chưa rõ ràng dựa trên biểu hiện lâm sàng và đánh giá sinh hoá ban đầu, cần làm thêm xét nghiệm chẩn đoán, có thể bao gồm (tuỳ nguồn lực và chuyên môn sẵn có): (1) đo TRAb, (2) đo độ tập trung iod phóng xạ (RAIU), hoặc (3) đo dòng máu tuyến giáp trên siêu âm. Nên xạ hình bằng ¹²³I hoặc ⁹⁹ᵐTc pertechnetate khi biểu hiện lâm sàng gợi ý bướu nhân độc (TA) hoặc bướu giáp đa nhân độc (TMNG).
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Ở bệnh nhân có tuyến giáp to đối xứng, mới khởi phát bệnh mắt Basedow, và cường giáp mức độ vừa đến nặng, chẩn đoán GD là nhiều khả năng và không cần thêm xét nghiệm xác định nguyên nhân. Ở bệnh nhân nhiễm độc giáp có tuyến giáp không nhân và không có bệnh mắt Basedow rõ, đo TRAb hoặc RAIU có thể giúp phân biệt GD với các nguyên nhân khác. Trong một mô hình nghiên cứu trên quần thể lý thuyết 100.000 người tham gia bảo hiểm y tế quản lý tại Hoa Kỳ, sử dụng TRAb để chẩn đoán GD (thay vì RAIU) giảm chi phí 47% và cho kết quả nhanh hơn 46%.</p>
+<p>RAIU đo tỷ lệ phần trăm iod phóng xạ được tập trung vào mô giáp sau một khoảng thời gian cố định, thường là 24 giờ. Đo độ tập trung technetium dùng pertechnetate được bắt giữ bởi tuyến giáp nhưng không được hữu cơ hoá (organify); độ tập trung TcO₄ đo tỷ lệ phần trăm technetium được bắt giữ sau khoảng thời gian cố định, thường 20 phút.</p>
+<p>Đo độ tập trung được chỉ định khi chẩn đoán chưa chắc chắn (trừ khi đang mang thai và thường trừ khi đang cho con bú — xem mục [T4]), giúp phân biệt các nguyên nhân nhiễm độc giáp có độ tập trung tăng/bình thường với nhóm gần như không tập trung (Bảng 3). Độ tập trung thường tăng ở GD, bình thường hoặc cao ở bướu giáp đa nhân độc (trừ khi mới phơi nhiễm iod, ví dụ thuốc cản quang). RAIU gần bằng 0 ở viêm giáp không đau, viêm giáp hậu sản, viêm giáp bán cấp; nhiễm độc giáp do uống hormon giáp (tự ý/factitious); hoặc mới dùng dư iod. RAIU có thể thấp sau phơi nhiễm thuốc cản quang chứa iod trong 1–2 tháng trước, hoặc ăn khẩu phần giàu iod bất thường như canh rong biển. Tuy nhiên, RAIU hiếm khi &lt;1% trừ khi phơi nhiễm iod tái diễn, ví dụ khi điều trị amiodarone. Khi nghi ngờ phơi nhiễm dư iod (ví dụ khi RAIU thấp hơn dự kiến so với bệnh sử lâm sàng), đo nồng độ iod niệu (mẫu nước tiểu ngẫu nhiên hiệu chỉnh theo creatinin hoặc mẫu nước tiểu 24 giờ) có thể hữu ích. Độ tập trung vùng cổ cũng sẽ vắng mặt ở bệnh nhân bướu giáp buồng trứng, nơi mô giáp bất thường nằm trong u quái buồng trứng.</p>
+<p>Xạ hình giáp cho hình ảnh phẳng của tuyến giáp bằng gamma camera để đánh giá tính không đồng nhất trong tập trung đồng vị phóng xạ trong mô giáp. Xạ hình RAI có thể thực hiện cùng lúc với RAIU, xạ hình technetium cùng lúc với độ tập trung technetium. Xạ hình technetium có khoảng bình thường của độ tập trung thấp và hoạt độ nền cao, nhưng liều bức xạ toàn thân thấp hơn xạ hình ¹²³I; cả hai loại đều hữu ích khi xác định nguyên nhân cường giáp có kèm nhân giáp.</p>
+<p>Nên xạ hình giáp khi biểu hiện lâm sàng gợi ý TA hoặc TMNG. Hình ảnh RAIU trong GD là lan toả trừ khi có nhân hoặc xơ hoá kèm theo. Hình ảnh ở bệnh nhân TA đơn độc thường cho thấy tập trung khu trú tại nhân với vùng mô giáp xung quanh và đối bên bị ức chế. Hình ảnh TMNG cho thấy nhiều vùng tập trung tăng và ức chế xen kẽ. Nếu tính tự động lan rộng, hình ảnh có thể khó phân biệt với GD. Ngoài ra, GD và bướu giáp đa nhân không độc có thể cùng tồn tại, dẫn đến TRAb dương tính kèm siêu âm có nhân hoặc hình ảnh tập trung không đồng nhất.</p>
+<p>Ở nơi có chuyên môn, siêu âm Doppler màu có thể phân biệt tăng hoạt động giáp (tăng tưới máu) với viêm giáp phá huỷ. Đánh giá Doppler định lượng cần hiệu chỉnh cẩn thận để tránh giả tạo, đo vận tốc đỉnh tâm thu ở động mạch trong tuyến giáp hoặc động mạch giáp dưới. Xét nghiệm này đặc biệt hữu ích khi RAI chống chỉ định, như trong thai kỳ hoặc cho con bú. Doppler dòng chảy cũng được dùng để phân biệt các phân nhóm nhiễm độc giáp do amiodarone (mục [V2]) và giữa GD với viêm giáp phá huỷ (mục [W2]).</p>
+<p>Tỷ số T3 toàn phần/T4 toàn phần cũng hữu ích khi đánh giá nguyên nhân nhiễm độc giáp khi chống chỉ định xạ hình. Vì tuyến hoạt động quá mức sản xuất nhiều T3 hơn T4, T3 sẽ tăng vượt giới hạn trên nhiều hơn T4 trong nhiễm độc giáp do cường giáp thực sự, trong khi T4 tăng nhiều hơn T3 trong nhiễm độc giáp do viêm giáp; trong một nghiên cứu, tỷ số T3/T4 toàn phần (ng/μg) &gt;20 ở GD và bướu giáp đa nhân độc, và &lt;20 ở viêm giáp không đau hoặc hậu sản. Tỷ số T4/T3 cao có thể gặp trong nhiễm độc giáp tự ý (do levothyroxine ngoại sinh).</p>
+<p>Lựa chọn xét nghiệm chẩn đoán ban đầu tuỳ thuộc chi phí, tính sẵn có, và chuyên môn tại chỗ. TRAb có hiệu quả chi phí tốt vì nếu dương tính sẽ xác nhận chẩn đoán nguyên nhân thường gặp nhất. Nếu âm tính thì không phân biệt được các nguyên nhân khác, và có thể âm tính trong GD rất nhẹ. Nếu không có xét nghiệm TRAb thế hệ 3, ưu tiên RAIU cho xét nghiệm ban đầu.</p>
+<p>Lựa chọn xét nghiệm chẩn đoán có thể bị ảnh hưởng bởi lựa chọn điều trị (xem mục [C]). Ví dụ, đo TRAb ở bệnh nhân GD dự định dùng methimazole (MMI) với hy vọng đạt thuyên giảm sẽ cho giá trị nền để theo dõi hoạt tính bệnh. Đo RAIU ở bệnh nhân ưu tiên điều trị RAI vừa cho thông tin chẩn đoán vừa hỗ trợ tính liều RAI (xem mục [D2]).</p>
+<p>Ở hầu hết bệnh nhân, phân biệt viêm giáp bán cấp và viêm giáp không đau không khó. Viêm giáp bán cấp thường đau, tuyến chắc đến cứng khi sờ, tốc độ lắng máu thường &gt;50 mm/h và đôi khi trên 100 mm/h. Bệnh nhân viêm giáp không đau khởi phát trong năm đầu sau sinh (viêm giáp hậu sản) thường có tiền sử bản thân hoặc gia đình mắc bệnh tuyến giáp tự miễn và thường có kháng thể kháng peroxidase giáp đo được.</p>
+<p>Thyroglobulin được giải phóng cùng hormon giáp trong viêm giáp bán cấp, không đau, và viêm giáp do thao tác (sau phẫu thuật giáp), trong khi bị ức chế khi dùng hormon giáp ngoại sinh. Nếu bệnh sử không rõ, nhiễm độc giáp tự ý có thể được phân biệt với các nguyên nhân khác bằng thyroglobulin huyết thanh thấp, RAIU gần bằng 0, và tỷ số T3/T4 (ng/μg) &lt;20 nếu do levothyroxine ngoại sinh. Ở bệnh nhân có kháng thể kháng thyroglobulin gây nhiễu kết quả đo thyroglobulin, một hướng tiếp cận thay thế (tuy không phổ biến) là đo T4 trong phân.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Có hai phương pháp đo kháng thể kháng thụ thể giáp (TRAb). Xét nghiệm TBII (TSH Binding Inhibition Immunoglobulin) thế hệ 3 là xét nghiệm cạnh tranh, đo mức ức chế gắn kết của kháng thể đơn dòng kháng thụ thể TSH người có gắn nhãn (hoặc TSH gắn nhãn) với thụ thể TSH tái tổ hợp — không phân biệt được các phân type kháng thể. Xét nghiệm sinh học (bioassay) đo Thyroid Stimulating Immunoglobulin (TSI) đo khả năng TSI làm tăng nồng độ cAMP nội bào trực tiếp hoặc gián tiếp (ví dụ qua tế bào CHO chuyển gen thụ thể TSH người, phát hiện qua tăng sản xuất luciferase) — có thể phân biệt các phân type kháng thể kháng thụ thể TSH. Trong bệnh cảnh cường giáp rõ, các xét nghiệm gắn kết TRAb và sinh học thế hệ mới có độ nhạy 96–97% và độ đặc hiệu 99% với GD.</p>
+</div>
+
+<div class="tbl-wrap">
+<table>
+<caption>Bảng 3. Nguyên nhân nhiễm độc giáp</caption>
+<tr><th>Nhiễm độc giáp kèm RAIU vùng cổ bình thường hoặc tăng*</th></tr>
+<tr><td>Bệnh Basedow (GD)</td></tr>
+<tr><td>Bướu nhân độc (TA) hoặc bướu giáp đa nhân độc (TMNG)</td></tr>
+<tr><td>Bệnh nguyên bào nuôi (trophoblastic disease)</td></tr>
+<tr><td>U tuyến yên tiết TSH</td></tr>
+<tr><td>Kháng hormon giáp (đột biến thụ thể T3 β, THRB)**</td></tr>
+<tr><th>Nhiễm độc giáp kèm RAIU vùng cổ gần như không có</th></tr>
+<tr><td>Viêm giáp không đau (thầm lặng)</td></tr>
+<tr><td>Viêm giáp do amiodarone</td></tr>
+<tr><td>Viêm giáp bán cấp (u hạt, de Quervain)</td></tr>
+<tr><td>Viêm giáp do sờ nắn (palpation thyroiditis)</td></tr>
+<tr><td>Nhiễm độc giáp do thầy thuốc (iatrogenic)</td></tr>
+<tr><td>Nhiễm độc giáp tự ý (uống hormon giáp)</td></tr>
+<tr><td>Bướu giáp buồng trứng (struma ovarii)</td></tr>
+<tr><td>Viêm giáp cấp</td></tr>
+<tr><td>Di căn lan rộng của ung thư giáp thể nang</td></tr>
+</table>
+</div>
+<p style="font-size:12.5px;color:var(--ink-2);margin-top:-14px;">* Trong cường giáp do iod hoặc phơi nhiễm iod (kể cả amiodarone type 1), độ tập trung có thể thấp. ** Bệnh nhân không phải lúc nào cũng có biểu hiện cường giáp lâm sàng rõ.</p>
+
+<h3 id="h-dieu-tri-trieu-chung">[B4] Xử trí triệu chứng</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 2</span> — Nên dùng chẹn beta giao cảm cho tất cả bệnh nhân nhiễm độc giáp có triệu chứng, đặc biệt bệnh nhân lớn tuổi và bệnh nhân nhiễm độc giáp có nhịp tim nghỉ &gt;90 lần/phút hoặc có bệnh tim mạch kèm theo.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Trong một thử nghiệm ngẫu nhiên có đối chứng so sánh MMI đơn thuần với MMI phối hợp chẹn beta giao cảm, sau 4 tuần, nhóm dùng chẹn beta có nhịp tim thấp hơn, ít khó thở và mệt mỏi hơn, cải thiện "chức năng thể chất" trên bảng câu hỏi sức khoẻ SF-36.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Vì các chẹn beta hiện có không đủ chọn lọc β-1 ở liều khuyến cáo, nhóm thuốc này thường chống chỉ định ở bệnh nhân hen phế quản co thắt. Ở bệnh nhân hen phế quản co thắt ổn định cần kiểm soát nhịp tim, hoặc bệnh phổi tắc nghẽn nhẹ, hoặc hiện tượng Raynaud có triệu chứng, có thể thận trọng dùng thuốc chọn lọc β-1 tương đối, theo dõi sát chức năng hô hấp (Bảng 4). Đôi khi cần liều chẹn beta rất cao để kiểm soát triệu chứng và đưa nhịp tim về gần giới hạn trên bình thường, nhưng thường liều thấp đến trung bình đã đủ giảm triệu chứng. Chẹn kênh calci đường uống (verapamil, diltiazem) đã được chứng minh kiểm soát nhịp tim ở bệnh nhân không dung nạp hoặc không phù hợp dùng chẹn beta.</p>
+</div>
+
+<div class="tbl-wrap">
+<table>
+<caption>Bảng 4. Chẹn thụ thể Beta giao cảm trong điều trị nhiễm độc giáp</caption>
+<tr><th>Thuốc*</th><th>Liều</th><th>Tần suất</th><th>Lưu ý</th></tr>
+<tr><td>Propranolol</td><td>10–40 mg</td><td>3–4 lần/ngày</td><td>Chẹn beta không chọn lọc; kinh nghiệm dùng lâu nhất nhất; có thể ức chế chuyển T4→T3 ở liều cao; thuốc ưu tiên cho phụ nữ cho con bú và mang thai</td></tr>
+<tr><td>Atenolol</td><td>25–100 mg</td><td>1–2 lần/ngày</td><td>Chọn lọc β-1 tương đối; tuân thủ tốt hơn; tránh dùng trong thai kỳ</td></tr>
+<tr><td>Metoprolol**</td><td>25–50 mg</td><td>2–3 lần/ngày</td><td>Chọn lọc β-1 tương đối</td></tr>
+<tr><td>Nadolol</td><td>40–160 mg</td><td>1 lần/ngày</td><td>Chẹn beta không chọn lọc; dùng 1 lần/ngày; ít kinh nghiệm nhất</td></tr>
+<tr><td>Esmolol</td><td>Truyền TM 50–100 μg/kg/phút</td><td>—</td><td>Có thể ức chế chuyển T4→T3 ở liều cao; dùng tại khoa hồi sức trong nhiễm độc giáp nặng hoặc cơn bão giáp</td></tr>
+</table>
+</div>
+<p style="font-size:12.5px;color:var(--ink-2);margin-top:-14px;">* Các thuốc này đều đã được phê duyệt điều trị bệnh tim mạch, nhưng chưa thuốc nào được phê duyệt riêng cho điều trị nhiễm độc giáp. ** Cũng có dạng bào chế dùng 1 lần/ngày.</p>
+
+<h2 id="h-lua-chon-dieu-tri-basedow">[C] Xử trí cường giáp rõ do Basedow như thế nào?</h2>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 3</span> — Bệnh nhân cường giáp rõ do Basedow nên được điều trị bằng một trong các phương thức sau: điều trị RAI, thuốc kháng giáp tổng hợp (ATD), hoặc phẫu thuật cắt giáp.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Khi đã xác định bệnh nhân cường giáp do GD, bác sĩ và bệnh nhân cần chọn một trong ba lựa chọn điều trị ban đầu hiệu quả và tương đối an toàn: RAI, ATD, hoặc phẫu thuật cắt giáp. Tại Hoa Kỳ, RAI từng là phương thức được bác sĩ ưa chuộng nhất, nhưng những năm gần đây có xu hướng tăng dùng ATD và giảm dùng RAI. Khảo sát năm 2011 trên các bác sĩ nội tiết lâm sàng cho thấy 59,7% người trả lời tại Hoa Kỳ chọn RAI làm điều trị đầu tay cho GD không biến chứng, so với 69% trong khảo sát tương tự 20 năm trước. Tại châu Âu, Mỹ Latinh và Nhật Bản, bác sĩ có xu hướng ưu tiên ATD hơn. Chất lượng cuộc sống (QoL) lâu dài sau điều trị GD được ghi nhận là tương đương giữa 3 nhóm điều trị trong nghiên cứu phân bổ ngẫu nhiên. Hiện chưa có bằng chứng khoa học ủng hộ các liệu pháp thay thế trong điều trị cường giáp.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Sau khi chẩn đoán xác định, bác sĩ điều trị và bệnh nhân nên thảo luận từng lựa chọn điều trị, bao gồm hậu cần, lợi ích, tốc độ hồi phục dự kiến, hạn chế, tác dụng phụ tiềm ẩn và chi phí. Điều này giúp bác sĩ đưa ra khuyến nghị dựa trên phán đoán lâm sàng tốt nhất, đồng thời cho phép quyết định cuối cùng phản ánh giá trị và ưu tiên cá nhân của bệnh nhân. Lựa chọn điều trị cũng cần cân nhắc tính sẵn có tại chỗ và chi phí liên quan. Khi chọn phẫu thuật, nên ưu tiên phẫu thuật viên giáp có kinh nghiệm/khối lượng ca cao (nguy cơ biến chứng thấp hơn); nếu không có chuyên môn này, cần cân nhắc so với nguy cơ đã biết của các lựa chọn khác. Điều trị ATD kéo dài liên tục có thể được cân nhắc trong một số trường hợp chọn lọc.</p>
+</div>
+<p><strong>Các tình huống lâm sàng ưu tiên một phương thức điều trị nhất định cho cường giáp Basedow (xem Bảng 5):</strong></p>
+<div class="box">
+<div class="box-title">a. RAI được ưu tiên khi</div>
+<ul style="margin:0;">
+<li>Phụ nữ dự định mang thai trong tương lai (sau &gt;6 tháng kể từ khi dùng RAI, với điều kiện hormon giáp đã bình thường)</li>
+<li>Có bệnh đồng mắc làm tăng nguy cơ phẫu thuật</li>
+<li>Đã từng phẫu thuật/xạ trị ngoài vùng cổ, hoặc không có bác sĩ phẫu thuật giáp kinh nghiệm</li>
+<li>Có chống chỉ định dùng ATD hoặc thất bại đạt bình giáp khi dùng ATD</li>
+<li>Liệt chu kỳ do hạ kali máu nhiễm độc giáp, tăng áp phổi kèm suy tim phải, hoặc suy tim sung huyết</li>
+</ul>
+</div>
+<div class="box">
+<div class="box-title">b. ATD được ưu tiên khi</div>
+<ul style="margin:0;">
+<li>Khả năng thuyên giảm cao (đặc biệt nữ, bệnh nhẹ, bướu giáp nhỏ, TRAb âm tính hoặc thấp)</li>
+<li>Thai kỳ</li>
+<li>Người cao tuổi hoặc có bệnh đồng mắc làm tăng nguy cơ phẫu thuật, hoặc tiên lượng sống ngắn</li>
+<li>Người ở viện dưỡng lão/cơ sở chăm sóc, tiên lượng sống hạn chế, không thể tuân thủ quy định an toàn phóng xạ</li>
+<li>Đã từng phẫu thuật/xạ trị vùng cổ, không có phẫu thuật viên giáp kinh nghiệm</li>
+<li>Bệnh mắt Basedow đang hoạt động mức độ vừa–nặng</li>
+<li>Cần kiểm soát bệnh sinh hoá nhanh hơn</li>
+</ul>
+</div>
+<div class="box">
+<div class="box-title">c. Phẫu thuật được ưu tiên khi</div>
+<ul style="margin:0;">
+<li>Phụ nữ dự định mang thai trong &lt;6 tháng (với điều kiện hormon giáp bình thường)</li>
+<li>Bướu giáp lớn gây chèn ép triệu chứng (≥80 g)</li>
+<li>Độ tập trung RAI thấp tương đối</li>
+<li>Nghi ngờ/xác định ác tính tuyến giáp (tế bào học nghi ngờ hoặc không xác định)</li>
+<li>Nhân giáp lớn, đặc biệt &gt;4 cm, hoặc không chức năng/giảm chức năng trên xạ hình ¹²³I/⁹⁹ᵐTc</li>
+<li>Cường cận giáp đồng mắc cần phẫu thuật</li>
+<li>TRAb rất cao</li>
+<li>Bệnh mắt Basedow đang hoạt động mức độ vừa–nặng</li>
+</ul>
+</div>
+
+<div class="warn">
+<strong>Chống chỉ định theo từng phương thức:</strong><br>
+<strong>RAI:</strong> chống chỉ định tuyệt đối gồm thai kỳ, cho con bú, ung thư giáp đồng mắc hoặc nghi ngờ, không tuân thủ được quy định an toàn phóng xạ; cần thận trọng và cân nhắc kỹ ở phụ nữ dự định mang thai trong 4–6 tháng tới.<br>
+<strong>ATD:</strong> chống chỉ định tuyệt đối là tiền sử phản ứng bất lợi nghiêm trọng với ATD.<br>
+<strong>Phẫu thuật:</strong> các yếu tố cản trở gồm bệnh đồng mắc nặng (tim phổi, ung thư giai đoạn cuối, bệnh suy nhược khác), không có phẫu thuật viên giáp kinh nghiệm. Thai kỳ là chống chỉ định tương đối — chỉ phẫu thuật khi cần kiểm soát cường giáp nhanh và không thể dùng ATD. Nên tránh phẫu thuật cắt giáp trong tam cá nguyệt 1 và 3 (nguy cơ quái thai do thuốc mê, sẩy thai ở tam cá nguyệt 1, sinh non ở tam cá nguyệt 3). Thời điểm tối ưu là tam cá nguyệt 2 — dù an toàn nhất nhưng vẫn có nguy cơ (4,5–5,5% sinh non). Phẫu thuật giáp trong thai kỳ cũng liên quan tỷ lệ biến chứng cao hơn, gồm suy cận giáp và tổn thương thần kinh thanh quản quặt ngược (RLN).</p>
+</div>
+
+<div class="tbl-wrap">
+<table>
+<caption>Bảng 5. Các tình huống lâm sàng ưu tiên một phương thức điều trị cường giáp Basedow (OO = ưu tiên; O = chấp nhận được; ! = thận trọng; − = không phải đầu tay nhưng có thể chấp nhận tuỳ hoàn cảnh; X = chống chỉ định)</caption>
+<tr><th>Tình huống lâm sàng</th><th>RAI</th><th>ATD</th><th>Phẫu thuật</th></tr>
+<tr><td>Thai kỳ*</td><td>X</td><td>OO</td><td>O</td></tr>
+<tr><td>Bệnh đồng mắc tăng nguy cơ PT / tiên lượng sống ngắn</td><td>OO</td><td>OO</td><td>X</td></tr>
+<tr><td>GO không hoạt động</td><td>O</td><td>O</td><td>O</td></tr>
+<tr><td>GO đang hoạt động</td><td>O/!</td><td>OO</td><td>OO</td></tr>
+<tr><td>Bệnh gan</td><td>OO</td><td>!</td><td>O</td></tr>
+<tr><td>Phản ứng bất lợi nặng với ATD</td><td>OO</td><td>X</td><td>O</td></tr>
+<tr><td>Đã PT/xạ trị vùng cổ trước đó</td><td>O</td><td>O</td><td>!</td></tr>
+<tr><td>Không có phẫu thuật viên giáp kinh nghiệm</td><td>OO</td><td>O</td><td>!</td></tr>
+<tr><td>Khả năng thuyên giảm cao</td><td>O</td><td>OO</td><td>-</td></tr>
+<tr><td>Liệt chu kỳ</td><td>OO</td><td>O</td><td>-</td></tr>
+<tr><td>Tăng áp phổi phải / suy tim sung huyết</td><td>OO</td><td>O</td><td>-</td></tr>
+<tr><td>Người cao tuổi có bệnh đồng mắc</td><td>OO</td><td>OO</td><td>O</td></tr>
+<tr><td>Ung thư giáp xác định/nghi ngờ</td><td>X</td><td>!</td><td>OO</td></tr>
+<tr><td>Một hoặc nhiều nhân giáp lớn</td><td>!</td><td>!</td><td>OO</td></tr>
+<tr><td>Cường cận giáp nguyên phát đồng mắc cần PT</td><td>!</td><td>-</td><td>OO</td></tr>
+</table>
+</div>
+<p style="font-size:12.5px;color:var(--ink-2);margin-top:-14px;">* Với phụ nữ dự định mang thai trong 6 tháng, xem thêm mục [T2].</p>
+
+<p><strong>Giá trị bệnh nhân có thể ảnh hưởng đến lựa chọn điều trị:</strong></p>
+<ul>
+<li><strong>RAI:</strong> bệnh nhân chọn RAI thường coi trọng việc kiểm soát dứt điểm cường giáp, tránh phẫu thuật, tránh tác dụng phụ của ATD; ít coi trọng hơn nhu cầu bổ sung hormon giáp suốt đời, tốc độ hồi phục nhanh, và nguy cơ nặng thêm/khởi phát bệnh mắt Basedow.</li>
+<li><strong>ATD:</strong> bệnh nhân chọn ATD thường coi trọng khả năng thuyên giảm bệnh và tránh dùng hormon giáp suốt đời, tránh phẫu thuật và phơi nhiễm phóng xạ; ít coi trọng hơn việc tránh tác dụng phụ của ATD (mục [E]) và khả năng tái phát bệnh.</li>
+<li><strong>Phẫu thuật:</strong> bệnh nhân chọn phẫu thuật thường coi trọng việc kiểm soát cường giáp nhanh và dứt điểm, tránh phơi nhiễm phóng xạ và tác dụng phụ của ATD; ít coi trọng hơn nguy cơ phẫu thuật tiềm ẩn và nhu cầu thay thế hormon giáp suốt đời.</li>
+</ul>
+
+<h2 id="h-rai-basedow">[D] Nếu chọn điều trị RAI, thực hiện như thế nào?</h2>
+
+<h3 id="h-chuan-bi-rai">[D1] Chuẩn bị bệnh nhân GD trước điều trị RAI</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 4</span> — Vì điều trị RAI cho GD có thể gây bùng phát cường giáp thoáng qua, nên cân nhắc chẹn beta giao cảm ngay cả ở bệnh nhân không triệu chứng nhưng có nguy cơ biến chứng cao do cường giáp nặng lên (ví dụ người cao tuổi, có bệnh đồng mắc).
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 5</span> — Ngoài chẹn beta giao cảm (Khuyến cáo 2, 4), nên cân nhắc điều trị trước bằng MMI trước khi làm RAI ở bệnh nhân có nguy cơ biến chứng cao do cường giáp nặng lên. Nên ngừng MMI 2–3 ngày trước khi làm RAI.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng trung bình</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 6</span> — Ở bệnh nhân nguy cơ cao biến chứng do cường giáp nặng lên, nên cân nhắc dùng lại MMI 3–7 ngày sau khi làm RAI.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 7</span> — Cần tối ưu hoá điều trị nội khoa các bệnh đồng mắc trước khi làm RAI.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>RAI đã được dùng điều trị cường giáp hơn 7 thập kỷ. Phương pháp này dung nạp tốt, biến chứng hiếm gặp, ngoại trừ liên quan bệnh mắt Basedow (mục [U]). Cơn bão giáp chỉ hiếm khi xảy ra sau khi dùng RAI. Trong một nghiên cứu bệnh nhân có bệnh tim do nhiễm độc giáp được điều trị chỉ bằng RAI, không thấy triệu chứng nào của nhiễm độc giáp nặng thêm. Tuy nhiên, RAI có thể gây tăng ngắn hạn nồng độ hormon giáp. Để phòng ngừa bùng phát cường giáp, có thể cân nhắc dùng MMI hoặc carbimazole (không có mặt tại Hoa Kỳ) trước và sau RAI ở bệnh nhân cường giáp nặng, người cao tuổi, và người có bệnh đồng mắc đáng kể làm tăng nguy cơ biến chứng khi cường giáp nặng lên. Nhóm bệnh đồng mắc này bao gồm bệnh tim mạch như rung nhĩ, suy tim, tăng áp phổi; suy thận, nhiễm trùng, chấn thương, đái tháo đường kiểm soát kém, bệnh mạch máu não hoặc phổi. Các bệnh đồng mắc này cần được xử trí nội khoa chuẩn và đưa bệnh nhân về trạng thái ổn định trước khi làm RAI nếu có thể. Nếu có thể, nên tránh thuốc cản quang chứa iod. Ngoài ra, cần dùng thận trọng chẹn beta giao cảm khi chuẩn bị RAI ở nhóm bệnh nhân này. MMI và carbimazole đã được chứng minh làm giảm nồng độ hormon giáp sau RAI trong các thử nghiệm ngẫu nhiên có đối chứng. Tuy nhiên, một phân tích gộp gần đây các thử nghiệm ngẫu nhiên cũng cho thấy MMI, carbimazole và PTU làm giảm tỷ lệ thành công của RAI nếu dùng trong tuần trước hoặc sau RAI. Sử dụng liều RAI cao hơn có thể bù trừ cho hiệu quả giảm đi này.</p>
+<p>Không cần chế độ ăn đặc biệt trước RAI, nhưng nên tránh thực phẩm bổ sung chứa dư iod và rong biển trong ít nhất 7 ngày. Chế độ ăn ít iod có thể hữu ích ở bệnh nhân có RAIU tương đối thấp để tăng tỷ lệ RAI được bắt giữ.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Bệnh nhân có thể hưởng lợi từ điều trị trước bằng MMI/carbimazole thường là người dung nạp kém triệu chứng cường giáp, thường có FT4 gấp 2–3 lần giới hạn trên bình thường. Bệnh nhân trẻ và trung niên khoẻ mạnh, bù trừ lâm sàng tốt dù cường giáp sinh hoá đáng kể, thường có thể làm RAI mà không cần điều trị trước. Nếu dùng điều trị trước, cần ngừng MMI/carbimazole trước khi làm RAI. Ngừng ATD 2–3 ngày ngăn tăng ngắn hạn hormon giáp — hiện tượng này xuất hiện sau 6 ngày. Ở người cao tuổi hoặc có bệnh tim mạch nền, nên cân nhắc dùng lại MMI/carbimazole 3–7 ngày sau RAI, giảm liều dần khi chức năng giáp bình thường hoá. Trong một nghiên cứu, nếu dùng lại MMI 7 ngày sau RAI, FT4 đo 3 tuần sau RAI thấp hơn 6% so với giá trị lúc làm RAI; nếu không dùng lại MMI, FT4 cao hơn 36% so với giá trị lúc làm RAI. Qua nhiều thập kỷ, một số báo cáo cho thấy điều trị trước bằng lithium làm giảm liều RAI cần thiết để chữa khỏi cường giáp Basedow và có thể ngăn tăng hormon giáp khi ngừng ATD. Tuy nhiên, cách tiếp cận này chưa được dùng rộng rãi và chưa đủ bằng chứng để khuyến cáo. Ở một số bệnh nhân GD lẽ ra là đối tượng điều trị trước bằng ATD (do bệnh đồng mắc hoặc triệu chứng nặng) nhưng dị ứng ATD, có thể rút ngắn thời gian cường giáp bằng cách dùng iod (ví dụ dung dịch kali iodide bão hoà [SSKI]) bắt đầu 1 tuần sau khi làm RAI.</p>
+</div>
+
+<h3 id="h-thuc-hien-rai">[D2] Thực hiện điều trị RAI cho GD</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 8</span> — Nên dùng đủ liều hoạt độ RAI trong một lần duy nhất, thường liều trung bình 10–15 mCi (370–555 MBq), để đưa bệnh nhân GD về trạng thái suy giáp.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 9</span> — Cần làm test thai trong vòng 48 giờ trước điều trị ở mọi phụ nữ còn khả năng sinh sản sẽ được điều trị RAI. Bác sĩ điều trị phải tự làm xét nghiệm này và xác nhận kết quả âm tính trước khi cho RAI.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Mục tiêu điều trị RAI trong GD là kiểm soát cường giáp bằng cách đưa bệnh nhân về trạng thái suy giáp; phương pháp này rất hiệu quả nếu đủ liều bức xạ lắng đọng vào tuyến giáp. Kết quả này có thể đạt được tương đương nhau dù dùng liều cố định hay tính liều theo kích thước tuyến giáp và khả năng bắt giữ RAI.</p>
+<p>Phương pháp thứ nhất đơn giản, trong khi phương pháp thứ hai cần xác định hai biến số chưa biết: độ tập trung RAI và kích thước tuyến giáp. Từ đó tính liều điều trị dựa trên hai yếu tố này và lượng bức xạ (μCi hoặc Bq) cần lắng đọng trên mỗi gram (hoặc cc) mô giáp (ví dụ: hoạt độ [μCi] = trọng lượng tuyến [g] × 50–200 μCi/g × [1/độ tập trung 24 giờ tính theo % hoạt độ đã dùng]). Hoạt độ tính bằng microcurie hoặc becquerel được chuyển sang millicurie hoặc megabecquerel bằng cách chia cho 1000. Độ tập trung thường dùng nhất được tính ở thời điểm 24 giờ, kích thước tuyến giáp xác định bằng sờ nắn hoặc siêu âm. Một nghiên cứu cho thấy ước lượng này của bác sĩ có kinh nghiệm khá chính xác so với hình ảnh giải phẫu; tuy nhiên các nghiên cứu khác chưa xác nhận điều này. Ngoài ra, có thể tính chi tiết hơn để lắng đọng một liều bức xạ cụ thể (rad hoặc Gy) vào tuyến giáp; cách này cần biết thêm thời gian bán huỷ hiệu dụng của RAI, đòi hỏi nhiều thời gian và tính toán hơn, và vì kết quả không cho thấy vượt trội nên ít được dùng tại Hoa Kỳ.</p>
+<p>Bằng chứng cho thấy cần đạt liều &gt;150 μCi/g (5,55 MBq/g) để đưa bệnh nhân về trạng thái suy giáp. Bệnh nhân đang lọc máu hoặc có ống nuôi ăn qua hỗng tràng/dạ dày cần chăm sóc và xử trí đặc biệt khi điều trị RAI.</p>
+<p>Hiệu quả điều trị RAI trong GD phụ thuộc mạnh vào liều hoạt độ. Ở bệnh nhân không dùng kèm ATD, các thử nghiệm ngẫu nhiên cho tỷ lệ thành công 61% với liều 5,4 mCi (200 MBq), 69% với 8,2 mCi (302 MBq), 74% với 10 mCi (370 MBq), 81% với 15 mCi (555 MBq), và 86% với 15,7 mCi (580 MBq). Vì tỷ lệ bệnh nhân cần điều trị lại cao, không khuyến cáo điều trị RAI liều thấp.</p>
+<p>Có báo cáo về tăng tử vong tim mạch và mạch máu não lâu dài sau RAI ở bệnh nhân không đạt suy giáp, trái với tỷ lệ tử vong không đổi ở bệnh nhân đạt suy giáp sau RAI đang dùng levothyroxine — phản ánh vai trò của cường giáp dai dẳng hơn là bản thân RAI đối với tử vong. Một phân tích gộp gần đây không thấy tăng nguy cơ ung thư chung sau điều trị RAI cho cường giáp; tuy nhiên có xu hướng tăng nguy cơ ung thư giáp, dạ dày và thận, cần nghiên cứu thêm. Ở một số nam giới, có giảm nhẹ tỷ số testosterone/LH sau RAI, mang tính dưới lâm sàng và hồi phục được. Nên trì hoãn có thai ở phụ nữ cho đến khi đạt bình giáp ổn định (đang dùng hormon thay thế sau huỷ giáp thành công) — thường mất 4–6 tháng hoặc lâu hơn. Ở nam giới, nên trì hoãn 3–4 tháng để tinh trùng được thay mới hoàn toàn. Tuy nhiên, một khi đã bình giáp (ở cả hai giới), không có bằng chứng giảm khả năng sinh sản, và con của người từng điều trị không có dị tật bẩm sinh cao hơn dân số chung.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Đưa bệnh nhân về trạng thái suy giáp có thể đạt được tương đương bằng liều cố định đủ lớn hoặc tính liều theo kích thước và khả năng bắt giữ iod của tuyến giáp. Thai nhi phơi nhiễm RAI sau tuần 10–11 của thai kỳ có thể sinh ra không có tuyến giáp (athyreotic) và về lý thuyết tăng nguy cơ giảm trí tuệ và/hoặc ung thư. Ở phụ nữ cho con bú, không nên điều trị RAI trong ít nhất 6 tuần sau khi ngừng cho bú để đảm bảo RAI không còn tập trung tích cực vào mô vú. Trì hoãn 3 tháng sẽ đảm bảo chắc chắn hơn rằng hoạt tính kênh vận chuyển natri-iodide ở mô vú liên quan cho con bú đã trở về bình thường. Không nên cho bú lại sau điều trị RAI.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 10</span> — Bác sĩ thực hiện điều trị RAI cần cung cấp hướng dẫn bằng văn bản về các biện pháp an toàn phóng xạ sau điều trị. Nếu bệnh nhân không thể tuân thủ các biện pháp này, cần chọn phương thức điều trị khác.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Cần tuân thủ mọi quy định an toàn phóng xạ quốc gia và khu vực liên quan đến điều trị RAI. Tại Hoa Kỳ, bác sĩ điều trị phải đảm bảo và ghi nhận rằng không thành viên nào của công chúng bị phơi nhiễm ≥0,5 mSv (500 mrem) khi bệnh nhân được xuất viện với hoạt độ tồn dư ≥33 mCi (1,22 GBq), hoặc phát xạ ≥7 mrem/giờ (70 μSv/giờ) ở khoảng cách 1 m.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Cần đảm bảo tính liên tục trong theo dõi, có thể qua trao đổi giữa bác sĩ giới thiệu và bác sĩ điều trị — bao gồm yêu cầu điều trị từ bác sĩ giới thiệu và xác nhận đã điều trị từ bác sĩ thực hiện.</p>
+</div>
+
+<h3 id="h-theo-doi-sau-rai">[D3] Theo dõi bệnh nhân sau điều trị RAI cho GD</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 11</span> — Trong 1–2 tháng đầu sau điều trị RAI cho GD, cần theo dõi FT4, T3 toàn phần và TSH. Tiếp tục theo dõi sinh hoá mỗi 4–6 tuần trong 6 tháng, hoặc cho đến khi bệnh nhân đạt suy giáp và ổn định với hormon giáp thay thế.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Hầu hết bệnh nhân đáp ứng với RAI bằng việc bình thường hoá xét nghiệm chức năng giáp và cải thiện triệu chứng lâm sàng trong 4–8 tuần. Suy giáp có thể xuất hiện từ tuần thứ 4 trở đi, với 40% bệnh nhân suy giáp vào tuần thứ 8 và &gt;80% vào tuần thứ 16. Quá trình chuyển đổi này có thể xảy ra nhanh nhưng thường trong 2–6 tháng, và thời điểm bắt đầu thay thế hormon giáp nên dựa trên kết quả xét nghiệm chức năng giáp, triệu chứng lâm sàng và khám thực thể. Suy giáp thoáng qua sau RAI hiếm khi xảy ra, sau đó có thể hồi phục hoàn toàn chức năng giáp hoặc tái phát cường giáp. Ở những bệnh nhân này, tuyến giáp thường vẫn sờ thấy được.</p>
+<p>Chẹn beta đã dùng trước RAI nên giảm liều dần khi FT4 và T3 toàn phần trở về khoảng tham chiếu. Khi FT4 và T3 toàn phần cải thiện, có thể giảm liều MMI dần, giúp đánh giá đáp ứng với RAI.</p>
+<p>Hầu hết bệnh nhân cuối cùng sẽ suy giáp sau RAI, biểu hiện bằng FT4 dưới ngưỡng bình thường. Lúc này cần bắt đầu levothyroxine. TSH có thể chưa tăng ngay khi bắt đầu suy giáp, nên không dùng TSH ban đầu để quyết định cần dùng levothyroxine hay không. Khi bắt đầu thay thế hormon giáp, liều nên điều chỉnh dựa trên FT4. Liều cần thiết có thể thấp hơn liều thay thế đầy đủ điển hình, và cần chuẩn liều thận trọng do còn chức năng giáp tồn dư không ức chế được hoàn toàn. Cần tránh suy giáp rõ, đặc biệt ở bệnh nhân có bệnh mắt Basedow đang hoạt động (mục [U2]). Khi đã đạt bình giáp, khuyến cáo xét nghiệm chức năng giáp suốt đời ít nhất hằng năm, hoặc khi có triệu chứng suy giáp/cường giáp.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Vì TSH có thể vẫn bị ức chế trong một tháng hoặc lâu hơn sau khi cường giáp hết, cần diễn giải thận trọng và chỉ kết hợp với FT4 và T3 toàn phần.</p>
+</div>
+
+<h3 id="h-ton-tai-sau-rai">[D4] Điều trị cường giáp Basedow tồn tại sau RAI</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 12</span> — Khi cường giáp do GD còn tồn tại sau 6 tháng kể từ RAI, nên điều trị lại bằng RAI. Ở một số bệnh nhân chọn lọc đáp ứng tối thiểu sau 3 tháng điều trị, có thể cân nhắc dùng thêm RAI.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Đáp ứng với điều trị RAI có thể được đánh giá qua theo dõi kích thước tuyến, chức năng giáp, và dấu hiệu/triệu chứng lâm sàng. Mục tiêu điều trị lại là kiểm soát chắc chắn cường giáp bằng cách đưa bệnh nhân về trạng thái suy giáp. Bệnh nhân có TSH ức chế dai dẳng nhưng T3 toàn phần và FT4 bình thường có thể chưa cần điều trị lại ngay, nhưng cần theo dõi sát để phát hiện tái phát hoặc suy giáp. Ở tỷ lệ nhỏ bệnh nhân cường giáp kháng trị với nhiều lần RAI, nên cân nhắc phẫu thuật.</p>
+</div>
+
+<hr class="sect">
+<div class="box">
+<div class="box-title">TÓM TẮT PHẦN 1 — SẼ TIẾP TỤC Ở PHẦN 2</div>
+<p style="margin:0;">Phần 2 sẽ trình bày: điều trị Basedow bằng thuốc kháng giáp tổng hợp [E] (khởi trị, tác dụng phụ — mất bạch cầu hạt, độc gan, viêm mạch, theo dõi, thời gian điều trị), phẫu thuật cắt giáp cho GD [F], xử trí nhân giáp kèm GD [G], cơn bão giáp [H], vai trò của iod đơn thuần [I], và mở đầu về bướu giáp đa nhân độc/bướu nhân độc [J].</p>
+</div>
+</div>
+
+
+    <hr class="sect">
+    <p style="font-size:12.5px; color:var(--ink-2);">Nguồn đầy đủ: Ross DS, Burch HB, Cooper DS, Greenlee MC, Laurberg P, Maia AL, Rivkees SA, Samuels M, Sosa JA, Stan MN, Walter MA. 2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis. Thyroid 2016;26(10):1343–1421. DOI: 10.1089/thy.2016.0229. Danh mục 139 tài liệu tham khảo đầy đủ có trong bản gốc, không chép lại ở đây.</p>
+  </main>
+</div>
+
+<div id="hlbtn">Đánh dấu</div>
+
+<script>
+(function(){
+  const content = document.getElementById('content');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const menuBtn = document.getElementById('menuBtn');
+  const progress = document.getElementById('progress');
+  const readpct = document.getElementById('readpct');
+  const tocEl = document.getElementById('toc');
+  const hlbtn = document.getElementById('hlbtn');
+  const hlcount = document.getElementById('hlcount');
+  const clearHlBtn = document.getElementById('clearHl');
+  const STORAGE_KEY = 'ata2016_hyperthyroid_p1_v1';
+
+  menuBtn.addEventListener('click', ()=>{ sidebar.classList.add('open'); overlay.classList.add('show'); });
+  overlay.addEventListener('click', ()=>{ sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+
+  const headings = Array.from(content.querySelectorAll('h2, h3'));
+  const links = [];
+  headings.forEach(h=>{
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#'+h.id;
+    a.textContent = h.textContent;
+    a.className = h.tagName === 'H2' ? 'lvl2' : 'lvl3';
+    a.addEventListener('click', ()=>{ sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+    li.appendChild(a);
+    tocEl.appendChild(li);
+    links.push({id:h.id, el:a});
+  });
+
+  function onScroll(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.min(100, Math.round((scrollTop/docHeight)*100)) : 0;
+    progress.style.width = pct + '%';
+    readpct.textContent = 'Đã đọc: ' + pct + '%';
+    let currentId = links[0] ? links[0].id : null;
+    for (const h of headings){
+      const rect = h.getBoundingClientRect();
+      if (rect.top - 90 <= 0) currentId = h.id;
+    }
+    links.forEach(l=> l.el.classList.toggle('active', l.id === currentId));
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  const blocks = Array.from(content.querySelectorAll('p, li, td'));
+  blocks.forEach((el, i)=>{ el.setAttribute('data-hid', 'b'+i); });
+
+  function getTextOffset(container, node, offset){
+    let total = 0; let found = false;
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+    let n;
+    while(n = walker.nextNode()){
+      if (n === node){ total += offset; found = true; break; }
+      total += n.textContent.length;
+    }
+    return found ? total : null;
+  }
+
+  function wrapRange(container, start, end, hlid){
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+    let pos = 0; let n; const toWrap = [];
+    while(n = walker.nextNode()){
+      const len = n.textContent.length;
+      const nStart = pos, nEnd = pos+len;
+      if (nEnd > start && nStart < end){
+        const wStart = Math.max(0, start-nStart);
+        const wEnd = Math.min(len, end-nStart);
+        toWrap.push({node:n, wStart, wEnd});
+      }
+      pos += len;
+      if (pos >= end) break;
+    }
+    toWrap.reverse().forEach(({node, wStart, wEnd})=>{
+      const range = document.createRange();
+      range.setStart(node, wStart);
+      range.setEnd(node, wEnd);
+      const mark = document.createElement('mark');
+      mark.className = 'hl';
+      mark.setAttribute('data-hlid', hlid);
+      mark.title = 'Bấm để xoá highlight';
+      try{ range.surroundContents(mark); }catch(e){}
+    });
+  }
+
+  function loadHighlights(){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    list.forEach(item=>{
+      const container = content.querySelector('[data-hid="'+item.bid+'"]');
+      if (container) wrapRange(container, item.start, item.end, item.id);
+    });
+    updateHlCount();
+  }
+
+  function saveHighlight(bid, start, end, text){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    const id = 'h'+Date.now()+Math.floor(Math.random()*1000);
+    list.push({id, bid, start, end, text});
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    updateHlCount();
+  }
+
+  function removeHighlight(hlid){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    list = list.filter(x=>x.id !== hlid);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    document.querySelectorAll('mark.hl[data-hlid="'+hlid+'"]').forEach(m=>{
+      const parent = m.parentNode;
+      while(m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+      parent.normalize();
+    });
+    updateHlCount();
+  }
+
+  function updateHlCount(){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    hlcount.textContent = list.length + ' đoạn đã highlight';
+  }
+
+  content.addEventListener('click', (e)=>{
+    if (e.target.tagName === 'MARK' && e.target.classList.contains('hl')){
+      const hlid = e.target.getAttribute('data-hlid');
+      if (confirm('Xoá highlight này?')) removeHighlight(hlid);
+    }
+  });
+
+  clearHlBtn.addEventListener('click', ()=>{
+    if (!confirm('Xoá toàn bộ highlight đã lưu?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    document.querySelectorAll('mark.hl').forEach(m=>{
+      const parent = m.parentNode;
+      while(m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+      parent.normalize();
+    });
+    updateHlCount();
+  });
+
+  let pendingSelection = null;
+  document.addEventListener('mouseup', (e)=>{
+    if (e.target === hlbtn) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || sel.rangeCount === 0){ hlbtn.style.display='none'; return; }
+    const range = sel.getRangeAt(0);
+    const container = range.commonAncestorContainer;
+    const el = container.nodeType === 1 ? container : container.parentElement;
+    const block = el.closest ? el.closest('[data-hid]') : null;
+    if (!block || !content.contains(block)){ hlbtn.style.display='none'; return; }
+    const start = getTextOffset(block, range.startContainer, range.startOffset);
+    const end = getTextOffset(block, range.endContainer, range.endOffset);
+    if (start === null || end === null || end <= start){ hlbtn.style.display='none'; return; }
+    pendingSelection = { bid: block.getAttribute('data-hid'), start, end, text: sel.toString() };
+    const rect = range.getBoundingClientRect();
+    hlbtn.style.left = (window.scrollX + rect.left + rect.width/2 - 34) + 'px';
+    hlbtn.style.top = (window.scrollY + rect.top - 38) + 'px';
+    hlbtn.style.display = 'block';
+  });
+
+  hlbtn.addEventListener('mousedown', (e)=> e.preventDefault());
+  hlbtn.addEventListener('click', ()=>{
+    if (!pendingSelection) return;
+    const { bid, start, end } = pendingSelection;
+    const container = content.querySelector('[data-hid="'+bid+'"]');
+    const id = 'h'+Date.now()+Math.floor(Math.random()*1000);
+    if (container) wrapRange(container, start, end, id);
+    saveHighlight(bid, start, end, pendingSelection.text);
+    window.getSelection().removeAllRanges();
+    hlbtn.style.display = 'none';
+    pendingSelection = null;
+  });
+
+  document.addEventListener('mousedown', (e)=>{
+    if (e.target !== hlbtn) hlbtn.style.display = 'none';
+  });
+
+  loadHighlights();
+})();
+</script>
+</body>
+</html>

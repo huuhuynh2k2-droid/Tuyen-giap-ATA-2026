@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ATA 2016 – Cường giáp (Phần 3): TMNG/TA & Basedow ở Trẻ em</title>
+<style>
+  :root{
+    --bg:#FAFAF7; --surface:#FFFFFF; --ink:#211F1B; --ink-2:#6B6862;
+    --border:#E4E1D8; --accent:#A6192E; --accent-ink:#6E0F1D; --accent-bg:#FBEAEC;
+    --warn-bg:#FBEFE0; --warn-ink:#6B3E06; --warn-border:#EBCE9C;
+    --hl:#FFE58A;
+    --serif:"Source Serif 4","Iowan Old Style",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --sidebar-w:290px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.7; font-size:16px;}
+  a{color:var(--accent-ink);}
+  #progress{position:fixed; top:0; left:0; height:3px; background:var(--accent); width:0%; z-index:100; transition:width .1s linear;}
+  #topbar{display:none; position:sticky; top:0; z-index:60; background:var(--surface); border-bottom:1px solid var(--border); padding:10px 14px; align-items:center; gap:10px;}
+  #topbar button{background:none; border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:14px; color:var(--ink); cursor:pointer;}
+  #topbar .ttl{font-family:var(--serif); font-size:15px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .layout{display:flex; max-width:1180px; margin:0 auto;}
+  #sidebar{width:var(--sidebar-w); flex-shrink:0; position:sticky; top:0; align-self:flex-start; height:100vh; overflow-y:auto; padding:28px 18px 40px 28px; border-right:1px solid var(--border);}
+  #sidebar .eyebrow{font-size:11px; letter-spacing:.03em; color:var(--accent-ink); font-weight:600; margin-bottom:6px;}
+  #sidebar .doc-title{font-family:var(--serif); font-size:16.5px; font-weight:600; line-height:1.35; margin-bottom:14px;}
+  #readpct{font-size:12px; color:var(--ink-2); margin-bottom:18px;}
+  #toc{list-style:none; margin:0; padding:0; font-size:13.5px;}
+  #toc li{margin:0;}
+  #toc a{display:block; padding:6px 8px; border-radius:6px; color:var(--ink-2); text-decoration:none; border-left:2px solid transparent;}
+  #toc a.lvl2{font-weight:600; color:var(--ink); margin-top:6px;}
+  #toc a.lvl3{padding-left:20px; font-size:13px;}
+  #toc a:hover{background:var(--accent-bg);}
+  #toc a.active{border-left:2px solid var(--accent); color:var(--accent-ink); background:var(--accent-bg); font-weight:600;}
+  #sidebar-foot{margin-top:22px; padding-top:14px; border-top:1px solid var(--border);}
+  #sidebar-foot button{width:100%; background:none; border:1px solid var(--border); border-radius:6px; padding:8px; font-size:12.5px; color:var(--ink-2); cursor:pointer;}
+  #sidebar-foot button:hover{border-color:var(--accent); color:var(--accent-ink);}
+  #hlcount{font-size:12px; color:var(--ink-2); margin-bottom:8px;}
+  main{flex:1; min-width:0; padding:44px 48px 120px; max-width:780px;}
+  .kicker{display:inline-block; background:var(--accent); color:#fff; font-size:11.5px; letter-spacing:.06em; font-weight:600; padding:4px 10px; border-radius:4px; margin-bottom:16px;}
+  h1{font-family:var(--serif); font-size:32px; line-height:1.22; font-weight:600; margin:0 0 10px;}
+  .byline{color:var(--ink-2); font-size:14px; margin-bottom:4px;}
+  .cite{color:var(--ink-2); font-size:12.5px; margin-bottom:30px; border-bottom:1px solid var(--border); padding-bottom:26px;}
+  h2{font-family:var(--serif); font-size:23px; font-weight:600; margin:44px 0 14px; scroll-margin-top:20px;}
+  h3{font-family:var(--serif); font-size:18.5px; font-weight:600; margin:30px 0 10px; scroll-margin-top:20px;}
+  p{margin:0 0 16px;}
+  .sup{font-size:11px; vertical-align:super; color:var(--accent-ink);}
+  strong{font-weight:600;}
+  .box{background:var(--accent-bg); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin:20px 0;}
+  .box .box-title{font-weight:600; color:var(--accent-ink); font-size:13px; letter-spacing:.02em; margin-bottom:8px;}
+  .box ul{margin:0; padding-left:20px;}
+  .box li{margin-bottom:6px;}
+  .rec{background:#F1EFE6; border-left:3px solid var(--accent); border-radius:6px; padding:12px 16px; margin:14px 0; font-size:14.5px;}
+  .rec .num{font-weight:700; color:var(--accent-ink);}
+  .grade{display:inline-block; font-weight:700; font-size:11.5px; background:var(--accent); color:#fff; border-radius:4px; padding:1px 6px; margin-left:4px;}
+  .warn{background:var(--warn-bg); border:1px solid var(--warn-border); border-radius:10px; padding:16px 20px; margin:20px 0; color:var(--warn-ink); font-size:14.5px;}
+  table{width:100%; border-collapse:collapse; margin:18px 0 26px; font-size:13.5px;}
+  caption{caption-side:top; text-align:left; font-weight:600; font-size:13.5px; margin-bottom:8px; color:var(--ink);}
+  th,td{border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top;}
+  th{background:#F1EFE6; font-weight:600;}
+  tr:nth-child(even) td{background:#FCFCFA;}
+  .tbl-wrap{overflow-x:auto;}
+  ul,ol{padding-left:22px;}
+  li{margin-bottom:6px;}
+  .fig-caption{font-size:13px; color:var(--ink-2); font-style:italic; margin-top:8px;}
+  hr.sect{border:none; border-top:1px solid var(--border); margin:36px 0;}
+  mark.hl{background:var(--hl); padding:0 1px; border-radius:2px; cursor:pointer;}
+  #hlbtn{position:absolute; display:none; z-index:80; background:var(--ink); color:#fff; font-size:12.5px; padding:7px 12px; border-radius:6px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.2); user-select:none;}
+  #hlbtn:hover{background:#000;}
+  @media (max-width:880px){
+    #topbar{display:flex;}
+    .layout{flex-direction:column;}
+    #sidebar{position:fixed; top:0; left:0; height:100%; z-index:70; background:var(--surface); width:82vw; max-width:320px; transform:translateX(-100%); transition:transform .22s ease; box-shadow:8px 0 30px rgba(0,0,0,.12);}
+    #sidebar.open{transform:translateX(0);}
+    #overlay{display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:65;}
+    #overlay.show{display:block;}
+    main{padding:28px 20px 100px; max-width:100%;}
+    h1{font-size:25px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="topbar"><button id="menuBtn" aria-label="Mục lục">☰ Mục lục</button><div class="ttl">ATA 2016 Cường giáp – P3</div></div>
+<div id="overlay"></div>
+
+<div class="layout">
+  <aside id="sidebar">
+    <div class="eyebrow">HƯỚNG DẪN CHUYÊN ĐỀ · THYROID (ATA) 2016</div>
+    <div class="doc-title">Hướng dẫn ATA 2016 về Chẩn đoán và Xử trí Cường giáp — Phần 3/5</div>
+    <div id="readpct">Đã đọc: 0%</div>
+    <ul id="toc"></ul>
+    <div id="sidebar-foot">
+      <div id="hlcount">0 đoạn đã highlight</div>
+      <button id="clearHl">Xoá tất cả highlight</button>
+    </div>
+  </aside>
+
+  <main id="content">
+    <span class="kicker">PHẦN 3/5 · TMNG/TA — BASEDOW TRẺ EM</span>
+    <h1>Hướng dẫn ATA 2016: Chẩn đoán và Xử trí Cường giáp — Phần 3</h1>
+    <div class="byline">Douglas S. Ross, Henry B. Burch, David S. Cooper và cộng sự — American Thyroid Association Task Force</div>
+    <div class="cite">Nguồn: Ross DS, Burch HB, Cooper DS, et al. 2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis. Thyroid. 2016;26(10):1343–1421. DOI: 10.1089/thy.2016.0229. Bản dịch tham khảo phục vụ học tập lâm sàng — không thay thế bản gốc.</div>
+
+    <div class="box">
+<div class="box-title">VỀ TÀI LIỆU NÀY</div>
+<p style="margin:0;">Đây là <strong>Phần 3/5</strong> của bộ tài liệu dịch Hướng dẫn ATA 2016 về cường giáp. Phần 3 bao gồm: cường giáp do bướu giáp đa nhân độc/bướu nhân độc — TMNG/TA [J–N] (Khuyến cáo 37–57: RAI, phẫu thuật, ATD, cồn/sóng cao tần), và toàn bộ Basedow ở trẻ em, thanh thiếu niên [O–R] (Khuyến cáo 58–72: nguyên tắc chung, ATD, RAI, phẫu thuật ở trẻ). Xem <strong>Phần 1–2</strong> để đọc phần Nền tảng, chẩn đoán, và điều trị Basedow ở người lớn (RAI, ATD, phẫu thuật, bão giáp).</p>
+</div>
+
+<h2 id="h-tmng-ta-tong-quan">[J] Xử trí cường giáp rõ do TMNG hoặc TA như thế nào?</h2>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 37</span> — Đề nghị bệnh nhân TMNG hoặc TA cường giáp rõ được điều trị bằng RAI hoặc cắt giáp. Đôi khi, điều trị dài hạn MMI liều thấp có thể phù hợp.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Trong 44 bệnh nhân Nhật Bản có phản ứng bất lợi với ATD được điều trị chỉ bằng KI, 66% được kiểm soát tốt trung bình 18 năm (9–28 năm), 39% thuyên giảm sau 7 năm (2–23 năm). Ở nhóm đáp ứng, liều dùng 13–100 mg, điều chỉnh theo đáp ứng sinh hoá. Trong 15 người không đáp ứng, 11 người (25% tổng số) thoát khỏi tác dụng ức chế của iod, 4 người hoàn toàn không đáp ứng KI. Không bệnh nhân nào có tác dụng phụ. FT4 ban đầu và kích thước bướu giáp không dự báo được đáp ứng.</p>
+<p>Có hai lựa chọn điều trị dứt điểm hiệu quả và tương đối an toàn cho TMNG và TA: RAI và phẫu thuật giáp. Quyết định điều trị cần cân nhắc nhiều yếu tố lâm sàng, nhân khẩu học, và ưu tiên của bệnh nhân. Mục tiêu điều trị là loại bỏ nhanh và bền vững tình trạng cường giáp.</p>
+<p>Ở bệnh nhân TMNG, nguy cơ thất bại điều trị hoặc cần điều trị lại &lt;1% sau cắt giáp gần toàn bộ/toàn bộ, so với 20% nguy cơ cần điều trị lại sau RAI. Bình giáp đạt được trong vài ngày sau mổ. Tuy nhiên, nguy cơ suy giáp và nhu cầu hormon thay thế là 100% sau cắt giáp gần toàn bộ/toàn bộ. Ở bệnh nhân TMNG điều trị RAI, đáp ứng 50–60% tại 3 tháng và 80% tại 6 tháng. Trong một nghiên cứu lớn bệnh nhân TMNG điều trị RAI, tỷ lệ suy giáp là 3% tại 1 năm và 64% tại 24 năm. Suy giáp thường gặp hơn ở bệnh nhân &lt;50 tuổi so với &gt;70 tuổi (61% so với 36% sau 16 năm). Một nghiên cứu gần đây hơn cho tỷ lệ suy giáp 4% tại 1 năm và 16% tại 5 năm.</p>
+<p>Trong một loạt ca hồi cứu lớn bệnh nhân TMNG có triệu chứng chèn ép, toàn bộ bệnh nhân cắt giáp toàn bộ hết triệu chứng, trong khi chỉ 46% bệnh nhân điều trị RAI cải thiện triệu chứng này. Kết quả này có thể một phần do bướu giáp rất lớn điều trị RAI liều cao chỉ giảm kích thước 30–50%.</p>
+<p>Ở bệnh nhân TA, nguy cơ thất bại điều trị &lt;1% sau cắt bỏ phẫu thuật (cắt thuỳ giáp cùng bên hoặc cắt eo giáp). Bình giáp thường đạt trong vài ngày sau mổ. Tỷ lệ suy giáp sau cắt thuỳ cho TA dao động 2–3%, dù tỷ lệ suy giáp sau cắt thuỳ cho nhân lành tính không độc được báo cáo cao tới 20%, và thấp hơn sau cắt eo giáp trong trường hợp đặc biệt TA khu trú tại eo giáp. Ở bệnh nhân TA điều trị RAI, nguy cơ cường giáp tồn tại 6–18% và tái phát 3–5,5%. Đáp ứng 75% tại 3 tháng và 89% tại 1 năm sau RAI cho TA. Tỷ lệ suy giáp sau RAI tiến triển dần và nhanh hơn khi có kháng thể kháng giáp hoặc TSH không ức chế tại thời điểm điều trị. Một nghiên cứu theo dõi 684 bệnh nhân TA điều trị RAI cho thấy tỷ lệ suy giáp rõ và dưới lâm sàng tăng dần: 7,6% tại 1 năm, 28% tại 5 năm, 46% tại 10 năm, 60% tại 20 năm. Tiến triển suy giáp nhanh hơn ở bệnh nhân lớn tuổi và những người ức chế TSH không hoàn toàn (tương quan chỉ ức chế một phần nhu mô ngoài nhân) do từng điều trị ATD trước đó. Nhân hiếm khi bị loại bỏ hoàn toàn ở bệnh nhân TA điều trị RAI, dẫn tới cần theo dõi tiếp tục.</p>
+<p>Biến chứng tiềm ẩn sau cắt giáp gần toàn bộ/toàn bộ gồm nguy cơ suy cận giáp vĩnh viễn (&lt;2,0%) hoặc tổn thương thần kinh thanh quản quặt ngược (&lt;2,0%). Có nguy cơ nhỏ tổn thương thần kinh thanh quản quặt ngược vĩnh viễn khi phẫu thuật TA. Sau RAI, có báo cáo khởi phát GD mới (tỷ lệ tới 4%) cũng như lo ngại về ác tính giáp và tăng rất nhỏ ung thư ngoài giáp muộn. Nhìn chung, tỷ lệ thành công của RAI (đạt suy giáp hoặc bình giáp dứt điểm) cao: 93,7% ở TA và 81,1% ở TMNG.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Sau khi chẩn đoán, bác sĩ và bệnh nhân nên thảo luận từng lựa chọn điều trị (hậu cần, lợi ích, tốc độ hồi phục, hạn chế, tác dụng phụ, chi phí) để đưa ra khuyến nghị dựa trên phán đoán lâm sàng, kết hợp giá trị cá nhân của bệnh nhân. TMNG và TA là nguyên nhân hiếm gây cường giáp trong thai kỳ, thiếu nghiên cứu trong bối cảnh này. Tuy nhiên, xét nguy cơ lý thuyết của phẫu thuật hoặc ATD (phải dùng suốt thai kỳ, có xu hướng điều trị quá mức cho thai nhi), điều trị dứt điểm bằng RAI hoặc phẫu thuật trước khi có kế hoạch mang thai có thể tối ưu. Đa số chuyên gia ưu tiên tránh RAI trong vòng 6 tháng trước khi mang thai; nếu dùng, cần hết sức thận trọng. Hội đồng đồng thuận rằng TMNG và TA có RAIU cao ở nhân và RAIU bị ức chế rộng ở mô giáp quanh nhân đặc biệt phù hợp điều trị RAI, tuy chưa đủ dữ liệu để đưa thành khuyến cáo chính thức.</p>
+</div>
+
+<div class="tbl-wrap">
+<table>
+<caption>Bảng 8. Các tình huống lâm sàng ưu tiên một phương thức điều trị cho bướu giáp đa nhân độc hoặc bướu nhân độc</caption>
+<tr><th>Tình huống lâm sàng</th><th>RAI</th><th>ATD</th><th>Phẫu thuật</th></tr>
+<tr><td>Thai kỳ*</td><td>X</td><td>OO</td><td>O</td></tr>
+<tr><td>Tuổi cao, bệnh đồng mắc tăng nguy cơ PT / tiên lượng sống ngắn</td><td>OO</td><td>OO</td><td>X</td></tr>
+<tr><td>Đã PT/xạ trị vùng cổ trước đó</td><td>O</td><td>O</td><td>!</td></tr>
+<tr><td>Không có phẫu thuật viên giáp kinh nghiệm</td><td>OO</td><td>O</td><td>!</td></tr>
+<tr><td>Triệu chứng/dấu hiệu chèn ép vùng cổ</td><td>O</td><td>-</td><td>OO</td></tr>
+<tr><td>Ung thư giáp xác định/nghi ngờ</td><td>X</td><td>-</td><td>OO</td></tr>
+<tr><td>Bướu giáp/nhân lớn</td><td>O</td><td>-</td><td>OO</td></tr>
+<tr><td>Bướu giáp/nhân lan xuống trung thất</td><td>O</td><td>-</td><td>OO</td></tr>
+<tr><td>Cường cận giáp đồng mắc cần PT</td><td>-</td><td>-</td><td>OO</td></tr>
+</table>
+</div>
+<p style="font-size:12.5px;color:var(--ink-2);margin-top:-14px;">OO = ưu tiên; O = chấp nhận được; ! = thận trọng; − = không phải đầu tay nhưng có thể chấp nhận tuỳ hoàn cảnh; X = chống chỉ định. * Với phụ nữ dự định mang thai trong 6 tháng, xem mục [T2].</p>
+
+<p><strong>Các yếu tố ưu tiên một phương thức điều trị cho TMNG hoặc TA (Bảng 8):</strong></p>
+<ul>
+<li><strong>RAI:</strong> tuổi cao, bệnh đồng mắc đáng kể, đã phẫu thuật/sẹo vùng cổ trước, bướu giáp nhỏ, RAIU đủ để điều trị, và không có phẫu thuật viên giáp kinh nghiệm (yếu tố này quan trọng hơn với TMNG so với TA).</li>
+<li><strong>Phẫu thuật:</strong> có triệu chứng/dấu hiệu chèn ép vùng cổ, lo ngại ung thư giáp đồng mắc, cường cận giáp đồng mắc cần mổ, bướu giáp lớn (&gt;80 g), lan xuống trung thất/sau xương ức, RAIU không đủ để điều trị, hoặc cần điều chỉnh nhanh tình trạng nhiễm độc giáp.</li>
+<li><strong>ATD:</strong> tuổi cao, bệnh đồng mắc tăng nguy cơ phẫu thuật hoặc giảm tuổi thọ, và ứng viên kém cho điều trị dứt điểm.</li>
+</ul>
+<div class="warn">
+<strong>Chống chỉ định theo phương thức (TMNG/TA):</strong><br>
+<strong>RAI:</strong> chống chỉ định tuyệt đối gồm thai kỳ, cho con bú, ung thư giáp đồng mắc, không tuân thủ được an toàn phóng xạ; thận trọng ở phụ nữ dự định mang thai trong 4–6 tháng.<br>
+<strong>Phẫu thuật:</strong> yếu tố cản trở gồm bệnh đồng mắc nặng (tim phổi, ung thư giai đoạn cuối, bệnh suy nhược khác), không có phẫu thuật viên kinh nghiệm. Thai kỳ là chống chỉ định tương đối — chỉ mổ khi cần kiểm soát cường giáp nhanh và không dùng được ATD. Tránh mổ giáp tam cá nguyệt 1 và 3; tối ưu ở nửa sau tam cá nguyệt 2 (vẫn có 4,5–5,5% nguy cơ sinh non).<br>
+<strong>ATD:</strong> chống chỉ định tuyệt đối là tiền sử phản ứng bất lợi nặng với ATD.
+</div>
+<p><strong>Yếu tố ảnh hưởng ưu tiên của bệnh nhân:</strong></p>
+<ul>
+<li><strong>RAI:</strong> bệnh nhân TMNG hoặc TA chọn RAI thường coi trọng việc tránh phẫu thuật, nhập viện, hoặc biến chứng từ mổ/gây mê; bệnh nhân TMNG cũng coi trọng khả năng vẫn bình giáp sau RAI.</li>
+<li><strong>Phẫu thuật:</strong> bệnh nhân chọn mổ thường coi trọng kiểm soát dứt điểm triệu chứng cường giáp, tránh phơi nhiễm phóng xạ, ít coi trọng nguy cơ mổ/gây mê; bệnh nhân TMNG chọn mổ ít coi trọng việc chắc chắn cần thay hormon suốt đời, còn bệnh nhân TA chọn mổ coi trọng khả năng đạt bình giáp mà không cần thay hormon.</li>
+<li><strong>ATD:</strong> bệnh nhân chọn ATD thường coi trọng tránh phơi nhiễm phóng xạ và nguy cơ phẫu thuật/gây mê, ít coi trọng việc chắc chắn cần dùng ATD suốt đời.</li>
+</ul>
+
+<h2 id="h-rai-tmng-ta">[K] Nếu chọn RAI điều trị TMNG hoặc TA, thực hiện như thế nào?</h2>
+
+<h3 id="h-chuan-bi-rai-tmng">[K1] Chuẩn bị bệnh nhân TMNG hoặc TA trước RAI</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 38</span> — Vì điều trị RAI cho TMNG/TA có thể gây bùng phát cường giáp thoáng qua, nên cân nhắc chẹn beta ngay cả ở bệnh nhân không triệu chứng nhưng có nguy cơ biến chứng do cường giáp nặng lên (người cao tuổi, bệnh đồng mắc).
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Xử trí nội khoa trước RAI nên cá thể hoá theo nguy cơ biến chứng nếu cường giáp nặng thêm, dựa trên mức độ nặng cường giáp, tuổi, và bệnh đồng mắc. Đã ghi nhận cường giáp sinh hoá nặng thêm kèm tăng nhịp tim, hiếm khi nhịp nhanh trên thất (kể cả rung nhĩ, cuồng nhĩ) ở bệnh nhân điều trị RAI cho TMNG hoặc bướu giáp đa nhân không độc. Ở bệnh nhân nhạy cảm có sẵn bệnh tim hoặc người cao tuổi, RAI có thể gây nặng thêm lâm sàng đáng kể. Do đó, nên cân nhắc chẹn beta phòng ngừa loạn nhịp nhanh sau điều trị ở mọi bệnh nhân TMNG/TA trên 60 tuổi và người có bệnh tim mạch hoặc cường giáp nặng.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 39</span> — Ngoài chẹn beta (Khuyến cáo 2, 38), nên cân nhắc điều trị trước bằng MMI trước RAI cho TMNG/TA ở bệnh nhân nguy cơ cao biến chứng do cường giáp nặng lên, gồm người cao tuổi và người có bệnh tim mạch hoặc cường giáp nặng.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 40</span> — Ở bệnh nhân nguy cơ cao biến chứng do cường giáp nặng lên, nên cân nhắc dùng lại ATD 3–7 ngày sau RAI.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Bệnh nhân trẻ và trung niên có TMNG hoặc TA thường không cần điều trị trước bằng ATD (MMI) trước RAI, nhưng có thể hưởng lợi từ chẹn beta nếu có triệu chứng và không chống chỉ định.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Nếu dùng ATD chuẩn bị RAI cho TMNG/TA, cần thận trọng tránh làm RAI khi TSH bình thường hoặc tăng, để tránh RAI tác động trực tiếp lên mô giáp bình thường quanh nhân và đối bên (tăng nguy cơ suy giáp). Tuy nhiên, nếu mục tiêu là giảm thể tích bướu giáp (chấp nhận đánh đổi tăng nguy cơ suy giáp), điều trị trước bằng MMI cho phép TSH tăng nhẹ trước RAI sẽ giúp giảm thể tích nhiều hơn sau liều RAI cố định. Tương tự, một phân tích gộp gần đây cho thấy dùng TSH người tái tổ hợp (rhTSH) trước RAI trong bướu giáp đa nhân không độc hoặc TMNG giúp giảm thể tích tuyến nhiều hơn nhưng tỷ lệ suy giáp cao hơn so với RAI đơn thuần. Trừ khi giảm thể tích là mục tiêu quan trọng, không khuyến cáo chung việc dùng rhTSH trước RAI cho TMNG vì có thể làm nặng thêm cường giáp, là chỉ định ngoài nhãn, và chủ yếu kích thích RAIU ở mô quanh nhân nhạy TSH.</p>
+</div>
+
+<h3 id="h-danh-gia-nhan-truoc-rai">[K2] Đánh giá nhân giáp trước RAI</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 41</span> — Nhân không chức năng trên xạ hình hoặc nhân có đặc điểm siêu âm nghi ngờ cần được xử trí theo hướng dẫn đã công bố về nhân giáp ở người bình giáp.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Cần đánh giá kỹ các nhân nghi ngờ trong TMNG theo hướng dẫn đã công bố trước khi chọn RAI làm điều trị. Tỷ lệ ung thư giáp trong TMNG trước đây ước tính khoảng 3%. Gần đây ước tính cao tới 9%, tương tự tỷ lệ 10,6% trong bướu giáp đa nhân không độc.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Cả ATA và AACE (phối hợp Hiệp hội Giáp châu Âu và Associazione Medici Endocrinologi), cùng Hiệp hội Giáp Mỹ Latinh đã công bố hướng dẫn xử trí nhân giáp.</p>
+</div>
+
+<h3 id="h-thuc-hien-rai-tmng">[K3] Thực hiện RAI điều trị TMNG hoặc TA</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 42</span> — Cần dùng đủ liều RAI trong một lần duy nhất để giải quyết cường giáp ở bệnh nhân TMNG.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Mục tiêu điều trị RAI, đặc biệt ở người cao tuổi, là loại bỏ tình trạng cường giáp. Liều RAI cao hơn — dù đã tính phù hợp theo thể tích/khối mô cường giáp — giúp giải quyết cường giáp nhanh hơn và giảm nhu cầu điều trị lại, nhưng tăng nguy cơ suy giáp sớm. Một nghiên cứu cho thấy 64% suy giáp sau 24 năm điều trị RAI cho TMNG, tỷ lệ cao hơn ở người cần điều trị nhiều lần. Tỷ lệ suy giáp sau RAI tăng khi TSH bình thường hoặc tăng tại thời điểm điều trị (do điều trị trước bằng ATD hoặc rhTSH) và khi có kháng thể kháng giáp.</p>
+<p>Liều RAI điều trị TMNG, tính theo kích thước bướu giáp để đạt 150–200 μCi (5,55–7,4 MBq) mỗi gram mô hiệu chỉnh theo RAIU 24 giờ, thường cao hơn liều điều trị GD. Ngoài ra, giá trị RAIU trong TMNG có thể thấp hơn, cần tăng liều RAI áp dụng. Các biện pháp an toàn phóng xạ có thể phức tạp hơn nếu cần liều RAI cao cho bướu giáp lớn. Cả điều trị trước bằng MMI cho phép TSH tăng nhẹ và dùng rhTSH ngoài nhãn có thể giảm tổng liều RAI cần thiết, nhưng đều tăng nguy cơ suy giáp (xem thảo luận mục [K1]).</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">To lớn tuyến giáp rất hiếm sau RAI. Tuy nhiên, cần dặn bệnh nhân báo ngay nếu thấy cảm giác thắt chặt vùng cổ, khó thở, hoặc thở rít sau RAI. Bất kỳ triệu chứng chèn ép nào (khó chịu, sưng, nuốt khó, khàn giọng) xuất hiện sau RAI cần được đánh giá và theo dõi cẩn thận; nếu cần lâm sàng, có thể dùng corticosteroid. Suy hô hấp trong bối cảnh này cực hiếm và cần xử trí như bất kỳ nguyên nhân chèn ép khí quản cấp nào khác.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 43</span> — Cần dùng đủ liều RAI trong một lần duy nhất để giải quyết cường giáp ở bệnh nhân TA.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>RAI điều trị TA có thể dùng liều cố định khoảng 10–20 mCi (370–740 MBq) hoặc liều tính theo kích thước nhân dùng 150–200 μCi (5,5–7,4 MBq) mỗi gram, hiệu chỉnh theo RAIU 24 giờ. Một nghiên cứu theo dõi dài hạn bệnh nhân TA — nhân &lt;4 cm dùng trung bình 13 mCi (481 MBq), nhân lớn hơn dùng trung bình 17 mCi (629 MBq) — cho thấy suy giáp tăng dần theo thời gian ở cả hai nhóm, gợi ý suy giáp phát triển theo thời gian bất kể điều chỉnh liều theo kích thước nhân. Một thử nghiệm ngẫu nhiên trên 97 bệnh nhân TA so sánh liều cố định cao (22,5 mCi/833 MBq) hoặc thấp (13 mCi/481 MBq) với liều tính toán cao (180–200 μCi/g) hoặc thấp (90–100 μCi/g) hiệu chỉnh RAIU 24 giờ. Nghiên cứu xác nhận các báo cáo trước đây: liều RAI cao hơn giúp cường giáp biến mất sớm hơn nhưng suy giáp cũng xuất hiện sớm hơn. Dùng liều tính toán cho phép dùng liều RAI thấp hơn mà vẫn đạt hiệu quả chữa khỏi cường giáp tương đương.</p>
+
+<h3 id="h-theo-doi-rai-tmng">[K4] Theo dõi bệnh nhân sau RAI cho TMNG hoặc TA</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 44</span> — Trong 1–2 tháng đầu sau RAI cho TMNG/TA, cần đánh giá FT4, T3 toàn phần, TSH. Tiếp tục theo dõi sinh hoá mỗi 4–6 tuần trong 6 tháng, hoặc cho đến khi suy giáp ổn định với hormon thay thế.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>RAI điều trị TMNG giải quyết cường giáp ở khoảng 55% bệnh nhân tại 3 tháng và 80% tại 6 tháng, tỷ lệ thất bại trung bình 15%. Thể tích bướu giáp giảm từ tháng thứ 3, tiếp tục giảm thêm qua 24 tháng, tổng giảm kích thước 40%. Với TA, 75% bệnh nhân hết cường giáp tại 3 tháng, thể tích nhân giảm 35% tại 3 tháng và 45% tại 2 năm. Nguy cơ cường giáp tồn tại/tái phát dao động 0–30% tuỳ nghiên cứu. Các nghiên cứu dài hạn cho thấy nguy cơ suy giáp rõ hoặc dưới lâm sàng tăng dần: khoảng 8% tại 1 năm và 60% tại 20 năm với TA, trung bình 3% tại 1 năm và 64% tại 24 năm với TMNG.</p>
+<p>GD có thể khởi phát sau RAI cho TMNG ở tới 4% bệnh nhân. Những bệnh nhân này cường giáp nặng thêm trong vài tháng sau RAI. Điều trị bằng RAI bổ sung có hiệu quả.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Nếu cần điều trị hormon giáp, liều cần dùng có thể thấp hơn liều thay thế đầy đủ do còn chức năng giáp tự động tồn dư.</p>
+</div>
+
+<h3 id="h-ton-tai-sau-rai-tmng">[K5] Điều trị cường giáp tồn tại/tái phát sau RAI cho TMNG hoặc TA</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 45</span> — Nếu cường giáp còn tồn tại sau 6 tháng kể từ RAI cho TMNG/TA, đề nghị điều trị lại bằng RAI. Ở bệnh nhân chọn lọc đáp ứng tối thiểu sau 3 tháng, có thể cân nhắc thêm RAI.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Trong ca nặng hoặc kháng trị cường giáp tồn tại do TMNG/TA sau RAI, có thể cân nhắc phẫu thuật. Vì một số bệnh nhân cường giáp nhẹ sau RAI sẽ tiếp tục cải thiện theo thời gian, có thể cân nhắc dùng MMI kèm theo dõi sát để kiểm soát cường giáp trong lúc chờ RAI phát huy hiệu quả.</p>
+</div>
+
+<h2 id="h-phau-thuat-tmng-ta">[L] Nếu chọn phẫu thuật cho TMNG/TA, thực hiện như thế nào?</h2>
+
+<h3 id="h-chuan-bi-pt-tmng">[L1] Chuẩn bị bệnh nhân TMNG/TA trước phẫu thuật</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 46</span> — Nếu chọn phẫu thuật cho TMNG/TA, bệnh nhân cường giáp rõ cần được đưa về bình giáp trước mổ bằng MMI (có hoặc không kèm chẹn beta). Không dùng iod trước mổ trong bối cảnh này.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Nguy cơ phẫu thuật tăng khi có nhiễm độc giáp. Cơn nguy kịch nhiễm độc giáp trong/sau mổ có thể gây tăng chuyển hoá cực độ, tăng thân nhiệt, nhịp nhanh, tăng huyết áp, hôn mê, hoặc tử vong. Do đó, phòng ngừa bằng chuẩn bị bệnh nhân cẩn thận là tối quan trọng. Y văn ghi nhận nguy cơ tử vong liên quan gây mê khi cắt giáp rất thấp. Không chỉ định dùng iod trước mổ vì nguy cơ làm nặng thêm cường giáp. Thường cường giáp trong TMNG ít nặng hơn, nên đa số bệnh nhân dị ứng ATD có thể chuẩn bị mổ chỉ bằng chẹn beta khi cần.</p>
+
+<h3 id="h-quy-trinh-pt-tmng">[L2] Quy trình phẫu thuật và lựa chọn phẫu thuật viên (TMNG)</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 47</span> — Nếu chọn phẫu thuật cho TMNG, cần thực hiện cắt giáp gần toàn bộ hoặc toàn bộ.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Có thể tránh tái phát trong TMNG nếu cắt giáp gần toàn bộ/toàn bộ được thực hiện ngay từ đầu. Thủ thuật này có thể thực hiện với tỷ lệ biến chứng thấp tương đương cắt giáp bán phần. Mổ lại vì bướu giáp tái phát/tồn tại làm tăng nguy cơ liệt dây thanh vĩnh viễn hoặc suy cận giáp lên 3–10 lần.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 48</span> — Phẫu thuật TMNG cần được thực hiện bởi phẫu thuật viên giáp khối lượng ca cao.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>TMNG thường gặp hơn ở người cao tuổi. Dữ liệu về kết cục cắt giáp ở người cao tuổi có kết quả trái chiều. Tuy nhiên nhìn chung, các nghiên cứu ở cấp độ dân số cho thấy tỷ lệ biến chứng sau mổ, thời gian nằm viện, và chi phí cao hơn đáng kể ở người cao tuổi. Dữ liệu cho kết cục tương đương ở người cao tuổi thường đến từ các trung tâm khối lượng ca cao. Dữ liệu vững chắc cho thấy số ca cắt giáp của phẫu thuật viên là yếu tố dự báo độc lập kết cục lâm sàng và kinh tế (biến chứng trong viện, thời gian nằm viện, tổng chi phí) sau mổ giáp. Khuyến cáo chuyển đến phẫu thuật viên khối lượng ca cao về cơ bản giống mục [F2] cho GD.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 49</span> — Nếu chọn phẫu thuật cho TA, cần siêu âm giáp đánh giá toàn bộ tuyến. Nên cắt thuỳ giáp cùng bên (hoặc cắt eo giáp nếu u nằm ở eo) cho TA đơn độc.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Siêu âm giáp trước mổ hữu ích vì phát hiện các nhân nghi ngờ đối bên hoặc cần theo dõi thêm — cả hai tình huống này có thể khiến cắt giáp toàn bộ phù hợp hơn. Cắt thuỳ loại bỏ TA nhưng giữ lại mô giáp bình thường, cho phép đa số bệnh nhân còn chức năng giáp tồn dư. Một loạt ca lớn về TA không ghi nhận tử vong phẫu thuật, tỷ lệ biến chứng thấp. Ở bệnh nhân muốn tránh gây mê toàn thân hoặc có bệnh đồng mắc đáng kể, nguy cơ gây mê có thể giảm thêm khi dùng gây tê vùng cổ kết hợp an thần bởi phẫu thuật viên và bác sĩ gây mê có kinh nghiệm. Bệnh nhân có kháng thể kháng giáp dương tính trước mổ có nguy cơ suy giáp sau mổ cao hơn.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 50</span> — Đề nghị phẫu thuật TA được thực hiện bởi phẫu thuật viên khối lượng ca cao.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Dù kinh nghiệm phẫu thuật viên trong bối cảnh TA ít quan trọng hơn so với TMNG, đây vẫn là yếu tố cần cân nhắc khi chọn giữa mổ và RAI. Phẫu thuật viên khối lượng ca cao có xu hướng kết cục tốt hơn sau cắt thuỳ so với phẫu thuật viên khối lượng ca thấp, dù khác biệt chưa có ý nghĩa thống kê. Phẫu thuật viên khối lượng ca cao có thể tự tin hơn khi thực hiện cắt thuỳ dưới gây tê vùng cổ kết hợp an thần.</p>
+
+<h3 id="h-cham-soc-sau-mo-tmng">[L3] Chăm sóc sau mổ (TMNG/TA)</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 51</span> — Sau cắt giáp cho TMNG, cần đo calci huyết thanh có/không kèm iPTH, bổ sung calci và calcitriol uống theo kết quả.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Xử trí hạ calci máu sau cắt giáp cho TMNG về cơ bản giống mục [F3] cho GD. Cường giáp trước mổ nặng/kéo dài và bướu giáp lớn, nhiều mạch máu hơn (thường gặp hơn ở GD) làm tăng nguy cơ hạ calci máu sau mổ.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 52</span> — Cần ngừng MMI tại thời điểm phẫu thuật cho TMNG/TA. Giảm dần chẹn beta sau mổ.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Thời gian giảm dần chẹn beta cần cân nhắc FT4 trước mổ, nhịp tim, và thời gian bán huỷ khoảng 1 tuần của T4. Ngoài ra, bệnh nhân dùng liều chẹn beta cao hơn sẽ cần giảm dần lâu hơn.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 53</span> — Sau cắt giáp cho TMNG, nên bắt đầu hormon thay thế với liều phù hợp cân nặng (0,8 μg/lb hay 1,6 μg/kg) và tuổi, người cao tuổi cần liều thấp hơn đôi chút. Đo TSH mỗi 1–2 tháng đến khi ổn định, sau đó hằng năm.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Liều L-thyroxine phù hợp thay đổi theo BMI bệnh nhân. Nếu còn mô giáp tồn dư đáng kể (có thể tự sản xuất hormon tự động) sau mổ, liều hormon ngay sau mổ nên bắt đầu thấp hơn liều thay thế đầy đủ, điều chỉnh sau theo xét nghiệm chức năng giáp.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 54</span> — Sau cắt thuỳ cho TA, cần đo TSH và ước tính FT4 tại 4–6 tuần sau mổ, bắt đầu bổ sung hormon giáp nếu TSH tăng dai dẳng trên giới hạn tham chiếu.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Sau cắt thuỳ cho TA, không cần đo calci huyết thanh thường quy, không cần bổ sung calci/calcitriol. Cần thay hormon giáp ở khoảng 15–20% bệnh nhân sau cắt thuỳ. TSH trước mổ có thể đã ức chế hoặc bình thường tuỳ mức độ chuẩn bị ATD trước mổ. TSH có thể vẫn ở mức cao-bình thường trong 3–6 tháng sau cắt thuỳ; do đó theo dõi tiếp 4–6 tháng ở bệnh nhân không triệu chứng là hợp lý vì chức năng giáp có thể phục hồi.</p>
+</div>
+
+<h3 id="h-ton-tai-sau-pt-tmng">[L4] Điều trị bệnh tồn tại/tái phát sau phẫu thuật TMNG hoặc TA</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 55</span> — Nên dùng RAI để điều trị lại cường giáp tồn tại/tái phát sau phẫu thuật chưa đủ cho TMNG/TA.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Cường giáp tồn tại/tái phát sau mổ cho thấy phẫu thuật chưa đủ triệt để. Vì mổ lại làm tăng đáng kể nguy cơ suy cận giáp và tổn thương thần kinh thanh quản quặt ngược, nên tránh nếu có thể, ưu tiên RAI. Nếu không phải lựa chọn, thiết yếu là mổ lại phải do phẫu thuật viên khối lượng ca cao thực hiện.</p>
+
+<h2 id="h-atd-tmng-ta">[M] Nếu chọn ATD điều trị TMNG hoặc TA, quản lý như thế nào?</h2>
+<p>ATD không gây thuyên giảm ở bệnh nhân bệnh giáp có nhân. Do đó, ngừng điều trị sẽ dẫn đến tái phát. Tuy nhiên, ATD dài hạn (suốt đời) có thể là lựa chọn tốt nhất cho một số người có tiên lượng sống ngắn và nguy cơ phẫu thuật cao, gồm cư dân viện dưỡng lão hoặc cơ sở chăm sóc khó tuân thủ quy định an toàn phóng xạ.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 56</span> — Điều trị MMI dài hạn cho TMNG/TA có thể chỉ định ở một số bệnh nhân cao tuổi hoặc yếu, tiên lượng sống ngắn, không phải ứng viên tốt cho phẫu thuật/điều trị dứt điểm, hoặc ưu tiên lựa chọn này.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Liều MMI cần thiết để đưa bệnh nhân TMNG/TA về bình giáp thường thấp (5–10 mg/ngày). Vì điều trị ATD liều thấp dài hạn trong cường giáp do nhân khó điều chỉnh, khuyến cáo theo dõi thường xuyên (mỗi 3 tháng) ban đầu, đặc biệt ở người cao tuổi, đến khi ổn định, sau đó có thể giảm tần suất xét nghiệm.</p>
+</div>
+
+<h2 id="h-con-rf-ablation">[N] Có vai trò của cồn hoặc sóng cao tần trong xử trí TA/TMNG không?</h2>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 57</span> — Các liệu pháp thay thế như tiêm cồn hoặc đốt sóng cao tần cho TA/TMNG có thể cân nhắc ở bệnh nhân chọn lọc khi RAI, phẫu thuật, và ATD dài hạn không phù hợp, chống chỉ định, hoặc bị từ chối, và có sẵn chuyên môn thực hiện thủ thuật.
+<span class="grade">Không khuyến cáo; chưa đủ bằng chứng đánh giá lợi ích/nguy cơ</span>
+</div>
+
+<h3 id="h-tiem-con">[N1] Tiêm cồn</h3>
+<p>Các báo cáo ủng hộ hiệu quả tiêm cồn qua da dưới hướng dẫn siêu âm điều trị TA và TMNG chủ yếu đến từ châu Âu. Kinh nghiệm tại Hoa Kỳ còn hạn chế. Phác đồ điển hình gồm tiêm cồn (liều trung bình 10 mL, tuỳ kích thước vùng cần đốt) vào TA hoặc vùng tự động của TMNG. Trong một nghiên cứu, bệnh nhân trung bình cần 4 lần tiêm cách nhau 2 tuần. 125 bệnh nhân TA được theo dõi trung bình 5 năm; 2,4% từ chối điều trị tiếp vì đau, 3,2% có biến chứng (liệt dây thần kinh thanh quản quặt ngược thoáng qua, áp xe, hoặc tụ máu). 93% bệnh nhân đạt chữa khỏi về chức năng (không bắt xạ trên xạ hình), 92% giảm &gt;50% kích thước nhân. Trong nghiên cứu khác trên cả TA và TMNG, 78% đạt chữa khỏi chức năng, mọi nhân đều thoái triển, không tái phát cường giáp trong 5 năm theo dõi. Tiêm cồn cũng được dùng sau RAI để giảm kích thước nhân. Tuy nhiên, việc dùng bị hạn chế do đau liên quan thoát cồn ra ngoài nhân, và các tác dụng phụ khác gồm nhiễm độc giáp thoáng qua, dị cảm mặt cùng bên vĩnh viễn, xơ hoá quanh nhân cản trở phẫu thuật sau này, và hoại tử độc tại thanh quản và da lân cận.</p>
+
+<h3 id="h-dot-song-cao-tan">[N2] Đốt sóng cao tần</h3>
+<p>Cả đốt sóng cao tần (RFA) và laser đã được dùng điều trị nhân giáp. Một phân tích gộp cho thấy RFA giảm kích thước nhân nhiều hơn với ít lần thực hiện hơn so với laser. Một báo cáo hồi cứu đa trung tâm về RFA cho TA ở 44 bệnh nhân dùng điện cực 18-gauge dưới hướng dẫn siêu âm, theo dõi trung bình 20 tháng: giảm 82% thể tích nhân, nhưng 20% nhân vẫn tự động trên xạ hình và 18% bệnh nhân vẫn cường giáp. Mọi bệnh nhân đều đau khi thực hiện thủ thuật, không có biến chứng. Một nghiên cứu Hàn Quốc so sánh RFA với phẫu thuật cho nhân lành tính không độc: RFA giảm 85% kích thước nhân, chi phí tương đương phẫu thuật, ít biến chứng hơn (tổn thương thần kinh thanh quản quặt ngược/suy cận giáp: 6% ở phẫu thuật so với 1% ở RFA), không bệnh nhân RFA nào suy giáp. Người ủng hộ RFA cho rằng nó bảo tồn chức năng giáp bình thường tốt hơn so với phẫu thuật hoặc RAI. Tuy nhiên, cần thêm dữ liệu xác định hiệu quả điều trị dứt điểm cường giáp ở TA và TMNG. Việc dùng RFA nên giới hạn ở các trung tâm có bác sĩ được đào tạo đầy đủ về kỹ thuật này.</p>
+
+<h2 id="h-basedow-tre-em">[O] Xử trí GD ở trẻ em và thanh thiếu niên như thế nào?</h2>
+
+<h3 id="h-nguyen-tac-chung-tre">[O1] Nguyên tắc chung</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 58</span> — Trẻ em GD nên điều trị bằng MMI, RAI, hoặc cắt giáp. Nên tránh RAI ở trẻ rất nhỏ (&lt;5 tuổi). RAI ở trẻ em chấp nhận được nếu liều &gt;150 μCi/g (5,55 MBq/g) mô giáp, và với trẻ 5–10 tuổi nếu liều RAI tính toán &lt;10 mCi (&lt;370 MBq). Nên chọn cắt giáp khi cần điều trị dứt điểm, trẻ còn quá nhỏ cho RAI, và phẫu thuật có thể thực hiện bởi phẫu thuật viên giáp khối lượng ca cao.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Điều trị bệnh nhân nhi GD khác biệt đáng kể giữa các cơ sở và bác sĩ. Quan trọng cần nhận thức rằng thuyên giảm bền vững sau ATD chỉ xảy ra ở thiểu số trẻ em GD, kể cả trẻ điều trị ATD nhiều năm. Khi quyết định hướng điều trị ban đầu, cần cân nhắc tuổi, tình trạng lâm sàng, và khả năng thuyên giảm. Giá trị và ưu tiên của bệnh nhân/phụ huynh cũng cần được cân nhắc kỹ khi chọn một trong ba phương thức.</p>
+<p>Vì một số trẻ sẽ thuyên giảm, điều trị MMI trong 1 năm vẫn được coi là đầu tay cho đa số trẻ. Tuy nhiên, đa số bệnh nhân nhi GD cuối cùng sẽ cần RAI hoặc phẫu thuật. Khi dùng ATD ở trẻ, chỉ nên dùng MMI, trừ trường hợp đặc biệt. Nếu đặc điểm lâm sàng gợi ý khả năng thuyên giảm thấp ngay từ đầu (xem mục [P6]), có thể cân nhắc MMI, RAI, hoặc phẫu thuật ngay từ đầu. Nếu không thuyên giảm sau một đợt ATD, nên cân nhắc RAI hoặc phẫu thuật. Cách khác, có thể tiếp tục MMI dài hạn cho đến khi trẻ đủ lớn để phẫu thuật hoặc RAI.</p>
+<p>Nếu dùng đúng cách, RAI là điều trị hiệu quả cho GD ở trẻ em. RAI được dùng rộng rãi ở trẻ nhưng vẫn còn gây tranh cãi ở một số bác sĩ chủ yếu vì lo ngại nguy cơ ung thư. Dù dữ liệu lâm sàng về RAI ở trẻ GD và ung thư giáp sau này còn ít, đã biết nguy cơ ung thư giáp sau xạ trị ngoài cao nhất ở trẻ &lt;5 tuổi, giảm dần theo tuổi (xem thảo luận về RAI và nguy cơ ung thư ở mục [Q3] dưới đây). Ngược lại, liều RAI dùng trong điều trị hiện đại chưa được biết liên quan tăng nguy cơ tân sinh giáp ở trẻ em.</p>
+<p>Cắt giáp là điều trị hiệu quả cho GD, nhưng tỷ lệ biến chứng ở trẻ em cao hơn người lớn. Nên cắt giáp ở trẻ quá nhỏ cho RAI, với điều kiện phẫu thuật được thực hiện bởi phẫu thuật viên khối lượng ca cao, ưu tiên có kinh nghiệm mổ giáp ở trẻ em.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Có thể có tình huống chỉ định RAI ở trẻ nhỏ, ví dụ khi trẻ có phản ứng với ATD, không có chuyên môn phẫu thuật phù hợp, hoặc không phải ứng viên phẫu thuật tốt.</p>
+</div>
+
+<h2 id="h-atd-tre-em">[P] Nếu chọn ATD điều trị ban đầu GD ở trẻ em, quản lý như thế nào?</h2>
+
+<h3 id="h-khoi-tri-atd-tre">[P1] Khởi trị ATD cho GD ở trẻ em</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 59</span> — Nên dùng MMI ở trẻ điều trị bằng ATD.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">MMI có dạng viên 5 hoặc 10 mg, có thể dùng 1 lần/ngày kể cả ở bệnh nhân cường giáp nặng. Dù nhiều bác sĩ chia liều MMI, dữ liệu ở người lớn không ủng hộ cần thiết chia liều và cho thấy tuân thủ tốt hơn với MMI 1 lần/ngày so với PTU nhiều lần/ngày (83% so với 53%). Liều MMI thường dùng 0,2–0,5 mg/kg/ngày, khoảng 0,1–1,0 mg/kg/ngày. Một cách tiếp cận: trẻ sơ sinh 1,25 mg/ngày; 1–5 tuổi: 2,5–5,0 mg/ngày; 5–10 tuổi: 5–10 mg/ngày; 10–18 tuổi: 10–20 mg/ngày. Với cường giáp nặng lâm sàng/sinh hoá, có thể dùng liều cao hơn 50–100% mức trên.</p>
+<p style="margin:8px 0 0;">Dù có xu hướng dùng liều MMI cao hơn khi khởi trị, dữ liệu ở người lớn cho thấy lợi ích khiêm tốn của liều cao và chỉ trong cường giáp nặng (FT4 &gt;7 ng/dL). Vì đa số tác dụng phụ MMI liên quan liều và xảy ra trong 3 tháng đầu điều trị, hiếm khi nên dùng liều cao ban đầu (ví dụ &gt;30 mg cho thanh thiếu niên/người lớn).</p>
+<p style="margin:8px 0 0;">Khi hormon giáp bình thường hoá, có thể giảm liều MMI 50% trở lên để duy trì bình giáp. Cách khác, một số bác sĩ không giảm liều MMI mà thêm levothyroxine để đạt bình giáp — gọi là "block and replace". Tuy nhiên, vì phân tích gộp gợi ý tỷ lệ biến cố bất lợi cao hơn với phác đồ này (có thể do liều MMI cao hơn và biến chứng liên quan liều), đề nghị tránh cách này. Tuy vậy có thể hữu ích ở số ít bệnh nhân (sau khi đã xử lý vấn đề tuân thủ) kiểm soát chưa đủ với một liều MMI, sau đó suy giáp khi tăng liều tối thiểu.</p>
+<p style="margin:8px 0 0;">Bác sĩ cũng nên theo dõi cân nặng trẻ điều trị ATD. Tăng cân quá mức trong 6 tháng đầu điều trị thường gặp ở trẻ điều trị GD, và có thể kéo dài. Cần tư vấn phụ huynh/bệnh nhân về khả năng này, cân nhắc tư vấn dinh dưỡng nếu tăng cân quá mức.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 60</span> — Bệnh nhân nhi và người chăm sóc cần được thông báo tác dụng phụ ATD, ưu tiên bằng văn bản, và sự cần thiết ngừng thuốc ngay, báo bác sĩ nếu xuất hiện phát ban ngứa, vàng da, phân bạc màu/nước tiểu sậm màu, đau khớp, đau bụng, buồn nôn, mệt mỏi, sốt, hoặc viêm họng.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 61</span> — Trước khi khởi trị ATD, đề nghị làm công thức máu nền (gồm bạch cầu có công thức) và bilan gan (bilirubin, transaminase, phosphatase kiềm) ở trẻ em.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>PTU liên quan nguy cơ độc gan không chấp nhận được ở trẻ em, với nguy cơ suy gan 1/2000–4000 trẻ dùng thuốc. PTU có thể gây hoại tử gan tối cấp gây tử vong; một số bệnh nhân dùng PTU đã phải ghép gan. Vì lý do này, FDA đã ban hành cảnh báo khung đen (black box) về PTU, ghi nhận 32 ca tổn thương gan nặng liên quan PTU (22 người lớn, 10 trẻ em). Hơn nữa, kể từ khi có khuyến cáo tránh PTU ở trẻ em, chưa ghi nhận thêm ca suy gan liên quan PTU nào được công bố.</p>
+<p>Vì tổn thương gan do PTU khởi phát nhanh và có thể tiến triển nhanh, theo dõi sinh hoá chức năng gan/transaminase định kỳ chưa cho thấy hữu ích trong giám sát tổn thương gan do PTU. Khi cả phẫu thuật cấp và RAI đều không khả thi, cần dùng ATD ở bệnh nhân có phản ứng độc nhẹ với MMI, có thể cân nhắc dùng PTU ngắn hạn. Khi dự định phẫu thuật và không dùng được MMI, nếu bệnh nhân không quá nặng (và cường giáp do GD), có thể kiểm soát trước mổ bằng chẹn beta và SSKI (50 mg iodide/giọt) 3–7 giọt (0,15–0,35 mL) uống 3 lần/ngày trong 10 ngày trước mổ. Trước mổ nên đưa FT4 hoặc T4/T3 toàn phần về mức bình thường hoặc dưới bình thường. Cách khác, nếu không thể mổ trong vài tuần, có thể dùng ngắn hạn PTU với theo dõi sát lâm sàng dấu hiệu rối loạn chức năng gan (buồn nôn, chán ăn, khó chịu, đau bụng).</p>
+<p>MMI cũng có thể liên quan độc gan ở trẻ em, nhưng thường nhẹ hơn và kiểu ứ mật thay vì tế bào gan. Ít nhất một ca vàng da ứ mật đã được báo cáo ở trẻ. Tuy nhiên, có báo cáo độc gan kiểu tế bào gan do MMI ở người lớn.</p>
+<p>MMI cũng có thể liên quan viêm mạch dương tính ANCA, dù ít gặp hơn nhiều so với PTU. Bệnh nhân gốc Á dường như dễ bị phản ứng này hơn, có thể xảy ra sau vài tháng đến vài năm điều trị. Nhiều bệnh nhân dùng PTU cũng phát triển ANCA dương tính khi điều trị nhưng không triệu chứng. Biểu hiện điển hình của viêm mạch dương tính ANCA gồm viêm đa khớp, tổn thương da dạng ban xuất huyết, đôi khi tổn thương phổi và/hoặc thận. Ngừng thuốc thường giải quyết triệu chứng, nhưng ca nặng hơn có thể cần glucocorticoid hoặc thuốc ức chế miễn dịch khác.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Nên cung cấp thông tin tác dụng phụ ATD cho bệnh nhân/người chăm sóc bằng văn bản. Xem ghi chú kỹ thuật ở Khuyến cáo 14 (Phần 2) về giá trị công thức máu/bilan gan trước khởi trị MMI.</p>
+</div>
+
+<h3 id="h-dieu-tri-trieu-chung-tre">[P2] Điều trị triệu chứng cường giáp Basedow ở trẻ em</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 62</span> — Nên dùng chẹn beta cho trẻ có triệu chứng cường giáp, đặc biệt trẻ nhịp tim &gt;100 lần/phút.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Ở trẻ nghi ngờ mạnh hoặc xác định cường giáp Basedow, có triệu chứng đáng kể (nhịp nhanh, yếu cơ, run, thay đổi tâm thần kinh...), điều trị bằng atenolol, propranolol, metoprolol, hoặc chẹn beta khác giúp giảm nhịp tim và triệu chứng GD. Ở trẻ có bệnh đường thở phản ứng, có thể thận trọng dùng chẹn beta chọn lọc tim (atenolol, metoprolol), theo dõi sát nguy cơ nặng thêm hen.</p>
+
+<h3 id="h-theo-doi-mmi-tre">[P3] Theo dõi trẻ dùng MMI</h3>
+<p>Sau khởi trị MMI, xét nghiệm chức năng giáp (FT4, T3 toàn phần, TSH) đo tại 2–6 tuần, điều chỉnh liều nếu cần, đo lại tại 4–6 tuần, sau đó mỗi 2–3 tháng khi liều đã ổn định. Tuỳ mức độ nặng cường giáp và liều MMI, có thể mất vài tháng để hormon giáp trở về bình thường. TSH có thể vẫn ức chế nhiều tháng sau khởi trị, không phải chỉ số tốt để theo dõi giai đoạn đầu.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 63</span> — Cần ngừng ATD ngay và đo công thức bạch cầu ở trẻ có sốt, đau khớp, loét miệng, viêm họng, hoặc khó chịu.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Dù MMI có hồ sơ an toàn tổng thể tốt hơn PTU, MMI vẫn liên quan các biến cố bất lợi nhẹ có thể ảnh hưởng tới 20% trẻ em. Biến cố liên quan MMI gồm phản ứng dị ứng, phát ban, đau cơ, đau khớp, cũng như suy giáp do điều trị quá liều. Tác dụng phụ MMI thường xảy ra trong 3 tháng đầu điều trị, nhưng có thể xảy ra muộn hơn. Ở trẻ em, nguy cơ ứ mật và tổn thương tế bào gan liên quan MMI dường như thấp hơn nhiều so với người lớn.</p>
+<p>Mất bạch cầu hạt được báo cáo ở khoảng 0,3% người lớn dùng MMI hoặc PTU. Chưa có dữ liệu tỷ lệ mất bạch cầu hạt ở trẻ em, nhưng ước tính rất thấp. Ở người lớn, mất bạch cầu hạt phụ thuộc liều với MMI và hiếm khi xảy ra ở liều thấp (5–10 mg/ngày). Khi xảy ra, 95% trường hợp trong 100 ngày đầu điều trị. Tỷ lệ tác dụng phụ chung của ATD (cả nặng và nhẹ) ở trẻ em được báo cáo 6–35%.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Dù theo dõi bạch cầu thường quy đôi khi có thể phát hiện mất bạch cầu hạt sớm, không khuyến cáo vì tình trạng hiếm và khởi phát đột ngột, thường có triệu chứng. Vì lý do này, đo bạch cầu khi sốt và khởi phát viêm họng là cách tiếp cận theo dõi tiêu chuẩn.</p>
+</div>
+
+<h3 id="h-theo-doi-ptu-tre">[P4] Theo dõi trẻ dùng PTU</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 64</span> — Nhìn chung không nên dùng PTU ở trẻ em. Nếu dùng, cần ngừng thuốc ngay và đánh giá chức năng gan/tính toàn vẹn tế bào gan ở trẻ có chán ăn, ngứa, phát ban, vàng da, phân nhạt màu/nước tiểu sậm màu, đau khớp, đau hạ sườn phải/chướng bụng, buồn nôn, hoặc khó chịu.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Nên ngừng PTU nếu transaminase (đo ở bệnh nhân triệu chứng hoặc phát hiện tình cờ) đạt 2–3 lần giới hạn trên. Sau khi ngừng thuốc, theo dõi chức năng gan (bilirubin, phosphatase kiềm, transaminase) hằng tuần đến khi hồi phục. Nếu không hồi phục, cần chuyển chuyên khoa tiêu hoá/gan mật.</p>
+</div>
+
+<h3 id="h-di-ung-mmi-tre">[P5] Xử trí phản ứng dị ứng ở trẻ dùng MMI</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 65</span> — Phản ứng da nhẹ dai dẳng khi dùng MMI ở trẻ nên xử trí bằng kháng histamine đồng thời hoặc ngừng thuốc và chuyển sang RAI/phẫu thuật. Trong trường hợp phản ứng bất lợi nặng, không khuyến cáo kê ATD còn lại.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Nếu trẻ có phản ứng bất lợi nặng với MMI, nên cân nhắc RAI hoặc phẫu thuật vì nguy cơ PTU được coi là lớn hơn nguy cơ RAI hoặc phẫu thuật. Trong hoàn cảnh đặc biệt (nguy cơ bão giáp và cần ATD ở trẻ có phản ứng nặng với MMI), có thể cân nhắc PTU ngắn hạn để kiểm soát cường giáp. Trong tình huống này, gia đình cần được thông báo nguy cơ của PTU.</p>
+
+<h3 id="h-thoi-gian-mmi-tre">[P6] Thời gian điều trị MMI ở trẻ GD</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 66</span> — Nếu chọn MMI là điều trị đầu tay cho GD ở trẻ em, có thể giảm liều dần sau 1–2 năm (ở trẻ cần liều thấp) để xác định có thuyên giảm tự nhiên hay không, hoặc tiếp tục cho đến khi trẻ và người chăm sóc sẵn sàng cân nhắc điều trị dứt điểm nếu cần.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Vấn đề nên dùng ATD bao lâu ở trẻ trước khi cân nhắc RAI hoặc phẫu thuật còn gây tranh cãi, cần thêm nghiên cứu. Nghiên cứu tiến cứu ở người lớn cho thấy nếu không thuyên giảm sau 12–18 tháng điều trị, khả năng thuyên giảm khi kéo dài thêm sẽ thấp hơn. Ở trẻ em, khi dùng ATD 1–2 năm, tỷ lệ thuyên giảm thường 20–30% (định nghĩa thuyên giảm là bình giáp 1 năm sau ngừng thuốc). Nghiên cứu hồi cứu gợi ý khả năng thuyên giảm sau 2 năm ATD thấp nếu tuyến giáp lớn (&gt;2,5 lần kích thước bình thường theo tuổi), trẻ nhỏ tuổi (&lt;12 tuổi) hoặc không phải người da trắng, TRAb vẫn cao khi điều trị, hoặc FT4 tăng đáng kể lúc chẩn đoán (&gt;4 ng/dL, 50 pmol/L). Một nghiên cứu tiến cứu gợi ý khả năng thuyên giảm dự báo tốt nhất bằng đáp ứng ban đầu với ATD — đạt bình giáp trong 3 tháng gợi ý khả năng cao hơn. Trẻ nhỏ tuổi hơn và mức hormon giáp ban đầu cao cũng ít khả năng thuyên giảm trong 2 năm.</p>
+<p>Tỷ lệ thuyên giảm ở trẻ điều trị ATD &gt;2 năm đã được báo cáo. Hai thập kỷ trước có gợi ý 25% trẻ GD thuyên giảm mỗi 2 năm điều trị liên tục, nhưng các nghiên cứu cohort lớn hơn sau này không cho thấy tỷ lệ tương tự. Trong 120 bệnh nhân nhi điều trị ATD tại một trung tâm: sau 1 năm 25% thuyên giảm; sau 2 năm 26%; sau 4 năm 37%; sau 4–10 năm 15%. Quan trọng, 30% trẻ thuyên giảm cuối cùng tái phát. Trong một cohort lớn khác 184 trẻ điều trị nội khoa: sau 1 năm 10% thuyên giảm; sau 2 năm 14%; sau 3 năm 20%; sau 4 năm 23%. Gần đây hơn, phân tích hồi cứu từ Nhật Bản trên 1138 trẻ: 723 tiếp tục ATD dài hạn, 271 mổ hoặc RAI, 144 bỏ theo dõi. Trong 639/723 trẻ ngừng ATD sau trung bình 3,8 năm (0,3–24,8 năm), 46,2% thuyên giảm, 34,2% tái phát. Tỷ lệ biến cố bất lợi với MMI và PTU lần lượt 21,4% và 18,8%.</p>
+<p>Ngược lại, các nghiên cứu gần đây khác về tỷ lệ thuyên giảm dài hạn ở trẻ GD điều trị ATD rất thấp (&lt;20%), đặc biệt khi theo dõi dài hơn, trong các cohort từ Đức và Đan Mạch.</p>
+<p>Dữ liệu cũng gợi ý khác biệt đáp ứng ATD theo tuổi. Một nghiên cứu so sánh 32 trẻ tiền dậy thì và 68 trẻ dậy thì: thuyên giảm chỉ ở 17% trẻ tiền dậy thì (điều trị 5,9±2,8 năm) so với 30% trẻ dậy thì (điều trị 2,8±1,1 năm). Một báo cáo khác so sánh 7 trẻ tiền dậy thì, 21 dậy thì, 12 sau dậy thì: thuyên giảm đạt ở 10 bệnh nhân (28%) tương tự giữa ba nhóm, nhưng thời gian đến thuyên giảm có xu hướng dài hơn ở nhóm nhỏ trẻ tiền dậy thì (tuổi trung vị 6).</p>
+<p>Bệnh GD tồn tại ở trẻ tương quan với TRAb tồn tại. Một nghiên cứu gần đây cho thấy TRAb chỉ bình thường hoá sau 24 tháng ở 18% bệnh nhân nhi dùng ATD. Không có dữ liệu cho thấy TRAb bình thường hoá khi điều trị lâu hơn. Do đó, có vẻ TRAb tồn tại lâu hơn ở trẻ em so với người lớn. Trong khi theo dõi TRAb khi dùng ATD hữu ích ở người lớn để dự đoán khả năng thuyên giảm/tái phát sau ngừng thuốc, cách tiếp cận này chưa được kiểm chứng ở trẻ em.</p>
+<p>Trong khi đa số nghiên cứu (kể cả báo cáo cơ sở dữ liệu lớn gần đây) cho thấy đa số bệnh nhân GD điều trị ATD không thuyên giảm, một báo cáo tiến cứu gần đây từ Pháp cho thấy dùng ATD kéo dài có thể đạt tỷ lệ thuyên giảm tới 49%. Nghiên cứu này báo cáo tỷ lệ 20%, 37%, 45%, 49% sau 4, 6, 8, 10 năm theo dõi 154 trẻ điều trị ATD. Việc dùng MMI ở nhóm này liên quan tỷ lệ tác dụng phụ rất thấp. Do đó, dù nhiều bác sĩ điều trị 1–2 năm với MMI, dữ liệu này gợi ý điều trị lâu hơn cũng hợp lý, miễn không có tác dụng phụ.</p>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 67</span> — Bệnh nhân nhi GD chưa thuyên giảm sau ít nhất 1–2 năm MMI nên cân nhắc điều trị bằng RAI hoặc cắt giáp. Cách khác, nếu trẻ dung nạp tốt ATD, có thể dùng kéo dài. Cách này đặc biệt hữu ích cho trẻ không phải ứng viên phẫu thuật hoặc RAI. Bệnh nhân dùng ATD kéo dài (&gt;2 năm) nên tái đánh giá mỗi 6–12 tháng và khi chuyển sang tuổi trưởng thành.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Nếu không thuyên giảm khi ngừng MMI sau ít nhất 1–2 năm điều trị, nên cân nhắc RAI hoặc phẫu thuật tuỳ tuổi trẻ. Cách khác, bác sĩ có thể tiếp tục MMI kéo dài, miễn không có tác dụng phụ và cường giáp được kiểm soát. Như đã nêu, phản ứng bất lợi thường xảy ra trong vài tháng đầu điều trị.</p>
+
+<h2 id="h-rai-tre-em">[Q] Nếu chọn RAI điều trị GD ở trẻ em, thực hiện như thế nào?</h2>
+
+<h3 id="h-chuan-bi-rai-tre">[Q1] Chuẩn bị bệnh nhân nhi GD trước RAI</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 68</span> — Đề nghị trẻ GD có T4 toàn phần &gt;20 μg/dL (260 nmol/L) hoặc FT4 &gt;5 ng/dL (60 pmol/L) sẽ điều trị RAI nên được điều trị trước bằng MMI và chẹn beta đến khi T4 toàn phần/FT4 bình thường trước khi làm RAI.
+<span class="grade">Khuyến cáo yếu, bằng chứng chất lượng thấp</span>
+</div>
+<p>Dù tần suất cường giáp nặng thêm ngắn hạn sau điều trị trước bằng ATD chưa rõ, đã có báo cáo hiếm về trẻ cường giáp nặng khởi phát bão giáp sau RAI.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">Khi trẻ dùng MMI sẽ điều trị RAI, nên ngừng thuốc 2–3 ngày trước điều trị. Lúc này nên dùng chẹn beta (nếu chưa dùng) đến khi T4 toàn phần/FT4 bình thường sau RAI, thường mất 2–4 tháng. Dù một số bác sĩ dùng lại ATD sau RAI, thực hành này hiếm khi cần thiết ở trẻ em. Hormon giáp ở trẻ bắt đầu giảm trong tuần đầu sau RAI. ATD có thể gây khó đánh giá suy giáp sau điều trị vì có thể do MMI thay vì RAI.</p>
+</div>
+
+<h3 id="h-thuc-hien-rai-tre">[Q2] Thực hiện RAI điều trị GD ở trẻ em</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 69</span> — Nếu chọn RAI cho trẻ GD, cần dùng đủ liều RAI trong một liều duy nhất để đưa bệnh nhân về suy giáp.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Mục tiêu RAI cho GD là gây suy giáp thay vì bình giáp, vì liều RAI thấp hơn để lại mô giáp tồn dư bị chiếu xạ một phần, tăng nguy cơ phát triển tân sinh giáp. Vì tăng nguy cơ nhân/ung thư giáp liên quan chiếu xạ mức thấp ở trẻ em, và tỷ lệ thuyên giảm kém với liều RAI thấp, quan trọng cần dùng liều RAI &gt;150 μCi/g (&gt;5,55 MBq/g) thay vì liều nhỏ hơn để đạt suy giáp. Với tuyến lớn (50–80 g), có thể cần liều ¹³¹I 200–300 μCi/g (7,4–11,1 MBq/g). Liều RAI cho bệnh nhân bướu giáp rất lớn cao, và có xu hướng đánh giá thấp kích thước tuyến (dẫn tới liều không đủ). Do đó, phẫu thuật có thể ưu tiên hơn RAI ở trẻ có bướu giáp &gt;80 g.</p>
+<p>Một số trung tâm dùng liều cố định khoảng 15 mCi cho mọi trẻ, số khác tính liều từ ước lượng hoặc đo trực tiếp kích thước tuyến và độ tập trung ¹²³I. Để đánh giá kích thước giáp, đặc biệt với tuyến lớn, khuyến cáo siêu âm. Chưa có dữ liệu so sánh kết cục liều cố định so với liều tính toán ở trẻ em; ở người lớn, kết cục tương đương giữa hai cách. Ưu điểm tiềm năng của liều tính toán là có thể dùng liều RAI thấp hơn, đặc biệt khi độ tập trung cao và tuyến nhỏ. Liều tính toán cũng giúp đảm bảo liều đủ.</p>
+<p>Khi dùng liều RAI &gt;150 μCi/g (&gt;5,55 MBq/g), tỷ lệ suy giáp khoảng 95%. Dù có báo cáo tái phát cường giáp ở trẻ đã suy giáp sau RAI, tình huống này rất hiếm gặp.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">RAI được bài tiết qua nước bọt, nước tiểu, mồ hôi, nước mắt, phân. Hoạt độ phóng xạ đáng kể còn lưu giữ trong tuyến giáp vài ngày. Do đó quan trọng bệnh nhân và gia đình được thông báo và tuân thủ khuyến cáo an toàn phóng xạ địa phương sau RAI. Sau RAI, cần đo T3, T4, và/hoặc FT4 mỗi tháng. Vì TSH có thể vẫn ức chế nhiều tháng sau khi cường giáp hết, đo TSH có thể không hữu ích trong bối cảnh này để đánh giá suy giáp. Suy giáp thường phát triển sau 2–3 tháng, lúc này nên kê levothyroxine.</p>
+</div>
+
+<h3 id="h-tac-dung-phu-rai-tre">[Q3] Tác dụng phụ của RAI ở trẻ em</h3>
+<p>Tác dụng phụ của RAI ở trẻ em không thường gặp, ngoài suy giáp suốt đời — vốn là mục tiêu điều trị. Dưới 10% trẻ than phiền đau nhẹ vùng giáp tuần đầu sau điều trị; có thể xử trí hiệu quả bằng acetaminophen hoặc NSAID trong 24–48 giờ.</p>
+<p>Nếu còn mô giáp tồn dư ở trẻ nhỏ sau RAI, tồn tại nguy cơ lý thuyết phát triển ung thư giáp. Người phản đối dùng RAI ở trẻ thường viện dẫn tỷ lệ ung thư giáp và nhân giáp tăng ở trẻ nhỏ phơi nhiễm phóng xạ từ bụi phóng xạ hạt nhân tại Hiroshima hoặc sau nổ lò phản ứng Chernobyl. Tuy nhiên, dữ liệu này không áp dụng trực tiếp khi đánh giá nguy cơ điều trị RAI. Nguy cơ tân sinh giáp cao nhất khi phơi nhiễm bức xạ ngoài mức thấp (0,1–25 Gy; ~0,09–30 μCi/g), không phải với liều điều trị cao hơn dùng cho GD. Cũng quan trọng lưu ý rằng thiếu iod và phơi nhiễm các đồng vị phóng xạ khác ngoài RAI có thể góp phần tăng nguy cơ ung thư giáp ở trẻ nhỏ sau sự cố Chernobyl. Đáng chú ý, tỷ lệ ung thư giáp không tăng ở 3000 trẻ phơi nhiễm RAI từ khu lò phản ứng hạt nhân Hanford tại vùng đủ iod. Tỷ lệ ung thư giáp cũng không tăng ở 6000 trẻ nhận RAI mục đích xạ hình chẩn đoán.</p>
+<p>Không có bằng chứng cho thấy trẻ em hoặc người lớn điều trị GD bằng &gt;150 μCi/g (5,55 MBq/g) RAI tăng nguy cơ ung thư giáp trực tiếp do RAI. Dù có một số nghiên cứu về vấn đề này ở người lớn điều trị RAI cho GD (xem mục [D2]), ít nghiên cứu tập trung vào quần thể phơi nhiễm RAI điều trị GD ở tuổi trẻ em/thanh thiếu niên.</p>
+<p>Một nghiên cứu phân tích 602 người phơi nhiễm RAI dưới 20 tuổi tại Thuỵ Điển và Hoa Kỳ, theo dõi trung bình 10 năm, liều RAI trung bình vào giáp 88 Gy (~80 μCi/g) — mức được biết liên quan tân sinh giáp và thấp hơn liều khuyến cáo điều trị GD. Ghi nhận 2 ca ung thư giáp so với 0,1 ca dự kiến trong thời gian đó. Không khảo sát tác động lên ung thư ngoài giáp.</p>
+<p>Nghiên cứu nhi khoa theo dõi dài nhất báo cáo kết cục 36 năm của 116 bệnh nhân điều trị RAI 1953–1973, tuổi điều trị 3–19 tuổi. Không bệnh nhân nào phát triển ung thư giáp hoặc bạch cầu cấp. Không tăng tỷ lệ sẩy thai tự nhiên hoặc dị tật bẩm sinh ở con cái. Tuy nhiên cỡ mẫu nhỏ, chưa đủ lực thống kê để đánh giá đầy đủ vấn đề này.</p>
+<p>Liều bức xạ toàn thân sau RAI thay đổi theo tuổi; cùng hoạt độ RAI tuyệt đối sẽ gây phơi nhiễm bức xạ nhiều hơn ở trẻ nhỏ so với thanh thiếu niên/người lớn. Hiện chưa có dữ liệu đo liều RAI ở trẻ GD để đánh giá phơi nhiễm toàn thân. Dùng mô hình phantom, ước tính ở tuổi 0, 1, 5, 10, 15 và người lớn, hoạt độ bức xạ toàn thân tương ứng là 11,1; 4,6; 2,4; 1,45; 0,90; và 0,85 rem trên mỗi millicurie RAI dùng. Dựa trên phân tích Ủy ban Ảnh hưởng Sinh học của Bức xạ Ion hoá VII về phơi nhiễm bức xạ cấp mức thấp, có thể ước tính nguy cơ lý thuyết tích luỹ suốt đời về tỷ lệ mắc và tử vong do mọi loại ung thư ở một quần thể lớn trẻ điều trị (Bảng 9).</p>
+<p>Đến nay, các nghiên cứu dài hạn trên trẻ điều trị RAI cho GD chưa cho thấy tăng nguy cơ ác tính ngoài giáp. Nếu có nguy cơ nhỏ tồn tại, cần cỡ mẫu &gt;10.000 trẻ điều trị &lt;10 tuổi để xác định được nguy cơ này, có thể vượt số trẻ thực tế từng điều trị. Dựa trên ước tính nguy cơ ung thư từ phơi nhiễm bức xạ toàn thân mức thấp theo tuổi, về mặt lý thuyết có thể có nguy cơ thấp về ác tính ở trẻ rất nhỏ điều trị RAI. Do đó, khuyến cáo tránh RAI ở trẻ rất nhỏ (&lt;5 tuổi) và cân nhắc RAI ở trẻ 5–10 tuổi khi liều cần thiết &lt;10 mCi (&lt;370 MBq). Quan trọng cần nhấn mạnh các khuyến cáo này dựa trên lo ngại lý thuyết, cần thêm nghiên cứu trực tiếp. Do đó, nguy cơ lý thuyết của RAI cần được cân nhắc với nguy cơ đã biết của phẫu thuật cắt giáp hoặc dùng ATD kéo dài khi chọn giữa ba phương thức điều trị GD ở nhóm tuổi nhi.</p>
+<p>Liều RAI dùng nên dựa trên kích thước và độ tập trung của tuyến giáp, không nên giảm tuỳ tiện vì tuổi nhỏ. Cố gắng giảm thiểu liều RAI sẽ dẫn tới điều trị chưa đủ và có thể cần thêm RAI, tăng phơi nhiễm bức xạ.</p>
+
+<div class="tbl-wrap">
+<table>
+<caption>Bảng 9. Ước tính lý thuyết tỷ lệ mắc/tử vong ung thư liên quan điều trị ¹³¹I cho cường giáp theo tuổi</caption>
+<tr><th>Tuổi khi điều trị (năm)</th><th>Liều toàn thân ¹³¹I mỗi mCi (rem)</th><th>Liều toàn thân với 15 mCi (rem)</th><th>Nguy cơ ung thư suốt đời với 15 mCi ¹³¹I (ca/100.000)</th><th>Tỷ lệ %</th><th>Nguy cơ ung thư tương đối so với nền</th></tr>
+<tr><td>0</td><td>11,1</td><td>167</td><td>23.884</td><td>23,9</td><td>1,96</td></tr>
+<tr><td>1</td><td>4,6</td><td>69,0</td><td>9.898</td><td>9,9</td><td>1,40</td></tr>
+<tr><td>5</td><td>2,4</td><td>36,0</td><td>3.958</td><td>3,96</td><td>1,16</td></tr>
+<tr><td>10</td><td>1,45</td><td>21,8</td><td>1.975</td><td>1,97</td><td>1,08</td></tr>
+<tr><td>15</td><td>0,9</td><td>13,5</td><td>1.024</td><td>1,02</td><td>1,04</td></tr>
+<tr><td>20</td><td>0,85</td><td>12,8</td><td>812</td><td>0,81</td><td>1,03</td></tr>
+<tr><td>40</td><td>0,85</td><td>12,8</td><td>564</td><td>0,56</td><td>1,02</td></tr>
+<tr><td>60</td><td>0,85</td><td>12,8</td><td>464</td><td>0,46</td><td>1,02</td></tr>
+</table>
+</div>
+<p style="font-size:12.5px;color:var(--ink-2);margin-top:-14px;">Nguồn: phân tích của Dr. Patrick Zanzonico, Memorial Sloan Kettering Cancer Center, dựa trên tỷ lệ trung bình tử vong do ung thư tự phát là 25%.</p>
+
+<h2 id="h-pt-basedow-tre">[R] Nếu chọn cắt giáp điều trị GD ở trẻ em, thực hiện như thế nào?</h2>
+
+<h3 id="h-chuan-bi-pt-tre">[R1] Chuẩn bị trẻ GD trước phẫu thuật</h3>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 70</span> — Trẻ GD phẫu thuật cắt giáp cần được đưa về bình giáp bằng MMI. Cần dùng chế phẩm chứa KI ngay trước mổ.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng thấp</span>
+</div>
+<p>Phẫu thuật là hình thức điều trị GD chấp nhận được ở trẻ em. Cắt giáp là điều trị ưu tiên cho GD ở trẻ nhỏ (&lt;5 tuổi) khi cần điều trị dứt điểm, và phẫu thuật có thể thực hiện bởi phẫu thuật viên khối lượng ca cao. Ở trẻ có tuyến giáp rất lớn (&gt;80 g), đáp ứng RAI có thể kém và phẫu thuật cũng có thể ưu tiên hơn cho nhóm này. Khi thực hiện, cắt giáp gần toàn bộ hoặc toàn bộ là quy trình được khuyến cáo.</p>
+<div class="box">
+<div class="box-title">GHI CHÚ KỸ THUẬT</div>
+<p style="margin:0;">MMI thường dùng 1–2 tháng chuẩn bị trước mổ. KI (50 mg iodide/giọt) có thể dùng 1–2 giọt (0,05–0,1 mL) × 3 lần/ngày trong 10 ngày trước mổ. SSKI có thể pha trong nước ép hoặc sữa.</p>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 71</span> — Nếu chọn phẫu thuật cho GD ở trẻ, cần thực hiện cắt giáp toàn bộ hoặc gần toàn bộ.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<div class="rec">
+<span class="num">KHUYẾN CÁO 72</span> — Cắt giáp ở trẻ em cần được thực hiện bởi phẫu thuật viên giáp khối lượng ca cao.
+<span class="grade">Khuyến cáo mạnh, bằng chứng chất lượng trung bình</span>
+</div>
+<p>Tỷ lệ biến chứng phẫu thuật ở trẻ em cao hơn người lớn, cao hơn ở trẻ nhỏ hơn so với trẻ lớn hơn. Sau mổ, trẻ nhỏ hơn cũng có vẻ nguy cơ suy cận giáp thoáng qua cao hơn thanh thiếu niên hoặc người lớn.</p>
+<p>Hạ calci máu sau mổ cần truyền calci tĩnh mạch dường như thường gặp hơn ở trẻ so với người lớn. Dữ liệu từ một trung tâm gợi ý nếu bắt đầu calcitriol 3 ngày trước mổ (0,25 hoặc 0,5 μg, 2 lần/ngày), nhu cầu truyền calci sau mổ giảm rõ rệt, giúp giảm thời gian nằm viện. Calcitriol sau đó giảm dần trong 2 tuần đầu sau mổ.</p>
+<p>Ngoài ra, tỷ lệ biến chứng cao gấp 2 lần khi cắt giáp được thực hiện bởi phẫu thuật viên nhi hoặc phẫu thuật viên tổng quát chưa có nhiều kinh nghiệm hiện tại với thủ thuật này, so với phẫu thuật viên khối lượng ca cao. Thêm bằng chứng ủng hộ quan điểm cắt giáp cho GD ở trẻ em cần do phẫu thuật viên giáp kinh nghiệm thực hiện đến từ các báo cáo kinh nghiệm tại cơ sở cho thấy tỷ lệ biến chứng thấp tại trung tâm khối lượng ca cao. Trong hoàn cảnh không có chuyên môn phẫu thuật giáp nhi tại chỗ, nên chuyển trẻ GD đến trung tâm phẫu thuật giáp khối lượng ca cao có kinh nghiệm nhi khoa, đặc biệt với trẻ nhỏ. Nhóm chăm sóc đa chuyên khoa tối ưu gồm bác sĩ nội tiết nhi, phẫu thuật viên giáp và bác sĩ gây mê có kinh nghiệm.</p>
+
+<hr class="sect">
+<div class="box">
+<div class="box-title">TÓM TẮT PHẦN 3 — SẼ TIẾP TỤC Ở PHẦN 4</div>
+<p style="margin:0;">Phần 4 sẽ trình bày: cường giáp dưới lâm sàng [S] (tỷ lệ, nguyên nhân, ý nghĩa lâm sàng, khi nào điều trị, cách điều trị — có Bảng 10), và toàn bộ cường giáp trong thai kỳ [T] (chẩn đoán, xử trí ATD theo tam cá nguyệt, vai trò TRAb, viêm giáp hậu sản — có Bảng 11).</p>
+</div>
+
+
+    <hr class="sect">
+    <p style="font-size:12.5px; color:var(--ink-2);">Nguồn đầy đủ: Ross DS, Burch HB, Cooper DS, Greenlee MC, Laurberg P, Maia AL, Rivkees SA, Samuels M, Sosa JA, Stan MN, Walter MA. 2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis. Thyroid 2016;26(10):1343–1421. DOI: 10.1089/thy.2016.0229. Danh mục 139 tài liệu tham khảo đầy đủ có trong bản gốc, không chép lại ở đây.</p>
+  </main>
+</div>
+
+<div id="hlbtn">Đánh dấu</div>
+
+<script>
+(function(){
+  const content = document.getElementById('content');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const menuBtn = document.getElementById('menuBtn');
+  const progress = document.getElementById('progress');
+  const readpct = document.getElementById('readpct');
+  const tocEl = document.getElementById('toc');
+  const hlbtn = document.getElementById('hlbtn');
+  const hlcount = document.getElementById('hlcount');
+  const clearHlBtn = document.getElementById('clearHl');
+  const STORAGE_KEY = 'ata2016_hyperthyroid_p3_v1';
+
+  menuBtn.addEventListener('click', ()=>{ sidebar.classList.add('open'); overlay.classList.add('show'); });
+  overlay.addEventListener('click', ()=>{ sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+
+  const headings = Array.from(content.querySelectorAll('h2, h3'));
+  const links = [];
+  headings.forEach(h=>{
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#'+h.id;
+    a.textContent = h.textContent;
+    a.className = h.tagName === 'H2' ? 'lvl2' : 'lvl3';
+    a.addEventListener('click', ()=>{ sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+    li.appendChild(a);
+    tocEl.appendChild(li);
+    links.push({id:h.id, el:a});
+  });
+
+  function onScroll(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.min(100, Math.round((scrollTop/docHeight)*100)) : 0;
+    progress.style.width = pct + '%';
+    readpct.textContent = 'Đã đọc: ' + pct + '%';
+    let currentId = links[0] ? links[0].id : null;
+    for (const h of headings){
+      const rect = h.getBoundingClientRect();
+      if (rect.top - 90 <= 0) currentId = h.id;
+    }
+    links.forEach(l=> l.el.classList.toggle('active', l.id === currentId));
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  const blocks = Array.from(content.querySelectorAll('p, li, td'));
+  blocks.forEach((el, i)=>{ el.setAttribute('data-hid', 'b'+i); });
+
+  function getTextOffset(container, node, offset){
+    let total = 0; let found = false;
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+    let n;
+    while(n = walker.nextNode()){
+      if (n === node){ total += offset; found = true; break; }
+      total += n.textContent.length;
+    }
+    return found ? total : null;
+  }
+
+  function wrapRange(container, start, end, hlid){
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+    let pos = 0; let n; const toWrap = [];
+    while(n = walker.nextNode()){
+      const len = n.textContent.length;
+      const nStart = pos, nEnd = pos+len;
+      if (nEnd > start && nStart < end){
+        const wStart = Math.max(0, start-nStart);
+        const wEnd = Math.min(len, end-nStart);
+        toWrap.push({node:n, wStart, wEnd});
+      }
+      pos += len;
+      if (pos >= end) break;
+    }
+    toWrap.reverse().forEach(({node, wStart, wEnd})=>{
+      const range = document.createRange();
+      range.setStart(node, wStart);
+      range.setEnd(node, wEnd);
+      const mark = document.createElement('mark');
+      mark.className = 'hl';
+      mark.setAttribute('data-hlid', hlid);
+      mark.title = 'Bấm để xoá highlight';
+      try{ range.surroundContents(mark); }catch(e){}
+    });
+  }
+
+  function loadHighlights(){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    list.forEach(item=>{
+      const container = content.querySelector('[data-hid="'+item.bid+'"]');
+      if (container) wrapRange(container, item.start, item.end, item.id);
+    });
+    updateHlCount();
+  }
+
+  function saveHighlight(bid, start, end, text){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    const id = 'h'+Date.now()+Math.floor(Math.random()*1000);
+    list.push({id, bid, start, end, text});
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    updateHlCount();
+  }
+
+  function removeHighlight(hlid){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    list = list.filter(x=>x.id !== hlid);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    document.querySelectorAll('mark.hl[data-hlid="'+hlid+'"]').forEach(m=>{
+      const parent = m.parentNode;
+      while(m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+      parent.normalize();
+    });
+    updateHlCount();
+  }
+
+  function updateHlCount(){
+    let list = [];
+    try{ list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ list = []; }
+    hlcount.textContent = list.length + ' đoạn đã highlight';
+  }
+
+  content.addEventListener('click', (e)=>{
+    if (e.target.tagName === 'MARK' && e.target.classList.contains('hl')){
+      const hlid = e.target.getAttribute('data-hlid');
+      if (confirm('Xoá highlight này?')) removeHighlight(hlid);
+    }
+  });
+
+  clearHlBtn.addEventListener('click', ()=>{
+    if (!confirm('Xoá toàn bộ highlight đã lưu?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    document.querySelectorAll('mark.hl').forEach(m=>{
+      const parent = m.parentNode;
+      while(m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+      parent.normalize();
+    });
+    updateHlCount();
+  });
+
+  let pendingSelection = null;
+  document.addEventListener('mouseup', (e)=>{
+    if (e.target === hlbtn) return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || sel.rangeCount === 0){ hlbtn.style.display='none'; return; }
+    const range = sel.getRangeAt(0);
+    const container = range.commonAncestorContainer;
+    const el = container.nodeType === 1 ? container : container.parentElement;
+    const block = el.closest ? el.closest('[data-hid]') : null;
+    if (!block || !content.contains(block)){ hlbtn.style.display='none'; return; }
+    const start = getTextOffset(block, range.startContainer, range.startOffset);
+    const end = getTextOffset(block, range.endContainer, range.endOffset);
+    if (start === null || end === null || end <= start){ hlbtn.style.display='none'; return; }
+    pendingSelection = { bid: block.getAttribute('data-hid'), start, end, text: sel.toString() };
+    const rect = range.getBoundingClientRect();
+    hlbtn.style.left = (window.scrollX + rect.left + rect.width/2 - 34) + 'px';
+    hlbtn.style.top = (window.scrollY + rect.top - 38) + 'px';
+    hlbtn.style.display = 'block';
+  });
+
+  hlbtn.addEventListener('mousedown', (e)=> e.preventDefault());
+  hlbtn.addEventListener('click', ()=>{
+    if (!pendingSelection) return;
+    const { bid, start, end } = pendingSelection;
+    const container = content.querySelector('[data-hid="'+bid+'"]');
+    const id = 'h'+Date.now()+Math.floor(Math.random()*1000);
+    if (container) wrapRange(container, start, end, id);
+    saveHighlight(bid, start, end, pendingSelection.text);
+    window.getSelection().removeAllRanges();
+    hlbtn.style.display = 'none';
+    pendingSelection = null;
+  });
+
+  document.addEventListener('mousedown', (e)=>{
+    if (e.target !== hlbtn) hlbtn.style.display = 'none';
+  });
+
+  loadHighlights();
+})();
+</script>
+</body>
+</html>
